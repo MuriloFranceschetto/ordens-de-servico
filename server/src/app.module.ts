@@ -4,6 +4,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PersonModule } from './person/person.module';
 import { Person } from './person/entities/person.entity';
+import { WorkModule } from './work/work.module';
+import { Work } from './work/entities/work.entity';
 
 @Module({
 	imports: [
@@ -13,11 +15,12 @@ import { Person } from './person/entities/person.entity';
 			port: 5432,
 			password: '123456',
 			username: 'postgres',
-			entities: [Person],
+			entities: [Person, Work],
 			database: 'trampos',
 			synchronize: true,
 		}),
 		PersonModule,
+		WorkModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
