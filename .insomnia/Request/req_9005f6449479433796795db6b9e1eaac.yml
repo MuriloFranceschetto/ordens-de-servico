@@ -1,19 +1,19 @@
-_id: req_86319bc3c6fd4f0193f1ca9f540e8847
+_id: req_9005f6449479433796795db6b9e1eaac
 type: Request
-parentId: wrk_cb447ca6879145ec9c4a8462f9fec2ef
-modified: 1694359630327
-created: 1694358807516
-url: "{{ _.serverHost }}"
-name: Hello World
+parentId: fld_7f0c9a756d374915881a158306eded60
+modified: 1694394782823
+created: 1694393588003
+url: "{{ _.serverHost }}/person"
+name: Find All
 description: ""
 method: GET
 body: {}
 parameters: []
 headers:
   - name: User-Agent
-    value: Insomnia/2023.5.7
+    value: insomnia/2023.5.8
 authentication: {}
-metaSortKey: -1694358807516
+metaSortKey: -1694393588003
 isPrivate: false
 settingStoreCookies: true
 settingSendCookies: true

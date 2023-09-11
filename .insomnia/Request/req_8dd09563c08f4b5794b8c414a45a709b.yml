@@ -1,0 +1,33 @@
+_id: req_8dd09563c08f4b5794b8c414a45a709b
+type: Request
+parentId: fld_7f0c9a756d374915881a158306eded60
+modified: 1694394728961
+created: 1694394314285
+url: "{{ _.serverHost }}/person"
+name: Create
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"name": "Murilo Franceschetto",
+    	"document": "08841536900",
+    	"phone": "543534534543",
+    	"type": "User"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1694376197759.5
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
