@@ -6,6 +6,12 @@ export class Person {
 	id: number;
 
 	@Column({ type: 'varchar', length: 100 })
+	login: string;
+
+	@Column({ type: 'varchar', length: 50 })
+	password: string;
+
+	@Column({ type: 'varchar', length: 100 })
 	name: string;
 
 	@Column({ type: 'varchar', length: 30 })

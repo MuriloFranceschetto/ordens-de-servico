@@ -18,11 +18,17 @@ export class PersonService {
 		person.document = createPersonDto.document;
 		person.phone = createPersonDto.phone;
 		person.type = createPersonDto.type;
+		person.login = createPersonDto.login;
+		person.password = createPersonDto.password;
 		return this.personRepository.save(person);
 	}
 
 	findAll() {
 		return this.personRepository.find();
+	}
+
+	findByLogin(login: string): Promise<Person> {
+		return this.personRepository.findOneBy({ login });
 	}
 
 	findOne(id: number) {
@@ -35,6 +41,8 @@ export class PersonService {
 		person.document = updatePersonDto.document;
 		person.phone = updatePersonDto.phone;
 		person.type = updatePersonDto.type;
+		person.login = updatePersonDto.login;
+		person.password = updatePersonDto.password;
 		person.id = id;
 		return this.personRepository.save(person);
 	}

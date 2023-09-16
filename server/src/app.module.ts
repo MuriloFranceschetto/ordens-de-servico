@@ -6,6 +6,7 @@ import { PersonModule } from './person/person.module';
 import { Person } from './person/entities/person.entity';
 import { WorkModule } from './work/work.module';
 import { Work } from './work/entities/work.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
 	imports: [
@@ -21,6 +22,7 @@ import { Work } from './work/entities/work.entity';
 		}),
 		PersonModule,
 		WorkModule,
+		AuthModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

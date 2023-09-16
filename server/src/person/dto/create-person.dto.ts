@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 // const passwordRegEx =
 // 	/^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,20}$/;
@@ -11,6 +11,13 @@ export class CreatePersonDto {
 
 	@IsNotEmpty()
 	document: string;
+
+	@IsNotEmpty()
+	@IsEmail()
+	login: string;
+
+	@IsNotEmpty()
+	password: string;
 
 	@IsNotEmpty()
 	phone: string;
