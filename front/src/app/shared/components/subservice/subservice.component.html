@@ -1,0 +1,45 @@
+
+<div class="p-6" [formGroup]="formSubservice">
+    
+    <div class="flex justify-between items-center">
+        <h1 class="text-2xl mb-4">
+            <button mat-icon-button matDialogClose>
+                <mat-icon>keyboard_arrow_left</mat-icon>
+            </button>
+            {{ !!dialogData ? 'Editar Sub-serviço' : 'Novo Sub-serviço' }}
+        </h1>
+        <mat-checkbox formControlName="active"> Ativo </mat-checkbox>
+    </div>
+    
+    <form class="flex flex-col">
+        
+        <mat-form-field>
+            <mat-label>Nome</mat-label>
+            <input matInput formControlName="name">
+        </mat-form-field>
+        
+        <mat-form-field>
+            <mat-label> Cobrado por: </mat-label>
+            <mat-select formControlName="charged_per">
+                @for (opt of chargeTypesOptions; track opt.value) {
+                    <mat-option [value]="opt.value"> {{ opt.label }} </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field>
+            <mat-label>Valor</mat-label>
+            <input matInput formControlName="price">
+        </mat-form-field>
+
+    </form>
+    
+    <section class="flex justify-between gap-2">
+        <div>
+            @if (dialogData?.id) {
+                <button mat-stroked-button class="w-52" color="warn" (click)="deleteSubservice()"> Excluir </button>
+            }
+        </div>
+        <button mat-raised-button class="w-52" color="primary" (click)="registerSubservice()" [disabled]="formSubservice.invalid"> Salvar </button>
+    </section>
+</div>

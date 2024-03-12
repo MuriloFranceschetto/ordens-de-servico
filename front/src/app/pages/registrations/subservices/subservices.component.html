@@ -1,0 +1,35 @@
+<h1 class="text-2xl mb-4"> Usuários </h1>
+
+<table mat-table [dataSource]="subservices$ | async">
+    
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Nome </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="charged_per">
+        <th mat-header-cell *matHeaderCellDef> Cobrado por </th>
+        <td mat-cell *matCellDef="let element"> {{ element.charged_per | subserviceChargeTypeLabel }} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef> Preço </th>
+        <td mat-cell *matCellDef="let element"> {{ element.price }} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>
+            <button color="accent" class="float-right" mat-raised-button (click)="openSubserviceForm()"> 
+                <mat-icon> add </mat-icon> Novo 
+            </button>
+        </th>
+        <td mat-cell *matCellDef="let element">
+            <button color="primary" class="float-right" mat-raised-button (click)="openSubserviceForm(element)">
+                <mat-icon> edit </mat-icon> Editar 
+            </button>
+        </td>
+    </ng-container>
+    
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns;" [ngClass]="{'opacity-50': !row.active}"></tr>
+</table>

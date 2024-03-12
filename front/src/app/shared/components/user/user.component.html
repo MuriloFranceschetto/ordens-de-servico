@@ -1,0 +1,55 @@
+
+<div class="p-6" [formGroup]="formUser">
+    
+    <div class="flex justify-between items-center">
+        <h1 class="text-2xl mb-4">
+            <button mat-icon-button matDialogClose>
+                <mat-icon>keyboard_arrow_left</mat-icon>
+            </button>
+            {{ !!dialogData ? 'Editar Usuário' : 'Novo Usuário' }}
+        </h1>
+        <mat-checkbox formControlName="active"> Ativo </mat-checkbox>
+    </div>
+    
+    <form class="flex flex-col">
+        
+        <mat-form-field>
+            <mat-label>Nome</mat-label>
+            <input matInput formControlName="name">
+        </mat-form-field>
+        
+        <mat-form-field>
+            <mat-label>E-mail</mat-label>
+            <input matInput formControlName="email">
+        </mat-form-field>
+        
+        <mat-form-field>
+            <mat-label>Senha</mat-label>
+            <input matInput formControlName="password">
+        </mat-form-field>
+        
+        <mat-form-field>
+            <mat-label> Tipos </mat-label>
+            <mat-select multiple formControlName="roles">
+                @for (opt of rolesOptions; track opt.value) {
+                    <mat-option [value]="opt.value"> {{ opt.label }} </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field>
+            <mat-label>Valor da Hora</mat-label>
+            <input currencyMask matInput formControlName="pricePerHour">
+        </mat-form-field>
+        
+    </form>
+    
+    <section class="flex justify-between gap-2">
+        <div>
+            @if (dialogData?.id) {
+                <button mat-stroked-button class="w-52" color="warn" (click)="deleteUser()"> Excluir </button>
+            }
+        </div>
+        <button mat-raised-button class="w-52" color="primary" (click)="registerUser()" [disabled]="formUser.invalid"> Salvar </button>
+    </section>
+</div>

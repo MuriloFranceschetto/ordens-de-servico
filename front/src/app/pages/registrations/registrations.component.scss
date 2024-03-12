@@ -1,0 +1,7 @@
+
+.hover-card:focus, .hover-card:hover {
+    @apply bg-blue-800 text-white;
+    img {
+        filter: invert(1);
+    }
+}

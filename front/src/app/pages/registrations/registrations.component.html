@@ -1,0 +1,20 @@
+
+<h1 class="text-4xl mb-4"> Cadastros </h1>
+
+<div class="grid grid-cols-1 sm:grid-cols-3 md:grid-col-4 gap-4">
+    
+    @for (registration of registrations; track $index) {
+        
+        <button mat-raised-button class="bg-white rounded p-4 cursor-pointer transition-all hover-card" [routerLink]="[registration.link]">
+            <div class="flex justify-between">
+                <section>
+                    <h2 class="text-lg font-semibold"> {{ registration.title }} </h2>
+                    <h3> {{ registration.subtitle }} </h3>
+                </section>
+                <img alt="Usuários" [src]="registration.img" class="w-16 h-16">
+            </div>
+        </button>
+        
+    }
+    
+</div>

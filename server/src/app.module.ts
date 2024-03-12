@@ -1,30 +1,28 @@
+import { SubserviceModule } from './subservice/subservice.module';
+import { UserModule } from './user/user.module';
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PersonModule } from './person/person.module';
-import { Person } from './person/entities/person.entity';
-import { WorkModule } from './work/work.module';
-import { Work } from './work/entities/work.entity';
-import { AuthModule } from './auth/auth.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { PostgresConfigService } from 'config/postgres.config.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-	imports: [
-		TypeOrmModule.forRoot({
-			type: 'postgres',
-			host: 'localhost',
-			port: 5432,
-			password: '123456',
-			username: 'postgres',
-			entities: [Person, Work],
-			database: 'trampos',
-			synchronize: true,
-		}),
-		PersonModule,
-		WorkModule,
-		AuthModule,
-	],
-	controllers: [AppController],
-	providers: [AppService],
+  imports: [
+    UserModule,
+    SubserviceModule,
+
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '../.env'
+    }),
+
+    TypeOrmModule.forRootAsync({
+      useClass: PostgresConfigService,
+      inject: [PostgresConfigService]
+    }),
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
