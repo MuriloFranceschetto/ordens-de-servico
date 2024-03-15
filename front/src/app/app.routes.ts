@@ -16,7 +16,11 @@ export const routes: Routes = [
             {
                 path: 'subservices',
                 loadComponent: () => import('./pages/registrations/subservices/subservices.component').then(c => c.SubservicesComponent),
-            }
+            },
+            {
+                path: 'orders',
+                loadComponent: () => import('./pages/orders/orders.component').then(c => c.OrdersComponent),
+            },
         ]
     },
     {

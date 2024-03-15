@@ -1,16 +1,19 @@
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { PostgresConfigService } from 'config/postgres.config.service';
 import { SubserviceModule } from './subservice/subservice.module';
 import { UserModule } from './user/user.module';
-import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { PostgresConfigService } from 'config/postgres.config.service';
-import { ConfigModule } from '@nestjs/config';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
     UserModule,
     SubserviceModule,
+    OrderModule,
 
     ConfigModule.forRoot({
       isGlobal: true,

@@ -1,7 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { ChargeTypes } from "./charge-type";
 
-
 @Entity({ name: 'subservices' })
 export class SubserviceEntity {
 
