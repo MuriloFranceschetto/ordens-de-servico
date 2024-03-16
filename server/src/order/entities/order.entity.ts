@@ -10,28 +10,28 @@ export class OrderEntity {
     id: string;
 
     @Column({ name: 'title', length: 100 })
-    name: string;
+    title: string;
 
     @Column({ name: 'description', length: 8000 })
     description: string;
 
     @Column({ name: 'datetime_in', type: 'timestamptz' })
-    datetime_in: Date;
+    datetimeIn: Date;
 
     @Column({ name: 'datetime_out', type: 'timestamptz' })
-    datetime_out: Date;
+    datetimeOut: Date;
 
     @Column({ name: 'open', type: 'boolean' })
     open: boolean;
 
     @Column({ name: 'payment_status', type: 'enum', enum: PaymentStatus })
-    payment_status: PaymentStatus;
+    paymentStatus: PaymentStatus;
 
-    @OneToOne(() => UserEntity)
+    @OneToOne(() => UserEntity, user => user.id, { eager: true })
     @JoinColumn()
     client: UserEntity;
 
-    @OneToMany(() => OrderPaymentEntity, (payment) => payment.id, { cascade: true, eager: true })
+    @OneToMany(() => OrderPaymentEntity, payment => payment.order, { cascade: true, eager: true, nullable: true })
     payments: OrderPaymentEntity[];
 
     @CreateDateColumn({ name: 'created_at' })
@@ -42,5 +42,8 @@ export class OrderEntity {
 
     @DeleteDateColumn({ name: 'deleted_at' })
     deletedAt: string;
+    datetime_in: Date;
+    datetime_out: Date;
+    payment_status: PaymentStatus;
 
 }

@@ -1,33 +1,47 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { OrderService } from "./order.service";
+import { ListOrderDTO } from "./dto/list-order.dto";
 
 @Controller('/api/orders')
 export class OrderController {
 
     constructor(
-        // private subserviceService: SubserviceService,
+        private orderService: OrderService,
     ) { }
 
     @Get()
     async getOrders() {
-        return []; //await this.subserviceService.listSubservices();
+        try {
+            return await this.orderService.listOrders();
+        } catch (error) {
+            throw new BadRequestException(error.message)
+        }
     }
 
     @Get('/:id')
-    async getSubserviceById(@Param('id') id: string) {
-        // return await this.subserviceService.getSubserviceById(id);
+    async getOrderById(@Param('id') id: string) {
+        try {
+            return await this.orderService.getOrderById(id);
+        } catch (error) {
+            throw new BadRequestException(error.message)
+        }
     }
 
     @Post()
-    async createSubservice(@Body() orderData: any) {
-        // const subserviceEntity = await this.subserviceService.createSubservice(subserviceData);
-        // return {
-        //     user: new listSubserviceDTO(subserviceEntity.active, subserviceEntity.id, subserviceEntity.name, subserviceEntity.charged_per, subserviceEntity.price),
-        //     message: 'Successfull user creation!'
-        // };
+    async createOrder(@Body() orderData: any) {
+        try {
+            const order = await this.orderService.createOrder(orderData);
+            return {
+                order: new ListOrderDTO(order.id, order.title, order.datetimeIn, order.datetimeOut, order.open, order.paymentStatus, order.client),
+                message: 'Successfull order creation!'
+            };
+        } catch (error) {
+            throw new BadRequestException(error.message)
+        }
     }
 
     @Put('/:id')
-    async updateSubservice(@Param('id') id: string, @Body() subserviceData: any) {
+    async updateSubservice(@Param('id') id: string, @Body() orderData: any) {
         // await this.subserviceService.updateSubservice(id, subserviceData);
         // return {
         //     message: 'Successfull user update!'
@@ -36,11 +50,11 @@ export class OrderController {
 
     @Delete('/:id')
     async deleteSubservice(@Param('id') id: string) {
-        // let deleteResult = await this.subserviceService.deleteSubservice(id);
-        // return {
-        //     deleteResult,
-        //     message: 'Successfull subservice delete!'
-        // };
+        let deleteResult = await this.orderService.deleteOrder(id);
+        return {
+            deleteResult,
+            message: 'Successfull order delete!'
+        };
     }
 
 }

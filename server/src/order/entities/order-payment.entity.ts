@@ -15,15 +15,12 @@ export class OrderPaymentEntity {
     @Column({ name: 'type', type: 'enum', enum: PaymentType })
     type: PaymentType;
 
-    @OneToOne(() => UserEntity)
+    @OneToOne(() => UserEntity, user => user.id, { eager: true })
     @JoinColumn()
     payer: UserEntity;
 
-    @ManyToOne(
-        () => OrderEntity,
-        (order) => order.payments,
-        { orphanedRowAction: "delete", onDelete: "CASCADE", onUpdate: "CASCADE" }
-    )
+    @ManyToOne(() => OrderEntity, (order) => order.payments,
+        { orphanedRowAction: "delete", onDelete: "CASCADE", onUpdate: "CASCADE" })
     order: OrderEntity;
 
 }

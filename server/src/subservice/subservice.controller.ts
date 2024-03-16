@@ -25,7 +25,7 @@ export class SubserviceController {
     async createSubservice(@Body() subserviceData: CreateSubserviceDTO) {
         const subserviceEntity = await this.subserviceService.createSubservice(subserviceData);
         return {
-            user: new listSubserviceDTO(subserviceEntity.active, subserviceEntity.id, subserviceEntity.name, subserviceEntity.charged_per, subserviceEntity.price),
+            subservice: new listSubserviceDTO(subserviceEntity.active, subserviceEntity.id, subserviceEntity.name, subserviceEntity.charged_per, subserviceEntity.price),
             message: 'Successfull user creation!'
         };
     }

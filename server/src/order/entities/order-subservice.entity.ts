@@ -12,7 +12,7 @@ export class OrderSubservice {
     @JoinColumn()
     subservice: SubserviceEntity;
 
-    @OneToOne(() => UserEntity)
+    @OneToOne(() => UserEntity, user => user.id)
     @JoinColumn()
     worker: UserEntity;
 
