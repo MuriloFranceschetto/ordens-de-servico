@@ -21,6 +21,10 @@ export const routes: Routes = [
                 path: 'orders',
                 loadComponent: () => import('./pages/orders/orders.component').then(c => c.OrdersComponent),
             },
+            {
+                path: 'order/:id',
+                loadComponent: () => import('./shared/components/order/order.component').then(c => c.OrderComponent),
+            },
         ]
     },
     {
