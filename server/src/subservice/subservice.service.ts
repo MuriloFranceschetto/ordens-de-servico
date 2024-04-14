@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SubserviceEntity } from './subservice.entity';
 import { Repository } from 'typeorm';
-import { listSubserviceDTO } from './dto/list-subservice.dto';
+import { ListSubserviceDto } from './dto/list-subservice.dto';
 import { randomUUID } from 'crypto';
 import { CreateSubserviceDTO } from './dto/create-subservice.dto';
 import { UpdateSubserviceDTO } from './dto/update-subservice.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class SubserviceService {
@@ -16,7 +17,7 @@ export class SubserviceService {
 
     async listSubservices() {
         let subservices = await this.subserviceRepository.find({ order: { id: 'ASC' } });
-        return subservices.map((sub) => new listSubserviceDTO(sub.active, sub.id, sub.name, sub.charged_per, sub.price));
+        return subservices.map((sub) => plainToInstance(ListSubserviceDto, sub));
     }
 
     async getSubserviceById(id: string) {

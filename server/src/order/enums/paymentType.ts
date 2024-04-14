@@ -1,8 +1,8 @@
 
 export enum PaymentType {
-    MONEY,
-    CARD,
-    PIX,
-    CHECK,
-    BANK_SLIP,
+    MONEY = 'MONEY',
+    CARD = 'CARD',
+    PIX = 'PIX',
+    CHECK = 'CHECK',
+    BANK_SLIP = 'BANK_SLIP',
 }

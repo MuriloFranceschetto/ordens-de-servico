@@ -1,11 +1,21 @@
+import { Expose } from "class-transformer";
 import { ChargeTypes } from "../charge-type";
 
-export class listSubserviceDTO {
-    constructor(
-        readonly active: boolean,
-        readonly id: string,
-        readonly name: string,
-        readonly charged_per: ChargeTypes,
-        readonly price: number,
-    ) { }
+export class ListSubserviceDto {
+
+    @Expose()
+    active: boolean;
+
+    @Expose()
+    id: string;
+
+    @Expose()
+    name: string;
+
+    @Expose()
+    charged_per: ChargeTypes;
+
+    @Expose()
+    price: number;
+
 }

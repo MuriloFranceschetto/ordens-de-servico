@@ -4,9 +4,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserEntity } from './user.entity';
-import { UserListDto } from './dto/UserList.dto';
+import { ListUserDto } from './dto/UserList.dto';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
 import { CreateUserDto } from './dto/CreateUser.dto';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class UserService {
@@ -17,17 +18,15 @@ export class UserService {
 
     async listUsers() {
         let users = await this.userRepository.find({ order: { id: 'ASC' } });
-        return users.map((user) => new UserListDto(user.id, user.name, user.roles, user.active));
+        return users.map((user) => plainToClass(ListUserDto, user));
     }
 
     async getUserById(id: string) {
-        let user = await this.userRepository.findOne({
+        return await this.userRepository.findOne({
             where: {
                 id,
             }
         });
-        let { password, ...fields } = user;
-        return fields;
     }
 
     async getUserByEmail(email: string) {

@@ -15,5 +15,8 @@ import { UniqueEmailValidator } from './validators/uniqueEmail.validator';
         UniqueEmailValidator,
         UserService,
     ],
+    exports: [
+        UserService,
+    ]
 })
 export class UserModule { }

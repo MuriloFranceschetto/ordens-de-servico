@@ -1,8 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { SubserviceService } from './subservice.service';
-import { listSubserviceDTO } from './dto/list-subservice.dto';
+import { ListSubserviceDto } from './dto/list-subservice.dto';
 import { CreateSubserviceDTO } from './dto/create-subservice.dto';
 import { UpdateSubserviceDTO } from './dto/update-subservice.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Controller('/api/subservices')
 export class SubserviceController {
@@ -25,7 +26,7 @@ export class SubserviceController {
     async createSubservice(@Body() subserviceData: CreateSubserviceDTO) {
         const subserviceEntity = await this.subserviceService.createSubservice(subserviceData);
         return {
-            subservice: new listSubserviceDTO(subserviceEntity.active, subserviceEntity.id, subserviceEntity.name, subserviceEntity.charged_per, subserviceEntity.price),
+            subservice: plainToInstance(ListSubserviceDto, subserviceEntity),
             message: 'Successfull user creation!'
         };
     }

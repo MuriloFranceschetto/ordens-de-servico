@@ -1,16 +1,17 @@
 export interface IUser {
     id: string;
     name: string;
-    roles: UserRole[],
+    roles: UserRole[];
+    active: boolean;
 }
 
 export interface ICompleteUser extends IUser {
     active: boolean;
     pricePerHour: number;
-    createdAt: Date,
-    deletedAt: Date,
-    updatedAt: Date,
-    email: string,
+    createdAt: Date;
+    deletedAt: Date;
+    updatedAt: Date;
+    email: string;
 }
 
 export enum UserRole {

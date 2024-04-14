@@ -1,6 +1,11 @@
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { OrderService } from "./order.service";
-import { ListOrderDTO } from "./dto/list-order.dto";
+import { ListOrderDto } from "./dto/order/list-order.dto";
+import { plainToInstance } from "class-transformer";
+import { ResponseOrderDto } from "./dto/order/response-order.dto";
+import { PaymentOrderDto } from "./dto/payment/payment-order.dto";
+import { CreatePaymentOrderDto } from "./dto/payment/create-payment-order.dto";
+import { CreateOrderDTO } from "./dto/order/create-order.dto";
 
 @Controller('/api/orders')
 export class OrderController {
@@ -21,22 +26,36 @@ export class OrderController {
     @Get('/:id')
     async getOrderById(@Param('id') id: string) {
         try {
-            return await this.orderService.getOrderById(id);
+            let order = await this.orderService.getOrderById(id);
+            return plainToInstance(ResponseOrderDto, order)
         } catch (error) {
             throw new BadRequestException(error.message)
         }
     }
 
     @Post()
-    async createOrder(@Body() orderData: any) {
+    async createOrder(@Body() orderData: CreateOrderDTO) {
         try {
             const order = await this.orderService.createOrder(orderData);
             return {
-                order: new ListOrderDTO(order.id, order.title, order.datetimeIn, order.datetimeOut, order.open, order.paymentStatus, order.client),
+                order: plainToInstance(ListOrderDto, order),
                 message: 'Successfull order creation!'
             };
         } catch (error) {
-            throw new BadRequestException(error.message)
+            throw new BadRequestException(error.message);
+        }
+    }
+
+    @Post('/payment')
+    async createPayment(@Body() paymentData: CreatePaymentOrderDto) {
+        try {
+            const payment = await this.orderService.createPayment(paymentData);
+            return {
+                payment: plainToInstance(PaymentOrderDto, payment),
+                message: 'Successfull order creation!'
+            };
+        } catch (error) {
+            throw new BadRequestException(error.message);
         }
     }
 

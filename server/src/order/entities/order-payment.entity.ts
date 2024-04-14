@@ -15,7 +15,7 @@ export class OrderPaymentEntity {
     @Column({ name: 'type', type: 'enum', enum: PaymentType })
     type: PaymentType;
 
-    @OneToOne(() => UserEntity, user => user.id, { eager: true })
+    @ManyToOne(() => UserEntity, user => user.id, { eager: true })
     @JoinColumn()
     payer: UserEntity;
 

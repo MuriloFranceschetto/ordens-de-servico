@@ -1,8 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { UserListDto } from './dto/UserList.dto';
+import { ListUserDto } from './dto/UserList.dto';
 import { CreateUserDto } from './dto/CreateUser.dto';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
 import { UserService } from './user.service';
+import { plainToClass, plainToInstance } from 'class-transformer';
+import { ResponseUserDto } from './dto/response-user.dto';
 
 @Controller('/api/users')
 export class UserController {
@@ -19,14 +21,15 @@ export class UserController {
 
     @Get('/:id')
     async getUsersById(@Param('id') id: string) {
-        return await this.userService.getUserById(id);
+        let user = await this.userService.getUserById(id);
+        return plainToInstance(ResponseUserDto, user);
     }
 
     @Post()
     async createUser(@Body() userData: CreateUserDto) {
         const userEntity = await this.userService.createUser(userData);
         return {
-            user: new UserListDto(userEntity.id, userEntity.name, userEntity.roles, userEntity.active),
+            user: plainToClass(ListUserDto, userEntity),
             message: 'Successfull user creation!'
         };
     }

@@ -1,24 +1,23 @@
-import { UserEntity } from "src/user/user.entity";
-import { PaymentStatus } from "../enums/paymentStatus";
-import { IsBoolean, IsDate, IsEnum, IsNotEmpty } from "class-validator";
+import { Type } from "class-transformer";
+import { PaymentStatus } from "../../enums/paymentStatus";
+import { IsBoolean, IsDate, IsEnum, IsNotEmpty, IsString, IsUUID } from "class-validator";
 
 export class CreateOrderDTO {
 
     @IsNotEmpty({ message: 'The property title cannot be empty' })
+    @IsString()
     title: string;
 
     @IsNotEmpty({ message: 'The property description cannot be empty' })
+    @IsString()
     description: string;
 
-    @IsNotEmpty({ message: 'The property client cannot be empty' })
-    client: UserEntity;
-
     @IsNotEmpty({ message: 'The property datetimeIn cannot be empty' })
-    @IsDate({ message: 'The property datetimeIn must be a Date' })
+    @Type(() => Date)
     datetimeIn: Date;
 
     @IsNotEmpty({ message: 'The property datetimeOut cannot be empty' })
-    @IsDate({ message: 'The property datetimeOut must be a Date' })
+    @Type(() => Date)
     datetimeOut: Date;
 
     @IsNotEmpty({ message: 'The property open cannot be empty' })
@@ -29,4 +28,7 @@ export class CreateOrderDTO {
     @IsEnum(PaymentStatus)
     paymentStatus: PaymentStatus;
 
+    @IsNotEmpty({ message: 'The property client cannot be empty' })
+    @IsUUID()
+    client: string;
 }

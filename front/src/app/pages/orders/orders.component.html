@@ -1,1 +1,42 @@
-<p>orders works!</p>
+
+<h1 class="text-2xl mb-4"> Ordens de Serviço </h1>
+
+<table mat-table [dataSource]="orders$ | async">
+    
+    <ng-container matColumnDef="open">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let order"> {{ order.open }} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef> Título </th>
+        <td mat-cell *matCellDef="let order"> {{ order.title }} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="client">
+        <th mat-header-cell *matHeaderCellDef> Cliente </th>
+        <td mat-cell *matCellDef="let order"> {{ order?.client?.name }} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="paymentStatus">
+        <th mat-header-cell *matHeaderCellDef> Status de Pagamento </th>
+        <td mat-cell *matCellDef="let order"> {{ order.paymentStatus }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>
+            <button color="accent" class="float-right" mat-raised-button (click)="openOrderForm()"> 
+                <mat-icon> add </mat-icon> Novo 
+            </button>
+        </th>
+        <td mat-cell *matCellDef="let element">
+            <button color="primary" class="float-right" mat-raised-button (click)="openOrderForm(element)">
+                <mat-icon> edit </mat-icon> Editar 
+            </button>
+        </td>
+    </ng-container>
+    
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+
+</table>

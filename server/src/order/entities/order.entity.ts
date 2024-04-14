@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { PaymentStatus } from "../enums/paymentStatus";
 import { UserEntity } from "src/user/user.entity";
 import { OrderPaymentEntity } from "./order-payment.entity";
@@ -27,7 +27,7 @@ export class OrderEntity {
     @Column({ name: 'payment_status', type: 'enum', enum: PaymentStatus })
     paymentStatus: PaymentStatus;
 
-    @OneToOne(() => UserEntity, user => user.id, { eager: true })
+    @ManyToOne(() => UserEntity, user => user.id, { eager: true })
     @JoinColumn()
     client: UserEntity;
 
@@ -42,8 +42,5 @@ export class OrderEntity {
 
     @DeleteDateColumn({ name: 'deleted_at' })
     deletedAt: string;
-    datetime_in: Date;
-    datetime_out: Date;
-    payment_status: PaymentStatus;
 
 }
