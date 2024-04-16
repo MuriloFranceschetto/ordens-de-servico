@@ -1,8 +1,20 @@
 import { IUser } from "./User";
 
 export interface IOrder {
-    id: string;
+    id?: string;
     title: string;
+    description: string;
+    datetimeIn: Date;
+    datetimeOut: Date;
+    open: boolean;
+    paymentStatus: PaymentStatus;
+    client: IUser;
+}
+
+export class Order implements IOrder {
+    id?: string;
+    title: string;
+    description: string;
     datetimeIn: Date;
     datetimeOut: Date;
     open: boolean;

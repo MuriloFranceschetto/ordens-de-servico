@@ -1,7 +1,8 @@
-import { Expose, Type } from "class-transformer";
+import { Expose, Transform, Type } from "class-transformer";
 import { ListUserDto } from "src/user/dto/UserList.dto";
 import { PaymentStatus } from "../../enums/paymentStatus";
 import { PaymentOrderDto } from "../payment/payment-order.dto";
+import * as moment from "moment";
 
 export class ResponseOrderDto {
     @Expose()
@@ -11,9 +12,14 @@ export class ResponseOrderDto {
     title: string;
 
     @Expose()
+    description: string;
+
+    @Expose()
+    @Transform(({ value }) => moment(value).format('YYYY-MM-DDTHH:mm'))
     datetimeIn: Date;
 
     @Expose()
+    @Transform(({ value }) => moment(value).format('YYYY-MM-DDTHH:mm'))
     datetimeOut: Date;
 
     @Expose()

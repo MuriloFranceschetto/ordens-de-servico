@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { PaymentType } from "../enums/paymentType";
 import { OrderEntity } from "./order.entity";
 import { UserEntity } from "src/user/user.entity";

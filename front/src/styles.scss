@@ -7,6 +7,11 @@
 // Be sure that you only ever include this mixin once!
 @include mat.core();
 
+:root {
+  // Tamanho da fonte - mat-hint e mat-error
+  --mat-form-field-subscript-text-size: .8rem;
+}
+
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
@@ -25,6 +30,14 @@ $front-theme: mat.define-light-theme((
     warn: $front-warn,
   )
 ));
+
+$my-custom-level: mat.define-typography-level(
+  $font-family: Roboto,
+  $font-weight: 400,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
