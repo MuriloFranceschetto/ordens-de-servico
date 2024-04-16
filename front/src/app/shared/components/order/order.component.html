@@ -1,0 +1,30 @@
+
+<div class="p-6" [formGroup]="formOrder">
+    
+    <div class="flex justify-between items-center">
+        <h1 class="text-2xl mb-4">
+            <button mat-icon-button (click)="returnOrCloseDialog()">
+                <mat-icon>keyboard_arrow_left</mat-icon>
+            </button>
+            {{ isNew() ? 'Nova' : 'Editar' + ' Order de Serviço' }}
+        </h1>
+    </div>
+    
+    <form class="flex flex-col">
+        
+        <mat-form-field>
+            <mat-label>Título</mat-label>
+            <input matInput formControlName="title">
+        </mat-form-field>
+
+    </form>
+    
+    <section class="flex justify-between gap-2">
+        <div>
+            @if (!isNew()) {
+                <button mat-stroked-button class="w-52" color="warn" (click)="deleteOrder()"> Excluir </button>
+            }
+        </div>
+        <button mat-raised-button class="w-52" color="primary" (click)="registerOrder()" [disabled]="formOrder.invalid"> Salvar </button>
+    </section>
+</div>

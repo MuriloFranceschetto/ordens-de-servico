@@ -11,6 +11,7 @@ import { OrdersService } from '../../shared/services/orders.service';
 import { MyChipComponent } from '../../shared/components/my-chip/my-chip.component';
 
 import colors from 'tailwindcss/colors';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-orders',
@@ -21,17 +22,17 @@ import colors from 'tailwindcss/colors';
 })
 export class OrdersComponent {
 
-  colors = colors;
-
-  public columns: Array<keyof IOrder | 'actions'> = ['open', 'title', 'client', 'paymentStatus', 'actions'];
-
   private ordersService = inject(OrdersService);
+  private router = inject(Router);
+
+  public colors = colors;
+  public columns: Array<keyof IOrder | 'actions'> = ['open', 'title', 'client', 'paymentStatus', 'actions'];
 
   public orders$ = this.ordersService.orders$
     .pipe(take(1));
 
   openOrderForm(order?: IOrder) {
-
+    this.router.navigate(['order', order?.id || 'new']);
   }
 
 }
