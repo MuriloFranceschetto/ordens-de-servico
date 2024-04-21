@@ -10,11 +10,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SubservicesService } from '../../services/subservices.service';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
 import { take } from 'rxjs';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-subservice',
   standalone: true,
-  imports: [MatDialogModule, ReactiveFormsModule, MatInputModule, MatIconModule, MatFormFieldModule, MatSelectModule, MatCheckboxModule],
+  imports: [MatDialogModule, ReactiveFormsModule, MatInputModule, MatIconModule, MatFormFieldModule, MatSelectModule, MatCheckboxModule, MatButtonModule],
   templateUrl: './subservice.component.html',
   styleUrl: './subservice.component.scss'
 })
@@ -40,12 +41,12 @@ export class SubserviceComponent {
 
     this.subservicesService.getSubservice(this.dialogData.id)
       .subscribe({
-        next: (user) => {
+        next: (subservices) => {
           this.formSubservice.setValue({
-            active: user.active,
-            name: user.name,
-            charged_per: user.charged_per,
-            price: user.price,
+            active: subservices.active,
+            name: subservices.name,
+            charged_per: subservices.charged_per,
+            price: subservices.price,
           });
         },
       })

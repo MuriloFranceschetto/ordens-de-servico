@@ -46,6 +46,20 @@ export class OrderController {
         }
     }
 
+    @Put('/:id')
+    async updateSubservice(@Param('id') id: string, @Body() orderData: any) {
+        try {
+            const order = await this.orderService.updateOrder(id, orderData);
+            console.log(order);
+            return {
+                order: plainToInstance(ListOrderDto, order),
+                message: 'Successfull order update!'
+            };
+        } catch (error) {
+            throw new BadRequestException(error.message);
+        }
+    }
+
     @Post('/payment')
     async createPayment(@Body() paymentData: CreatePaymentOrderDto) {
         try {
@@ -57,14 +71,6 @@ export class OrderController {
         } catch (error) {
             throw new BadRequestException(error.message);
         }
-    }
-
-    @Put('/:id')
-    async updateSubservice(@Param('id') id: string, @Body() orderData: any) {
-        // await this.subserviceService.updateSubservice(id, subserviceData);
-        // return {
-        //     message: 'Successfull user update!'
-        // };
     }
 
     @Delete('/:id')

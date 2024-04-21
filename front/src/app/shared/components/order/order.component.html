@@ -25,8 +25,8 @@
 
             <mat-form-field class="col-span-2">
                 <mat-label>Cliente</mat-label>
-                <mat-select formControlName="client">
-                    @for (client of clients$ | async; track $index) {
+                <mat-select formControlName="client" [compareWith]="FN_COMPARE_WITH_USERS">
+                    @for (client of clients$ | async; track client.id) {
                         <mat-option [value]="client">{{ client.name }}</mat-option>
                     }
                 </mat-select>

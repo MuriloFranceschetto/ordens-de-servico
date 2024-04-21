@@ -5,7 +5,7 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/mat
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, input, inject, computed, Optional, signal, WritableSignal, effect } from '@angular/core';
 
@@ -15,6 +15,9 @@ import { Order, PaymentStatus } from '../../models/Order';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { UsersService } from '../../services/users.service';
+import { plainToClass, plainToClassFromExist } from 'class-transformer';
+import { ConfirmationComponent } from '../confirmation/confirmation.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatInputModule, MatSelectModule, MatFormFieldModule, MatIconModule, ReactiveFormsModule, MatButtonModule, MatDialogModule, MatDatepickerModule, MatNativeDateModule
@@ -34,7 +37,11 @@ export class OrderComponent {
 
   private ordersService = inject(OrdersService);
   private usersService = inject(UsersService);
+  private matDialog = inject(MatDialog);
+  private matSnackBar = inject(MatSnackBar);
   @Optional() public dialogRef = inject(MatDialogRef<OrderComponent>);
+
+  public FN_COMPARE_WITH_USERS = this.usersService.FN_COMPARE_WITH_USERS;
 
   public isNew$ = computed(() => this.id() === 'new');
 
@@ -79,12 +86,31 @@ export class OrderComponent {
     this.dialogRef ? this.dialogRef.close() : window.history.back();
   }
 
-  deleteOrder() {
-
+  async registerOrder() {
+    this.order$.update(order => plainToClassFromExist(order, this.formOrder.getRawValue()));
+    if (this.id()) {
+      await this.ordersService.updateOrder(this.order$());
+    } else {
+      await this.ordersService.newOrder(this.order$());
+    }
+    this.matSnackBar.open('Order de serviço editada com sucesso', 'X');
   }
 
-  registerOrder() {
-
+  async deleteOrder() {
+    this.matDialog.open(ConfirmationComponent, { data: 'Tem certeza que deseja excluir esta order de serviço?\nEssa operação é irreversível!' })
+      .afterClosed()
+      .subscribe((response) => {
+        if (response) {
+          this.ordersService.deleteOrder(this.id())
+            .pipe(take(1))
+            .subscribe({
+              next: () => {
+                this.returnOrCloseDialog();
+                this.matSnackBar.open('Order de serviço excluída com sucesso');
+              },
+            })
+        }
+      })
   }
 
 }

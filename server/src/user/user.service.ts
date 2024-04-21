@@ -8,6 +8,7 @@ import { ListUserDto } from './dto/UserList.dto';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
 import { CreateUserDto } from './dto/CreateUser.dto';
 import { plainToClass } from 'class-transformer';
+import { UserRole } from './user-role';
 
 @Injectable()
 export class UserService {
@@ -35,6 +36,20 @@ export class UserService {
                 email,
             }
         })
+    }
+
+    async verifyUserById(clientId: string): Promise<UserEntity> {
+        let clientById = await this.getUserById(clientId);
+        if (!clientById) {
+            throw new Error('Não existe cliente com este identificador');
+        }
+        return clientById;
+    }
+
+    async verifyUserRole(user: UserEntity) {
+        if (!user.roles.includes(UserRole.Client)) {
+            throw new Error(`O cadastro de "${user.name}" não é referente a um cliente`);
+        }
     }
 
     async createUser(userData: CreateUserDto): Promise<UserEntity> {

@@ -6,7 +6,7 @@ import { ListSubserviceDto } from './dto/list-subservice.dto';
 import { randomUUID } from 'crypto';
 import { CreateSubserviceDTO } from './dto/create-subservice.dto';
 import { UpdateSubserviceDTO } from './dto/update-subservice.dto';
-import { plainToInstance } from 'class-transformer';
+import { plainToClass, plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class SubserviceService {
@@ -17,7 +17,7 @@ export class SubserviceService {
 
     async listSubservices() {
         let subservices = await this.subserviceRepository.find({ order: { id: 'ASC' } });
-        return subservices.map((sub) => plainToInstance(ListSubserviceDto, sub));
+        return subservices.map((sub) => plainToClass(ListSubserviceDto, sub));
     }
 
     async getSubserviceById(id: string) {

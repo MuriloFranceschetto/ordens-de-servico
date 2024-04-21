@@ -9,6 +9,8 @@ export class UsersService {
 
   private http = inject(HttpClient);
 
+  public FN_COMPARE_WITH_USERS = (clientA: IUser, clientB: IUser) => clientA?.id === clientB?.id;
+
   public users$ = this.http.get<IUser[]>(`/api/users`);
 
   public getUser(id: string) {

@@ -2,8 +2,6 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToO
 import { PaymentStatus } from "../enums/paymentStatus";
 import { UserEntity } from "src/user/user.entity";
 import { OrderPaymentEntity } from "./order-payment.entity";
-import { Transform } from "class-transformer";
-import moment from "moment";
 
 @Entity({ name: 'orders' })
 export class OrderEntity {

@@ -3,7 +3,7 @@ import { SubserviceService } from './subservice.service';
 import { ListSubserviceDto } from './dto/list-subservice.dto';
 import { CreateSubserviceDTO } from './dto/create-subservice.dto';
 import { UpdateSubserviceDTO } from './dto/update-subservice.dto';
-import { plainToInstance } from 'class-transformer';
+import { plainToClass, plainToInstance } from 'class-transformer';
 
 @Controller('/api/subservices')
 export class SubserviceController {
@@ -19,14 +19,15 @@ export class SubserviceController {
 
     @Get('/:id')
     async getSubserviceById(@Param('id') id: string) {
-        return await this.subserviceService.getSubserviceById(id);
+        let subservice = await this.subserviceService.getSubserviceById(id);
+        return plainToClass(ListSubserviceDto, subservice);
     }
 
     @Post()
     async createSubservice(@Body() subserviceData: CreateSubserviceDTO) {
         const subserviceEntity = await this.subserviceService.createSubservice(subserviceData);
         return {
-            subservice: plainToInstance(ListSubserviceDto, subserviceEntity),
+            subservice: plainToClass(ListSubserviceDto, subserviceEntity),
             message: 'Successfull user creation!'
         };
     }
