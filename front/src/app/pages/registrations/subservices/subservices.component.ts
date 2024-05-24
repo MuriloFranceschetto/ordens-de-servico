@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, NgClass } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -8,13 +8,13 @@ import { SubserviceChargeTypeLabelPipe } from '../../../shared/pipes/subservice-
 import { MatIconModule } from '@angular/material/icon';
 import { SubservicesService } from '../../../shared/services/subservices.service';
 import { take } from 'rxjs';
-import { ISubservice } from '../../../shared/models/Subservice';
+import { ISubservice } from '../../../shared/models/subservice/ISubservice';
 import { SubserviceComponent } from '../../../shared/components/subservice/subservice.component';
 
 @Component({
   selector: 'app-subservices',
   standalone: true,
-  imports: [AsyncPipe, MatTableModule, RouterLink, MatButtonModule, MatDialogModule, SubserviceChargeTypeLabelPipe, MatIconModule, NgClass],
+  imports: [AsyncPipe, MatTableModule, RouterLink, MatButtonModule, MatDialogModule, SubserviceChargeTypeLabelPipe, MatIconModule, NgClass, CurrencyPipe],
   templateUrl: './subservices.component.html',
   styleUrl: './subservices.component.scss'
 })

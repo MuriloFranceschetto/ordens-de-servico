@@ -6,23 +6,29 @@
             <button mat-icon-button (click)="returnOrCloseDialog()">
                 <mat-icon>keyboard_arrow_left</mat-icon>
             </button>
-            {{ isNew$() ? 'Nova' : 'Editar' + ' Order de Serviço' }}
+            {{ (isNew$() ? 'Nova' : 'Editar') + ' Order de Serviço' }}
         </h1>
-
-        <button mat-raised-button color="accent"> Finalizar Ordem </button>
+        
+        <section class="flex justify-between items-center gap-2 mb-4">
+            @if (!isNew$()) {
+                <button mat-stroked-button class="w-52" color="warn" (click)="deleteOrder()"> Excluir </button>
+            }
+            <button mat-raised-button class="w-52" color="primary" (click)="registerOrder()" [disabled]="formOrder.invalid"> Salvar </button>
+            <button mat-raised-button color="accent"> Finalizar Ordem </button>
+        </section>
 
     </div>
     
-    <form class="grid grid-cols-4 gap-2">
+    <form class="grid grid-cols-4 gap-4 items-start">
         
         <section class="col-span-2 grid grid-cols-2 gap-2">
-
+            
             <mat-form-field class="col-span-2">
                 <mat-label>Título</mat-label>
                 <input matInput #title formControlName="title" maxlength="100">
                 <mat-hint align="end"> {{ title.value.length }} / {{ title.maxLength }} </mat-hint>
             </mat-form-field>
-
+            
             <mat-form-field class="col-span-2">
                 <mat-label>Cliente</mat-label>
                 <mat-select formControlName="client" [compareWith]="FN_COMPARE_WITH_USERS">
@@ -31,37 +37,40 @@
                     }
                 </mat-select>
             </mat-form-field>
-        
+            
             <mat-form-field class="col-span-1">
                 <mat-label>Data / Horário de entrada</mat-label>
-                <input matInput type="datetime-local" formControlName="datetimeIn">
+                <input matInput type="datetime-local" formControlName="datetimeIn" #form>
+                <button mat-icon-button matSuffix (click)="setTodayToFormField('datetimeIn')"><mat-icon> event </mat-icon></button>
             </mat-form-field>
             
             <mat-form-field class="col-span-1">
                 <mat-label>Data / Horário de saída </mat-label>
                 <input matInput type="datetime-local" formControlName="datetimeOut">
+                <button mat-icon-button matSuffix (click)="setTodayToFormField('datetimeOut')"><mat-icon> event </mat-icon></button>
             </mat-form-field> 
             
-            <mat-form-field class="col-span-2">
+        </section>
+        
+        <section class="col-span-2">
+            
+            <mat-form-field class="w-full">
                 <mat-label>Descrição</mat-label>
-                <textarea matInput #description formControlName="description" style="height: 200px;" maxlength="8000"></textarea>
+                <textarea matInput #description formControlName="description" style="height: 195px; max-height: 195px;" maxlength="8000"></textarea>
                 <mat-hint align="end"> {{ description.value.length }} / {{ description.maxLength }} </mat-hint>
             </mat-form-field>
             
         </section>
-
-        <section class="col-span-2">
-            
+        
+        <!-- ------- Tabela de Sub-serviços ------ -->
+        <section class="col-span-2 bg-whitesmoke px-2 py-4 rounded">
+            <app-order-subservices class="flex"></app-order-subservices>
+        </section>
+        
+        <!-- ------- Tabela de Pagamentos ------ -->
+        <section class="col-span-2 bg-whitesmoke rounded overflow-hidden">
+            <app-order-payments [payments$]="order$().payments" [order]="order$()" (onAction)="getOrder()"></app-order-payments>
         </section>
 
     </form>
-    
-    <section class="flex justify-between gap-2">
-        <div>
-            @if (!isNew$()) {
-                <button mat-stroked-button class="w-52" color="warn" (click)="deleteOrder()"> Excluir </button>
-            }
-        </div>
-        <button mat-raised-button class="w-52" color="primary" (click)="registerOrder()" [disabled]="formOrder.invalid"> Salvar </button>
-    </section>
 </div>

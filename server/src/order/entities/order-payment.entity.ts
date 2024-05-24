@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { PaymentType } from "../enums/paymentType";
 import { OrderEntity } from "./order.entity";
 import { UserEntity } from "src/user/user.entity";
@@ -22,5 +22,14 @@ export class OrderPaymentEntity {
     @ManyToOne(() => OrderEntity, (order) => order.payments,
         { orphanedRowAction: "delete", onDelete: "CASCADE", onUpdate: "CASCADE" })
     order: OrderEntity;
+
+    @CreateDateColumn({ name: 'created_at' })
+    createdAt: string;
+
+    @UpdateDateColumn({ name: 'updated_at' })
+    updatedAt: string;
+
+    @DeleteDateColumn({ name: 'deleted_at' })
+    deletedAt: string;
 
 }

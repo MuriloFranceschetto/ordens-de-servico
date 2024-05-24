@@ -1,6 +1,6 @@
 import { SubserviceEntity } from "src/subservice/subservice.entity";
 import { UserEntity } from "src/user/user.entity";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'order_subservices' })
 export class OrderSubservice {
@@ -18,5 +18,14 @@ export class OrderSubservice {
 
     @Column({ name: 'amount', type: 'double precision' })
     amount: number;
+
+    @CreateDateColumn({ name: 'created_at' })
+    createdAt: string;
+
+    @UpdateDateColumn({ name: 'updated_at' })
+    updatedAt: string;
+
+    @DeleteDateColumn({ name: 'deleted_at' })
+    deletedAt: string;
 
 }

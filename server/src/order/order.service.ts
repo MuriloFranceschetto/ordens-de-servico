@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { OrderEntity } from "./entities/order.entity";
-import { Repository } from "typeorm";
+import { ObjectId, Repository } from "typeorm";
 import { ListOrderDto } from "./dto/order/list-order.dto";
 import { CreateOrderDTO } from "./dto/order/create-order.dto";
 import { randomUUID } from "crypto";
@@ -11,6 +11,7 @@ import { UserService } from "src/user/user.service";
 import { CreatePaymentOrderDto } from "./dto/payment/create-payment-order.dto";
 import { UserRole } from "src/user/user-role";
 import { UpdateOrderDTO } from "./dto/order/update-order.dto";
+import { UpdatePaymentOrderDto } from "./dto/payment/update-payment-order.dto";
 
 
 @Injectable()
@@ -31,6 +32,12 @@ export class OrderService {
         return await this.orderRepository.findOne({
             where: {
                 id,
+            },
+            relations: ['payments'],
+            order: {
+                payments: {
+                    createdAt: "ASC"
+                }
             }
         });
     }
@@ -40,7 +47,7 @@ export class OrderService {
         orderEntity.id = randomUUID();
 
         let clientById = await this.userService.verifyUserById(orderEntity.client?.id);
-        await this.userService.verifyUserRole(clientById);
+        await this.userService.verifyIfUserIsClient(clientById);
 
         orderEntity.client = clientById;
 
@@ -48,30 +55,53 @@ export class OrderService {
         return orderEntity;
     }
 
-    public async updateOrder(id: string, orderData: UpdateOrderDTO): Promise<ListOrderDto> {
+    public async updateOrder(orderData: UpdateOrderDTO): Promise<ListOrderDto> {
         const orderEntity = plainToClass(OrderEntity, orderData);
 
         let clientById = await this.userService.verifyUserById(orderEntity.client?.id);
-        await this.userService.verifyUserRole(clientById);
+        await this.userService.verifyIfUserIsClient(clientById);
 
         orderEntity.client = clientById;
 
         await this.orderRepository.save(orderEntity);
         return orderEntity;
-    }
-
-    public async createPayment(paymentData: CreatePaymentOrderDto) {
-        const paymentEntity = new OrderPaymentEntity();
-        paymentEntity.amount = paymentData.amount;
-        paymentEntity.type = paymentData.type;
-        paymentEntity.order = await this.getOrderById(paymentData.order.id);
-        paymentEntity.payer = await this.userService.getUserById(paymentData.payer.id);
-        paymentEntity.id = randomUUID();
-        await this.orderPaymentRepository.save(paymentEntity);
     }
 
     public async deleteOrder(id: string) {
         return await this.orderRepository.delete(id);
+    }
+
+
+    // -------------- PAYMENT ---------------------------------------------------
+
+    public async createPayment(paymentData: CreatePaymentOrderDto) {
+        const paymentEntity = plainToClass(OrderPaymentEntity, paymentData);
+        paymentEntity.order = await this.getOrderById(paymentData.order.id);
+
+        paymentEntity.payer = await this.userService.getUserById(paymentData.payer.id);
+        await this.userService.verifyIfUserIsClient(paymentEntity.payer);
+
+        paymentEntity.id = randomUUID();
+        await this.orderPaymentRepository.save(paymentEntity);
+    }
+
+    public async updatePayment(paymentData: UpdatePaymentOrderDto) {
+        const paymentEntity = plainToClass(OrderPaymentEntity, paymentData);
+        paymentEntity.order = await this.getOrderById(paymentData.order.id);
+
+        paymentEntity.payer = await this.userService.getUserById(paymentData.payer.id);
+        await this.userService.verifyIfUserIsClient(paymentEntity.payer);
+
+        await this.orderPaymentRepository.save(paymentEntity);
+    }
+
+    public async deletePayment(idOrder: string, idPayment: string) {
+        await this.orderPaymentRepository.delete({
+            id: idPayment,
+            order: {
+                id: idOrder,
+            }
+        });
     }
 
 }

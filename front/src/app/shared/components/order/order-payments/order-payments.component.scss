@@ -1,0 +1,13 @@
+
+.child-align-vertical-center > section {
+    display: flex;
+    align-items: center;
+    column-span: 1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+}
+
+.table-header {
+    @apply text-primary font-bold text-12 py-0.5;
+}

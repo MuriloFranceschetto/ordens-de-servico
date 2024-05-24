@@ -1,21 +1,25 @@
+import { take } from 'rxjs';
+import { CurrencyMaskModule } from 'ng2-currency-mask';
+
 import { Component, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { CHARGE_TYPES_OPTIONS, ChargeTypes, ISubservice } from '../../models/Subservice';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+
 import { SubservicesService } from '../../services/subservices.service';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
-import { take } from 'rxjs';
-import { MatButtonModule } from '@angular/material/button';
+import { CHARGE_TYPES_OPTIONS, ChargeTypes, ISubservice } from '../../models/subservice/ISubservice';
 
 @Component({
   selector: 'app-subservice',
   standalone: true,
-  imports: [MatDialogModule, ReactiveFormsModule, MatInputModule, MatIconModule, MatFormFieldModule, MatSelectModule, MatCheckboxModule, MatButtonModule],
+  imports: [MatDialogModule, ReactiveFormsModule, MatInputModule, MatIconModule, MatFormFieldModule,
+    MatSelectModule, MatCheckboxModule, MatButtonModule, CurrencyMaskModule],
   templateUrl: './subservice.component.html',
   styleUrl: './subservice.component.scss'
 })

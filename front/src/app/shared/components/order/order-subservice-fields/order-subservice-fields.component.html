@@ -1,0 +1,28 @@
+<div class="flex gap-2 subservice-form items-stretch" [formGroup]="form">
+                
+    <mat-select class="flex-1"
+        formControlName="subservice"
+        [id]="'select-subservice-' + index"
+        placeholder="Selecione o tipo de sub-serviço"
+        [compareWith]="FN_COMPARE_WITH_SUBSERVICES">
+        @for (subservice of subservices$ | async; track subservice.id) {
+            <mat-option [value]="subservice"> {{ subservice.name }} (Por {{ subservice.charged_per | subserviceChargeTypeLabel }}) </mat-option>
+        }
+    </mat-select>
+
+    @if (showsQuantityInput$ | async) {
+        <input class="flex-1" matInput type="number" placeholder="Quantidade"
+        formControlName="quantity"
+        [id]="'input-quantity-' + index">
+    }
+    
+    <input matInput class="flex-1" currencyMask 
+        [placeholder]="(sugestedPrice$ | async)?.toString()"
+        formControlName="price"
+        [id]="'input-price-' + index">
+
+    <mat-icon color="warn" class="m-1 cursor-pointer" (click)="onClickRemove.emit()" [id]="'remove-btn-' + index"> 
+        remove 
+    </mat-icon>
+    
+</div>

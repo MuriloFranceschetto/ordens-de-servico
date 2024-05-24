@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { CHARGE_TYPES_OPTIONS, ChargeTypes } from '../models/Subservice';
+import { CHARGE_TYPES_OPTIONS, ChargeTypes } from '../models/subservice/ISubservice';
 
 @Pipe({
   name: 'subserviceChargeTypeLabel',

@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 
-import { IOrder } from '../../shared/models/Order';
+import { IOrder } from '../../shared/models/order/Order';
 import { OrdersService } from '../../shared/services/orders.service';
 import { MyChipComponent } from '../../shared/components/my-chip/my-chip.component';
 
@@ -26,7 +26,7 @@ export class OrdersComponent {
   private router = inject(Router);
 
   public colors = colors;
-  public columns: Array<keyof IOrder | 'actions'> = ['open', 'title', 'client', 'paymentStatus', 'actions'];
+  public columns: Array<keyof IOrder | 'actions'> = ['title', 'client', 'open', 'paymentStatus', 'actions'];
 
   public orders$ = this.ordersService.orders$
     .pipe(take(1));

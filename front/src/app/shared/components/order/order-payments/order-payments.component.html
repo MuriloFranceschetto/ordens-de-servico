@@ -1,0 +1,44 @@
+
+<div class="basis-full flex flex-col">
+    
+    <div class="flex justify-between items-center px-2 py-1 bg-primary text-whitesmoke">
+        <h2> Pagamentos </h2>
+        <mat-icon class="m-1 cursor-pointer text-whitesmoke" (click)="openDialogPayment()" matTooltip="Novo pagamento"> add </mat-icon>
+    </div>
+
+    <div class="basis-full grid grid-cols-6 pt-1 child-align-vertical-center">
+
+        <section class="table-header col-span-3 pl-2"> Pagador </section>
+        <section class="table-header"> Método de Pagamento </section>
+        <section class="table-header"> Valor </section>
+        <section class="table-header justify-end pr-2"></section>
+
+        <div class="resize-y overflow-y-auto col-span-6">
+            <div class="grid grid-cols-6 child-align-vertical-center">     
+                @for (payment of payments$(); let i = $index; track payment.id; let last = $last; let odd = $odd) {
+                    <section [ngClass]="{'border-b-[1px] border-gray-400': !last, 'bg-slate-200': odd}" class="col-span-3 pl-2"> 
+                        {{ payment.payer?.name }}
+                    </section>
+                    <section [ngClass]="{'border-b-[1px] border-gray-400': !last, 'bg-slate-200': odd}"> 
+                        {{ payment.type | paymentMethodLabel }}
+                    </section>
+                    <section [ngClass]="{'border-b-[1px] border-gray-400': !last, 'bg-slate-200': odd}"> 
+                        {{ payment.amount | currency }} 
+                    </section>
+                    <section [ngClass]="{'border-b-[1px] border-gray-400': !last, 'bg-slate-200': odd}" class="justify-end pr-2">
+                        <mat-icon color="primary" class="m-1 cursor-pointer" (click)="openDialogPayment(payment)" matTooltip="Editar pagamento"> edit </mat-icon>
+                    </section>
+                }
+            </div>
+        </div>
+
+    </div>
+
+    <div class="grid grid-cols-6 child-align-vertical-center py-1 bg-primary text-whitesmoke">
+        <section class="col-span-3 pl-2"> Valor Total </section>
+        <section></section>
+        <section> {{ paymentSum$() | currency }} </section>
+    </div>
+
+</div>
+

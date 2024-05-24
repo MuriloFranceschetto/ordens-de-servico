@@ -6,6 +6,7 @@ import { ResponseOrderDto } from "./dto/order/response-order.dto";
 import { PaymentOrderDto } from "./dto/payment/payment-order.dto";
 import { CreatePaymentOrderDto } from "./dto/payment/create-payment-order.dto";
 import { CreateOrderDTO } from "./dto/order/create-order.dto";
+import { UpdatePaymentOrderDto } from "./dto/payment/update-payment-order.dto";
 
 @Controller('/api/orders')
 export class OrderController {
@@ -46,11 +47,10 @@ export class OrderController {
         }
     }
 
-    @Put('/:id')
-    async updateSubservice(@Param('id') id: string, @Body() orderData: any) {
+    @Put()
+    async updateOrder(@Body() orderData: any) {
         try {
-            const order = await this.orderService.updateOrder(id, orderData);
-            console.log(order);
+            const order = await this.orderService.updateOrder(orderData);
             return {
                 order: plainToInstance(ListOrderDto, order),
                 message: 'Successfull order update!'
@@ -58,6 +58,15 @@ export class OrderController {
         } catch (error) {
             throw new BadRequestException(error.message);
         }
+    }
+
+    @Delete('/:id')
+    async deleteOrder(@Param('id') id: string) {
+        let deleteResult = await this.orderService.deleteOrder(id);
+        return {
+            deleteResult,
+            message: 'Successfull order delete!'
+        };
     }
 
     @Post('/payment')
@@ -73,12 +82,25 @@ export class OrderController {
         }
     }
 
-    @Delete('/:id')
-    async deleteSubservice(@Param('id') id: string) {
-        let deleteResult = await this.orderService.deleteOrder(id);
+    @Put('/payment')
+    async updatePayment(@Body() paymentData: UpdatePaymentOrderDto) {
+        try {
+            const payment = await this.orderService.updatePayment(paymentData);
+            return {
+                payment: plainToInstance(PaymentOrderDto, payment),
+                message: 'Successfull order creation!'
+            };
+        } catch (error) {
+            throw new BadRequestException(error.message);
+        }
+    }
+
+    @Delete('/payment/:idOrder/:idPayment')
+    async deletePayment(@Param('idOrder') idOrder: string, @Param('idPayment') idPayment: string) {
+        let deleteResult = await this.orderService.deletePayment(idOrder, idPayment);
         return {
             deleteResult,
-            message: 'Successfull order delete!'
+            message: 'Successfull payment delete!'
         };
     }
 

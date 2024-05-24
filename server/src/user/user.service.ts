@@ -46,7 +46,7 @@ export class UserService {
         return clientById;
     }
 
-    async verifyUserRole(user: UserEntity) {
+    async verifyIfUserIsClient(user: UserEntity) {
         if (!user.roles.includes(UserRole.Client)) {
             throw new Error(`O cadastro de "${user.name}" não é referente a um cliente`);
         }

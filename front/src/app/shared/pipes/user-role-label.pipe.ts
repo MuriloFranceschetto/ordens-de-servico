@@ -11,7 +11,9 @@ export class UserRoleLabelPipe implements PipeTransform {
     if (typeof roles === 'string') {
       roles = [roles];
     }
-    return roles?.map(role => USER_ROLES_OPTIONS.find(opt => opt.value === role)?.label).join(' - ');
+    return roles?.map(role => USER_ROLES_OPTIONS
+      .find(opt => opt.value === role)?.label)
+      .join(' - ');
   }
 
 }

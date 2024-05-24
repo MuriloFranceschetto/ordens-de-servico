@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { ISubservice } from '../models/Subservice';
+import { ISubservice } from '../models/subservice/ISubservice';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,8 @@ export class SubservicesService {
   private readonly API_PATH = `/api/subservices`;
 
   private http = inject(HttpClient);
+
+  public FN_COMPARE_WITH_SUBSERVICES = (subserviceA: ISubservice, subserviceB: ISubservice) => subserviceA?.id === subserviceB?.id;
 
   public subservices$ = this.http.get<ISubservice[]>(this.API_PATH);
 

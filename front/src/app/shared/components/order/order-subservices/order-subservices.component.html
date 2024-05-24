@@ -1,0 +1,31 @@
+
+<div class="basis-full flex flex-col gap-2 px-2">
+    
+    <div class="flex justify-between items-center">
+        <h2>Sub-serviços</h2>
+    </div>
+    
+    <div class="basis-full flex flex-col gap-2 overflow-y-auto max-h-80">
+
+        <div class="flex text-12 font-bold gap-2 items-center">
+            <div class="flex-1"> Tipo de Serviço </div>
+            <div class="flex-1"> Quantidade </div>
+            <div class="flex-1"> Preço Total </div>
+            <mat-icon color="primary" class="m-1 cursor-pointer" (click)="addNewSubservice()" matTooltip="Adicionar novo sub-serviço"> add </mat-icon>
+        </div>
+
+        @for (orderSubservice of orderSubservices$(); let i = $index; track orderSubservice.id) {
+            
+            <div class="border-b-[1px] border-gray-300"></div>
+            
+            <app-order-subservice-fields 
+                [subserviceOrder]="orderSubservice"
+                [index]="i"
+                (onClickRemove)="removeSubservice(i)">
+            </app-order-subservice-fields>
+
+        }
+    </div>
+
+</div>
+
