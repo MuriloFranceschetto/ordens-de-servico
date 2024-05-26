@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { map, take } from 'rxjs';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
@@ -57,6 +58,7 @@ export class PaymentComponent implements OnInit {
     payer: new FormControl(null, [Validators.required]),
     type: new FormControl(null, [Validators.required]),
     amount: new FormControl(null, [Validators.required, Validators.min(0)]),
+    date: new FormControl(null, [Validators.required]),
   });
   public loadingSave: boolean = false;
 
@@ -66,8 +68,13 @@ export class PaymentComponent implements OnInit {
         amount: this.data.payment.amount,
         payer: this.data.payment.payer,
         type: this.data.payment.type,
+        date: dayjs(this.data.payment.date).format('YYYY-MM-DD'),
       });
     }
+  }
+
+  setTodayToFormField() {
+    this.form.controls.date.setValue(dayjs().format('YYYY-MM-DD'));
   }
 
   async savePayment() {
@@ -78,6 +85,7 @@ export class PaymentComponent implements OnInit {
       amount: formValue.amount,
       type: formValue.type,
       payer: formValue.payer,
+      date: formValue.date,
     }).subscribe({
       next: () => this.dialogRef.close(true),
       error: (err) => {
@@ -119,5 +127,6 @@ Você está prestes a remover o pagamento com as seguintes definições:
 interface FormGroupPayment {
   amount: FormControl<number>,
   type: FormControl<PaymentType>,
-  payer: FormControl<IUser>
+  payer: FormControl<IUser>,
+  date: FormControl<string>,
 }

@@ -7,6 +7,7 @@ export interface IPaymentOrder {
     type: PaymentType;
     payer: IUser;
     order: IOrder;
+    date: string;
 }
 
 export enum PaymentType {

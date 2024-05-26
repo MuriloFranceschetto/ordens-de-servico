@@ -16,14 +16,18 @@ export class PaymentOrderDto {
     @IsEnum(PaymentType)
     type: PaymentType;
 
-    @Type(() => ListUserDto)
     @Expose()
+    @Type(() => ListUserDto)
     payer: ListUserDto;
 
-    @Type(() => ListOrderDto)
     @Expose()
+    @Type(() => ListOrderDto)
     order: ListOrderDto;
 
     @Expose()
     createdAt: Date;
+
+    @Expose()
+    @Type(() => Date)
+    date: Date;
 }

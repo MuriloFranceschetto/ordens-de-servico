@@ -1,4 +1,4 @@
-import { CurrencyPipe, NgClass } from '@angular/common';
+import { CurrencyPipe, DatePipe, NgClass } from '@angular/common';
 import { Component, Signal, computed, inject, input, output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -11,7 +11,7 @@ import { catchError, take } from 'rxjs';
 import { IOrder } from '../../../models/order/Order';
 
 const MATERIAL_MODULES = [MatIconModule, MatTooltipModule, MatDialogModule];
-const ANGULAR_MODULES = [CurrencyPipe, NgClass];
+const ANGULAR_MODULES = [CurrencyPipe, DatePipe, NgClass];
 
 @Component({
   selector: 'app-order-payments',

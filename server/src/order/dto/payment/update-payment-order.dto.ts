@@ -2,6 +2,7 @@ import { IsEnum, IsNotEmpty, IsUUID } from "class-validator";
 import { PaymentType } from "src/order/enums/paymentType";
 import { ListUserDto } from "src/user/dto/UserList.dto";
 import { ListOrderDto } from "../order/list-order.dto";
+import { Type } from "class-transformer";
 
 export class UpdatePaymentOrderDto {
 
@@ -21,5 +22,9 @@ export class UpdatePaymentOrderDto {
 
     @IsNotEmpty({ message: 'The property order cannot be empty' })
     order: ListOrderDto;
+
+    @IsNotEmpty({ message: 'The property date cannot be empty' })
+    @Type(() => Date)
+    date: Date;
 
 }

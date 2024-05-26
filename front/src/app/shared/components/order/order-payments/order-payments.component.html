@@ -8,34 +8,33 @@
 
     <div class="basis-full grid grid-cols-6 pt-1 child-align-vertical-center">
 
-        <section class="table-header col-span-3 pl-2"> Pagador </section>
+        <section class="table-header col-span-2 pl-2"> Pagador </section>
         <section class="table-header"> Método de Pagamento </section>
         <section class="table-header"> Valor </section>
+        <section class="table-header"> Data </section>
         <section class="table-header justify-end pr-2"></section>
 
         <div class="resize-y overflow-y-auto col-span-6">
-            <div class="grid grid-cols-6 child-align-vertical-center">     
-                @for (payment of payments$(); let i = $index; track payment.id; let last = $last; let odd = $odd) {
-                    <section [ngClass]="{'border-b-[1px] border-gray-400': !last, 'bg-slate-200': odd}" class="col-span-3 pl-2"> 
-                        {{ payment.payer?.name }}
-                    </section>
-                    <section [ngClass]="{'border-b-[1px] border-gray-400': !last, 'bg-slate-200': odd}"> 
-                        {{ payment.type | paymentMethodLabel }}
-                    </section>
-                    <section [ngClass]="{'border-b-[1px] border-gray-400': !last, 'bg-slate-200': odd}"> 
-                        {{ payment.amount | currency }} 
-                    </section>
-                    <section [ngClass]="{'border-b-[1px] border-gray-400': !last, 'bg-slate-200': odd}" class="justify-end pr-2">
+            @for (payment of payments$(); let i = $index; track payment.id; let last = $last; let odd = $odd) {
+                <div class="grid grid-cols-6 child-align-vertical-center" 
+                    [ngClass]="{'border-b-[1px] border-gray-400': !last, 'bg-slate-200': odd}">     
+
+                    <section class="col-span-2 pl-2"> {{ payment.payer?.name }} </section>
+                    <section> {{ payment.type | paymentMethodLabel }} </section>
+                    <section> {{ payment.amount | currency }} </section>
+                    <section> {{ payment.date | date }} </section>
+                    <section class="justify-end pr-2">
                         <mat-icon color="primary" class="m-1 cursor-pointer" (click)="openDialogPayment(payment)" matTooltip="Editar pagamento"> edit </mat-icon>
                     </section>
-                }
-            </div>
+                    
+                </div>
+            }
         </div>
 
     </div>
 
     <div class="grid grid-cols-6 child-align-vertical-center py-1 bg-primary text-whitesmoke">
-        <section class="col-span-3 pl-2"> Valor Total </section>
+        <section class="col-span-2 pl-2"> Valor Total </section>
         <section></section>
         <section> {{ paymentSum$() | currency }} </section>
     </div>

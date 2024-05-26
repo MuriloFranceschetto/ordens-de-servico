@@ -23,6 +23,9 @@ export class OrderPaymentEntity {
         { orphanedRowAction: "delete", onDelete: "CASCADE", onUpdate: "CASCADE" })
     order: OrderEntity;
 
+    @Column({ name: 'date', type: 'date' })
+    date: Date;
+
     @CreateDateColumn({ name: 'created_at' })
     createdAt: string;
 
