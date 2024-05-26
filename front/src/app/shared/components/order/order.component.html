@@ -63,8 +63,8 @@
         </section>
         
         <!-- ------- Tabela de Sub-serviços ------ -->
-        <section class="col-span-2 bg-whitesmoke px-2 py-4 rounded">
-            <app-order-subservices class="flex"></app-order-subservices>
+        <section class="col-span-2 bg-whitesmoke rounded overflow-hidden">
+            <app-order-subservices [subservices$]="order$().subservices" [order]="order$()" (onAction)="getOrder()"></app-order-subservices>
         </section>
         
         <!-- ------- Tabela de Pagamentos ------ -->

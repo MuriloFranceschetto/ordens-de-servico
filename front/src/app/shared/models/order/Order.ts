@@ -1,5 +1,6 @@
 import { IUser } from "../User";
 import { IPaymentOrder } from "./PaymentOrder";
+import { ISubserviceOrder, SubserviceOrder } from "./SubserviceOrder";
 
 export interface IOrder {
     id?: string;
@@ -11,6 +12,7 @@ export interface IOrder {
     paymentStatus: PaymentStatus;
     client: IUser;
     payments: IPaymentOrder[];
+    subservices: ISubserviceOrder[];
 }
 
 export class Order implements IOrder {
@@ -22,7 +24,9 @@ export class Order implements IOrder {
     open: boolean;
     paymentStatus: PaymentStatus;
     client: IUser;
+
     payments: IPaymentOrder[];
+    subservices: SubserviceOrder[];
 }
 
 export enum PaymentStatus {

@@ -24,7 +24,7 @@ export class OrderPaymentsComponent {
 
   public order = input.required<IOrder>();
   public payments$ = input.required<IPaymentOrder[]>();
-  public onAction = output();
+  public onAction = output<void>();
 
   public paymentSum$: Signal<number> = computed(() => {
     return this.payments$()

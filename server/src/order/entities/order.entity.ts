@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToO
 import { PaymentStatus } from "../enums/paymentStatus";
 import { UserEntity } from "src/user/user.entity";
 import { OrderPaymentEntity } from "./order-payment.entity";
+import { OrderSubserviceEntity } from "./order-subservice.entity";
 
 @Entity({ name: 'orders' })
 export class OrderEntity {
@@ -33,6 +34,9 @@ export class OrderEntity {
 
     @OneToMany(() => OrderPaymentEntity, payment => payment.order, { cascade: true, eager: true, nullable: true })
     payments: OrderPaymentEntity[];
+
+    @OneToMany(() => OrderSubserviceEntity, subservice => subservice.order, { cascade: true, eager: true, nullable: true })
+    subservices: OrderSubserviceEntity[];
 
     @CreateDateColumn({ name: 'created_at' })
     createdAt: string;

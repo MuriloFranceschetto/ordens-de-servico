@@ -32,7 +32,6 @@ export class OrdersService {
   }
 
   public savePayment(payment: IPaymentOrder) {
-    console.log(`Atualizando pagamento: ${payment.id}`)
     if (payment.id) {
       return this.http.put(`${this.API_PATH}/payment`, payment).pipe(take(1));
     } else {

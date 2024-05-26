@@ -3,7 +3,7 @@ import { firstValueFrom, map, take } from 'rxjs';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { plainToClassFromExist } from 'class-transformer';
+import { plainToClass, plainToClassFromExist } from 'class-transformer';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
@@ -21,6 +21,7 @@ import { Order, PaymentStatus } from '../../models/order/Order';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
 import { OrderPaymentsComponent } from './order-payments/order-payments.component';
 import { OrderSubservicesComponent } from './order-subservices/order-subservices.component';
+import { SubserviceOrder } from '../../models/order/SubserviceOrder';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatInputModule, MatSelectModule, MatFormFieldModule, MatIconModule,
@@ -75,10 +76,8 @@ export class OrderComponent {
   }
 
   async getOrder() {
-
-    this.order$.set(
-      await firstValueFrom(this.ordersService.getOrderById(this.id()))
-    );
+    let srcSubservice = await firstValueFrom(this.ordersService.getOrderById(this.id()));
+    this.order$.set(plainToClass(Order, srcSubservice));
 
     this.formOrder.setValue({
       title: this.order$().title,
@@ -110,7 +109,7 @@ export class OrderComponent {
   }
 
   async deleteOrder() {
-    this.matDialog.open(ConfirmationComponent, { data: 'Tem certeza que deseja excluir esta order de serviço? Essa operação é irreversível!' })
+    this.matDialog.open(ConfirmationComponent, { data: 'Tem certeza que deseja excluir esta order de serviço?\n\n<b>Essa operação é irreversível!</b>' })
       .afterClosed()
       .subscribe((response) => {
         if (response) {

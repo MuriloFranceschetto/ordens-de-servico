@@ -1,0 +1,31 @@
+
+<div class="p-4">
+    
+    <div class="flex justify-between items-center mb-4">
+        <h1 class="text-primary font-bold text-20">
+            {{ (data?.subservice?.id ? 'Editar' : 'Registrar') + ' Sub-serviço' }} 
+        </h1>
+        
+        @if (data?.subservice?.id) {
+            <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Abrir menu">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+                <button mat-menu-item (click)="deleteSubservice()">
+                    <mat-icon color="warn">delete</mat-icon>
+                    <span>Excluir Sub-serviço</span>
+                </button>
+            </mat-menu>
+        }
+    </div>
+    
+    <form [formGroup]="form" class="flex flex-col">
+        
+    </form>
+    
+    <section class="flex justify-between gap-2">
+        <button mat-button class="w-52" color="accent" matDialogClose> Voltar </button>
+        <button mat-raised-button class="w-52" color="primary" (click)="saveSubservice()" [disabled]="form.invalid"> Salvar </button>
+    </section>
+    
+</div>

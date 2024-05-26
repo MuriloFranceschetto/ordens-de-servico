@@ -1,30 +1,31 @@
 
-<div class="basis-full flex flex-col gap-2 px-2">
+<div class="basis-full flex flex-col">
     
-    <div class="flex justify-between items-center">
-        <h2>Sub-serviços</h2>
+    <div class="flex justify-between items-center px-2 py-1 bg-primary text-whitesmoke">
+        <h2> Sub-services </h2>
+        <mat-icon class="m-1 cursor-pointer text-whitesmoke" (click)="openDialogSubservice()" matTooltip="Novo pagamento"> add </mat-icon>
     </div>
-    
-    <div class="basis-full flex flex-col gap-2 overflow-y-auto max-h-80">
 
-        <div class="flex text-12 font-bold gap-2 items-center">
-            <div class="flex-1"> Tipo de Serviço </div>
-            <div class="flex-1"> Quantidade </div>
-            <div class="flex-1"> Preço Total </div>
-            <mat-icon color="primary" class="m-1 cursor-pointer" (click)="addNewSubservice()" matTooltip="Adicionar novo sub-serviço"> add </mat-icon>
+    <div class="basis-full grid grid-cols-2 pt-1 child-align-vertical-center">
+
+        <section class="table-header"> Valor </section>
+
+        <div class="resize-y overflow-y-auto col-span-2">
+            @for (subservice of subservices$(); let i = $index; track subservice.id; let last = $last; let odd = $odd) {
+                <div class="grid grid-cols-6 child-align-vertical-center" 
+                    [ngClass]="{'border-b-[1px] border-gray-400': !last, 'bg-slate-200': odd}">     
+                    <section> {{ subservice.amount | currency }} </section>
+                    <section class="justify-end pr-2">
+                        <mat-icon color="primary" class="m-1 cursor-pointer" (click)="openDialogSubservice(subservice)" matTooltip="Editar pagamento"> edit </mat-icon>
+                    </section>
+                </div>
+            }
         </div>
 
-        @for (orderSubservice of orderSubservices$(); let i = $index; track orderSubservice.id) {
-            
-            <div class="border-b-[1px] border-gray-300"></div>
-            
-            <app-order-subservice-fields 
-                [subserviceOrder]="orderSubservice"
-                [index]="i"
-                (onClickRemove)="removeSubservice(i)">
-            </app-order-subservice-fields>
+    </div>
 
-        }
+    <div class="grid grid-cols-2 child-align-vertical-center py-1 bg-primary text-whitesmoke">
+        <section> {{ subservicesSum$() | currency }} </section>
     </div>
 
 </div>

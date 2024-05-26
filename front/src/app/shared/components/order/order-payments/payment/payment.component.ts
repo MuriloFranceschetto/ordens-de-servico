@@ -41,8 +41,8 @@ export class PaymentComponent implements OnInit {
   private readonly usersService = inject(UsersService);
   private readonly matDialog = inject(MatDialog);
   private readonly matSnackBar = inject(MatSnackBar);
-  private readonly paymentMethodLabelPipe = inject(PaymentMethodLabelPipe)
-  private readonly currencyPipe = inject(CurrencyPipe)
+  private readonly paymentMethodLabelPipe = inject(PaymentMethodLabelPipe);
+  private readonly currencyPipe = inject(CurrencyPipe);
 
   public readonly PAYMENT_METHOD_OPTIONS = PAYMENT_METHOD_OPTIONS;
   public readonly FN_COMPARE_WITH_USERS = this.usersService.FN_COMPARE_WITH_USERS;
@@ -60,7 +60,6 @@ export class PaymentComponent implements OnInit {
     amount: new FormControl(null, [Validators.required, Validators.min(0)]),
     date: new FormControl(null, [Validators.required]),
   });
-  public loadingSave: boolean = false;
 
   ngOnInit(): void {
     if (this.data.payment) {
