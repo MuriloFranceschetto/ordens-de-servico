@@ -3,7 +3,7 @@ import { ListUserDto } from "src/user/dto/UserList.dto";
 import { PaymentStatus } from "../../enums/paymentStatus";
 import { PaymentOrderDto } from "../payment/payment-order.dto";
 import * as moment from "moment";
-import { SubServiceOrderDTO } from "../sub-service/sub-service-order.dto";
+import { SubserviceOrderDTO } from "../sub-service/subservice-order.dto";
 
 export class ResponseOrderDto {
 
@@ -39,7 +39,7 @@ export class ResponseOrderDto {
     payments: PaymentOrderDto[];
 
     @Expose()
-    @Type(() => SubServiceOrderDTO)
-    subservices: SubServiceOrderDTO[];
+    @Type(() => SubserviceOrderDTO)
+    subservices: SubserviceOrderDTO[];
 
 }

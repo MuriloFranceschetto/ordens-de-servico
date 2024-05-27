@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { IOrder } from '../models/order/Order';
 import { firstValueFrom, take } from 'rxjs';
 import { IPaymentOrder } from '../models/order/PaymentOrder';
+import { ISubserviceOrder } from '../models/order/SubserviceOrder';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,18 @@ export class OrdersService {
 
   public deletePayment(idOrder: string, idPayment: string) {
     return this.http.delete(`${this.API_PATH}/payment/${idOrder}/${idPayment}`).pipe(take(1));
+  }
+
+  public saveSubservice(subservice: ISubserviceOrder) {
+    if (subservice.id) {
+      return this.http.put(`${this.API_PATH}/subservice`, subservice).pipe(take(1));
+    } else {
+      return this.http.post(`${this.API_PATH}/subservice`, subservice).pipe(take(1));
+    }
+  }
+
+  public deleteSubservice(idOrder: string, idSubservice: string) {
+    return this.http.delete(`${this.API_PATH}/subservice/${idOrder}/${idSubservice}`).pipe(take(1));
   }
 
 }

@@ -7,6 +7,9 @@ import { PaymentOrderDto } from "./dto/payment/payment-order.dto";
 import { CreatePaymentOrderDto } from "./dto/payment/create-payment-order.dto";
 import { CreateOrderDTO } from "./dto/order/create-order.dto";
 import { UpdatePaymentOrderDto } from "./dto/payment/update-payment-order.dto";
+import { CreateSubserviceOrderDto } from "./dto/sub-service/create-subservice.dto";
+import { SubserviceOrderDTO } from "./dto/sub-service/subservice-order.dto";
+import { UpdateSubserviceOrderDto } from "./dto/sub-service/update-subservice.dto";
 
 @Controller('/api/orders')
 export class OrderController {
@@ -101,6 +104,41 @@ export class OrderController {
         return {
             deleteResult,
             message: 'Successfull payment delete!'
+        };
+    }
+
+    @Post('/subservice')
+    async createSubservice(@Body() SubserviceData: CreateSubserviceOrderDto) {
+        try {
+            const Subservice = await this.orderService.createSubservice(SubserviceData);
+            return {
+                Subservice: plainToInstance(SubserviceOrderDTO, Subservice),
+                message: 'Successfull order creation!'
+            };
+        } catch (error) {
+            throw new BadRequestException(error.message);
+        }
+    }
+
+    @Put('/subservice')
+    async updateSubservice(@Body() SubserviceData: UpdateSubserviceOrderDto) {
+        try {
+            const Subservice = await this.orderService.updateSubservice(SubserviceData);
+            return {
+                Subservice: plainToInstance(SubserviceOrderDTO, Subservice),
+                message: 'Successfull order creation!'
+            };
+        } catch (error) {
+            throw new BadRequestException(error.message);
+        }
+    }
+
+    @Delete('/subservice/:idOrder/:idSubservice')
+    async deleteSubservice(@Param('idOrder') idOrder: string, @Param('idSubservice') idSubservice: string) {
+        let deleteResult = await this.orderService.deleteSubservice(idOrder, idSubservice);
+        return {
+            deleteResult,
+            message: 'Successfull Subservice delete!'
         };
     }
 

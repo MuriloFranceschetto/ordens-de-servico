@@ -12,6 +12,8 @@ import { CreatePaymentOrderDto } from "./dto/payment/create-payment-order.dto";
 import { UserRole } from "src/user/user-role";
 import { UpdateOrderDTO } from "./dto/order/update-order.dto";
 import { UpdatePaymentOrderDto } from "./dto/payment/update-payment-order.dto";
+import { CreateSubserviceOrderDto } from "./dto/sub-service/create-subservice.dto";
+import { UpdateSubserviceOrderDto } from "./dto/sub-service/update-subservice.dto";
 
 
 @Injectable()
@@ -102,6 +104,18 @@ export class OrderService {
                 id: idOrder,
             }
         });
+    }
+
+    // ------------- SUBSERVICE --------------------------------------------------
+
+    public async createSubservice(subserviceData: CreateSubserviceOrderDto) {
+
+    }
+
+    public async updateSubservice(subserviceData: UpdateSubserviceOrderDto) {
+    }
+
+    public async deleteSubservice(idOrder: string, idSubservice: string) {
     }
 
 }

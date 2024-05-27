@@ -19,11 +19,68 @@
         }
     </div>
     
-    <form [formGroup]="form" class="flex flex-col">
+    <form [formGroup]="form" class="grid grid-cols-2 gap-x-4 gap-y-6">
+
+        <mat-form-field subscriptSizing="dynamic">
+            <mat-label> Sub-serviço </mat-label>
+            <mat-select formControlName="subservice" [compareWith]="FN_COMPARE_WITH_SUBSERVICES" #selectSubservice>
+                @for (subservice of subservices$ | async; track subservice.id) {
+                    <mat-option [value]="subservice"> {{ subservice.name }} </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        @if (showsHoursInput$ | async) {
+            <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label> Horas Trabalhadas </mat-label>
+                <input matInput formControlName="hours" type="time">
+            </mat-form-field>
+        } @else {
+            <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label> Quantidade </mat-label>
+                <input matInput formControlName="quantity" type="number">
+            </mat-form-field>
+        }
+
+        <mat-form-field subscriptSizing="dynamic">
+            <mat-label> Mecânico </mat-label>
+            <mat-select formControlName="worker" [compareWith]="FN_COMPARE_WITH_USERS">
+                @for (worker of workers$ | async; track worker.id) {
+                    <mat-option [value]="worker"> {{ worker.name }} </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field subscriptSizing="dynamic">
+            <mat-label> Ambiente de Trabalho </mat-label>
+            <mat-select formControlName="environment">
+                @for (env of ENVIRONMENT_OPTIONS; track env.value) {
+                    <mat-option [value]="env.value"> {{ env.label }} </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <div>
+            Resumo:
+            <br>
+            Valor do serviço:
+            @if (form.value?.subservice) {
+                {{ form.value?.subservice?.price | currency }} / {{ form.value?.subservice?.charged_per | subserviceChargeTypeLabel }}
+            }
+            <br>
+            Total Sugerido: <b>{{ 400 | currency }}</b>
+            <br>
+            <span class="text-12"> * Lembrando que o valor do campo ao lado não precisa seguir a sugestão </span>
+        </div>
+
+        <mat-form-field subscriptSizing="dynamic">
+            <mat-label> Valor Total do Serviço </mat-label>
+            <input matInput formControlName="amount" currencyMask>
+        </mat-form-field>
         
     </form>
     
-    <section class="flex justify-between gap-2">
+    <section class="flex justify-between gap-2 mt-4">
         <button mat-button class="w-52" color="accent" matDialogClose> Voltar </button>
         <button mat-raised-button class="w-52" color="primary" (click)="saveSubservice()" [disabled]="form.invalid"> Salvar </button>
     </section>
