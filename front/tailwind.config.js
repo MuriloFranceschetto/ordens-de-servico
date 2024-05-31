@@ -9,6 +9,7 @@ module.exports = {
         whitesmoke: '#F5F5F5',
         primary: '#3f51b5',
         accent: '#ff4081',
+        warn: '#f44336',
       },
       fontSize: {
         10: '10px',

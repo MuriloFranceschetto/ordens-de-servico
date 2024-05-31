@@ -46,7 +46,15 @@ export class OrderSubservicesComponent {
 
   async openDialogSubservice(subservices?: SubserviceOrder): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.dialog.open(SubserviceComponent, { data: { order: this.order(), subservices }, width: '900px', maxWidth: '99svw' })
+      this.dialog.open(
+        SubserviceComponent,
+        {
+          data: { order: this.order(), subservices },
+          width: '900px',
+          maxWidth: '99svw',
+          panelClass: 'dialog-bg-gray',
+        }
+      )
         .afterClosed()
         .pipe(take(1))
         .subscribe({
