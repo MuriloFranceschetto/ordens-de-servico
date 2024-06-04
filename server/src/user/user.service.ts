@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -38,12 +38,12 @@ export class UserService {
         })
     }
 
-    async verifyUserById(clientId: string): Promise<UserEntity> {
-        let clientById = await this.getUserById(clientId);
-        if (!clientById) {
-            throw new Error('Não existe cliente com este identificador');
+    async verifyUserById(userId: string): Promise<UserEntity> {
+        let user = await this.getUserById(userId);
+        if (!user) {
+            throw new Error('Não existe usuário com este identificador');
         }
-        return clientById;
+        return user;
     }
 
     async verifyIfUserIsClient(user: UserEntity) {
@@ -65,7 +65,7 @@ export class UserService {
         return userEntity;
     }
 
-    async updateUser(id: string, userEntity: UpdateUserDto) {
+    async updateUser(id: string, userEntity: UpdateUserDto): Promise<UpdateResult> {
         const updateUserEntity = new UpdateUserDto();
         updateUserEntity.name = userEntity.name;
         updateUserEntity.email = userEntity.email;
