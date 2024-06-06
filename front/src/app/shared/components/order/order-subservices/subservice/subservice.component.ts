@@ -1,38 +1,46 @@
-import { Observable, firstValueFrom, map, share, shareReplay, take, tap } from 'rxjs';
+import { Observable, firstValueFrom, map, share, take } from 'rxjs';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 
-import { Component, ElementRef, Signal, TemplateRef, ViewContainerRef, computed, effect, inject, viewChild } from '@angular/core';
+import { AsyncPipe, CurrencyPipe, NgTemplateOutlet } from '@angular/common';
+import { Component, Signal, TemplateRef, WritableSignal, computed, effect, inject, signal, viewChild } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { AsyncPipe, CommonModule, CurrencyPipe, NgTemplateOutlet } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 import { IOrder } from '../../../../models/order/Order';
+import { IUser, UserRole } from '../../../../models/User';
 import { UsersService } from '../../../../services/users.service';
 import { OrdersService } from '../../../../services/orders.service';
-import { ENVIRONMENT_OPTIONS, EnvironmentType, ISubserviceOrder, SubserviceOrder } from '../../../../models/order/SubserviceOrder';
+import { SubservicesService } from '../../../../services/subservices.service';
 import { ConfirmationComponent } from '../../../confirmation/confirmation.component';
 import { ChargeTypes, ISubservice } from '../../../../models/subservice/ISubservice';
-import { IUser, UserRole } from '../../../../models/User';
-import { SubservicesService } from '../../../../services/subservices.service';
 import { SubserviceChargeTypeLabelPipe } from '../../../../pipes/subservice-charge-type-label.pipe';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { HourQuantityComponent } from './quantity-strategies/hour-quantity/hour-quantity.component';
+import { KilometerQuantityComponent } from './quantity-strategies/kilometer-quantity/kilometer-quantity.component';
+import { ENVIRONMENT_OPTIONS, EnvironmentType, ISubserviceOrder, SubserviceOrder } from '../../../../models/order/SubserviceOrder';
 
 const MATERIAL_MODULES = [MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatButtonModule, MatDialogModule, MatMenuModule, MatIconModule, MatTooltipModule];
 const ANGULAR_MODULES = [AsyncPipe, CurrencyPipe, NgTemplateOutlet];
+const PROJECT_COMPONENTS = [ConfirmationComponent, HourQuantityComponent, KilometerQuantityComponent];
 
 @Component({
   selector: 'app-subservice',
   standalone: true,
-  imports: [CurrencyMaskModule, SubserviceChargeTypeLabelPipe, ConfirmationComponent, HourQuantityComponent, ...ANGULAR_MODULES, ...MATERIAL_MODULES],
+  imports: [
+    CurrencyMaskModule,
+    SubserviceChargeTypeLabelPipe,
+    ...PROJECT_COMPONENTS,
+    ...ANGULAR_MODULES,
+    ...MATERIAL_MODULES
+  ],
   providers: [
     CurrencyPipe,
   ],
@@ -70,19 +78,15 @@ export class SubserviceComponent {
     worker: new FormControl(null, Validators.required),
     amount: new FormControl(null, [Validators.required, Validators.min(0)]),
     environment: new FormControl(EnvironmentType.INTERNAL, Validators.required),
-    quantity: new FormControl({ value: null, disabled: true }, [Validators.required, Validators.min(0)]),
     hours: new FormControl(null),
   });
-  public quantity: number = 6.33;
+  public quantity: WritableSignal<number> = signal(0);
 
   public hoursField = viewChild<TemplateRef<any>>('hoursField');
   public unityField = viewChild<TemplateRef<any>>('unityField');
   public kilometerField = viewChild<TemplateRef<any>>('kilometerField');
   public kilogramField = viewChild<TemplateRef<any>>('kilogramField');
   public noQuantityField = viewChild<TemplateRef<any>>('noQuantityField');
-
-  public initialMileage = new FormControl<number>(null, Validators.min(0));
-  public finalMileage = new FormControl<number>(null, Validators.min(0));
 
   private subserviceChanges: Signal<ISubservice> = toSignal(this.form.controls.subservice.valueChanges);
 
@@ -104,19 +108,18 @@ export class SubserviceComponent {
       const subserviceType: ChargeTypes = this.subserviceChanges()?.charged_per;
       if (!subserviceType) return;
 
-      const quantityField = this.form.controls.quantity;
-
-      quantityField.enable();
-      quantityField.reset();
+      this.quantity.set(0);
 
       if (subserviceType === ChargeTypes.REFER) {
-        quantityField.setValue(1);
+        this.quantity.set(1);
         this.form.controls.environment.disable();
         this.form.controls.environment.removeValidators(Validators.required);
       } else {
         this.form.controls.environment.enable();
         this.form.controls.environment.setValidators(Validators.required);
       }
+    }, {
+      allowSignalWrites: true,
     });
   }
 
@@ -124,7 +127,7 @@ export class SubserviceComponent {
     .pipe(
       takeUntilDestroyed(),
       map((formValue) => {
-        return (formValue.subservice?.price * formValue?.quantity) || null;
+        return (formValue.subservice?.price * this.quantity()) || null;
       }),
       share(),
     );
@@ -136,9 +139,9 @@ export class SubserviceComponent {
         environment: this.data.subservice.environment,
         subservice: this.data.subservice.subservice,
         worker: this.data.subservice.worker,
-        quantity: this.data.subservice.quantity,
         hours: null, // TODO - Converter quantidade de horas e vice-versa
       });
+      this.quantity.set(this.data.subservice.quantity);
     }
   }
 
@@ -151,7 +154,7 @@ export class SubserviceComponent {
       environment: formValue.environment,
       subservice: formValue.subservice,
       worker: formValue.worker,
-      quantity: formValue.quantity,
+      quantity: this.quantity(),
     }
     try {
       let response = await firstValueFrom(this.ordersService.saveSubservice(subservice));
@@ -186,10 +189,6 @@ export class SubserviceComponent {
       });
   }
 
-  public calculateKilometers() {
-    this.form.controls.quantity.setValue(this.finalMileage.getRawValue() - this.initialMileage.getRawValue());
-  }
-
 }
 
 interface FormGroupSubservice {
@@ -197,6 +196,5 @@ interface FormGroupSubservice {
   environment: FormControl<EnvironmentType>;
   subservice: FormControl<ISubservice>;
   worker: FormControl<IUser>;
-  quantity: FormControl<number>;
   hours: FormControl<string>;
 }

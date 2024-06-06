@@ -1,0 +1,24 @@
+<div class="grid grid-cols-2 gap-2">
+                
+    <mat-form-field subscriptSizing="dynamic">
+        <mat-label> Quilometragem Inicial </mat-label>
+        <input matInput [formControl]="initialMileage" type="number">
+    </mat-form-field>
+    
+    <mat-form-field subscriptSizing="dynamic">
+        <mat-label> Quilometragem Final </mat-label>
+        <input matInput [formControl]="finalMileage" type="number">
+    </mat-form-field>
+    
+    <div class="col-span-2 flex justify-center items-center">
+        <button color="accent" mat-icon-button matTooltip="Calcular quilômetros rodados"
+        class="rotate-90"
+        (click)="calculateKilometers()" [disabled]="!initialMileage.value || !finalMileage.value">
+        <mat-icon>sync_alt</mat-icon>
+    </button>
+</div>
+
+<mat-form-field class="col-span-2" subscriptSizing="dynamic">
+    <mat-label> Quilômetros </mat-label>
+    <input matInput [formControl]="quantityFormControl" type="number">
+</mat-form-field>

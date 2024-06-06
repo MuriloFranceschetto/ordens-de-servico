@@ -1,7 +1,7 @@
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatInputModule } from '@angular/material/input';
-import { Component, OnInit, effect, model } from '@angular/core';
+import { Component, WritableSignal, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
@@ -11,9 +11,9 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
   templateUrl: './hour-quantity.component.html',
   styleUrl: './hour-quantity.component.scss'
 })
-export class HourQuantityComponent implements OnInit {
+export class HourQuantityComponent {
 
-  public readonly quantity = model.required<number>();
+  public readonly quantity = input<WritableSignal<number>>();
   public readonly hourFormControl = new FormControl<string>(null, Validators.required);
 
   constructor() {
@@ -25,12 +25,12 @@ export class HourQuantityComponent implements OnInit {
       )
       .subscribe((value) => {
         if (!this.hourFormControl.valid) return;
-        this.quantity.set(this.timeToPercentage(value));
+        this.quantity().set(this.timeToPercentage(value));
       });
   }
 
   ngOnInit(): void {
-    this.hourFormControl.setValue(this.percentageToTime(this.quantity()));
+    this.hourFormControl.setValue(this.percentageToTime(this.quantity()()));
   }
 
   private timeToPercentage(time: string): number {
