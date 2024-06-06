@@ -21,9 +21,9 @@ jobs:
                 name: "build-server"
                 runs-on: ubuntu-latest
                 steps:
+                        - run: cd server
                         - uses: actions/checkout@v4
                           with:
-                                  node-version: "20"
-                        - run: cd server
+                                  node-version: "20.x"
                         - run: npm install
                         - run: npm run build
