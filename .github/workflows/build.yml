@@ -2,7 +2,7 @@ name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 jobs:
-        Explore-GitHub-Actions:
+        explore-github-actions:
                 name: "Explore"
                 runs-on: ubuntu-latest
                 steps:
@@ -17,7 +17,7 @@ jobs:
                           run: |
                                   ls ${{ github.workspace }}
                         - run: echo "🍏 This job's status is ${{ job.status }}."
-        Test-server:
+        test-server:
                 name: "test-server"
                 runs-on: ubuntu-latest
                 defaults:
@@ -36,6 +36,9 @@ jobs:
         sonarcloud:
                 name: SonarCloud
                 runs-on: ubuntu-latest
+                defaults:
+                        run:
+                                working-directory: ./server
                 steps:
                         - uses: actions/checkout@v3
                           with:
@@ -45,3 +48,5 @@ jobs:
                           env:
                                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
                                   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+                        secrets: inherit
+                        
