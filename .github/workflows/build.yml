@@ -31,8 +31,17 @@ jobs:
                           with:
                                   node-version: "20.x"
                         - run: npm install
-                        - run: npm run test:cov
+                        - name: Generate coverage files
+                          run: npm run test:cov
+        sonarcloud:
+                name: SonarCloud
+                runs-on: ubuntu-latest
+                steps:
+                        - uses: actions/checkout@v3
+                          with:
+                                  fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
                         - name: SonarCloud Scan
                           uses: SonarSource/sonarcloud-github-action@master
                           env:
-                                  SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
+                                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+                                  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
