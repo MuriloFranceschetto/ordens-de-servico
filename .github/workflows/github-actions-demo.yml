@@ -20,12 +20,15 @@ jobs:
         Build-server:
                 name: "build-server"
                 runs-on: ubuntu-latest
+                defaults:
+                        run:
+                                working-directory: ./server
                 steps:
                         - name: Check out repository code
                           uses: actions/checkout@v4
-                        - name: Entra na pasta "server"
-                          run: cd server
-                        - name: Instala dependências
-                          run: npm install
-                        - name: Roda comando "build"
-                          run: npm run build
+                        - name: Use Node.js
+                          uses: actions/setup-node@v4
+                          with:
+                                  node-version: "20.x"
+                        - run: npm install
+                        - run: npm run build
