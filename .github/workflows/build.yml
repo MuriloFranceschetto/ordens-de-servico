@@ -3,44 +3,37 @@ on:
         push:
                 branches:
                         - main
-                paths:
-                        - "front/**" # monorepo projects paths from the monorepo root directory
-                        - "server/**"
+                # paths:
+                #         - "front/**" # monorepo projects paths from the monorepo root directory
+                #         - "server/**"
         pull_request:
                 types: [opened, synchronize, reopened]
 jobs:
-        sonarcloud-front:
-                name: SonarCloudFront
+        sonarcloud:
+                name: SonarCloud
                 runs-on: ubuntu-latest
+                defaults:
+                        run:
+                                working-directory: ./front
                 steps:
                         - uses: actions/checkout@v4
                           with:
                                   fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-                        - name: List files in the repository
+                        - name: Lista de secrets
                           run: |
-                                  ls ${{ github.workspace }}
-                        - name: SonarCloud Scan
+                                  echo ${{ secrets }}
+                        - name: SonarCloud Scan front
                           uses: SonarSource/sonarcloud-github-action@master
                           env:
                                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
                                   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONT }}
                           with:
                                   projectBaseDir: front/
-        sonarcloud-server:
-                name: SonarCloudServer
-                runs-on: ubuntu-latest
-                steps:
-                        - uses: actions/checkout@v4
-                          with:
-                                  fetch-depth: 0
-                        - name: List files in the repository
-                          run: |
-                                  ls ${{ github.workspace }}
-                        - name: SonarCloud Scan
-                          uses: SonarSource/sonarcloud-github-action@master
-                          env:
-                                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                                  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_SERVER }}
 
-                          with:
-                                  projectBaseDir: server/
+                        # - name: SonarCloud Scan server
+                        #   uses: SonarSource/sonarcloud-github-action@master
+                        #   env:
+                        #           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                        #           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_SERVER }}
+                        #   with:
+                        #           projectBaseDir: server/
