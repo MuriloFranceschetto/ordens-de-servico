@@ -3,7 +3,7 @@
 #####################################################
 
 # define a imagem padrão para em que o container é baseado
-FROM node:20-alpine as build-front
+FROM node:20-alpine AS build-front
 
 # Diretório padrão para a aplicação - Se não existir ela vai ser criada automaticamente
 WORKDIR /usr/src/app
