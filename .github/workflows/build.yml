@@ -12,37 +12,29 @@ jobs:
         sonarcloud:
                 name: SonarCloud
                 runs-on: ubuntu-latest
-                defaults:
-                        run:
-                                working-directory: ./front
                 steps:
                         - uses: actions/checkout@v4
                           with:
                                   fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-                        - name: ECHO SECRETSSSSS
-                          run: |
-                                  echo ${{ toJson(secrets) }}
-                          env:
-                                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-                                  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONT }}
-                        - name: ECHO SONAR_TOKEN_FRONT
-                          run: |
-                                  echo ${{ secrets.SONAR_TOKEN_FRONT }}
-                        - name: ECHO SONAR_TOKEN_SERVER
-                          run: |
-                                  echo ${{ secrets.SONAR_TOKEN_SERVER }}
-                        - name: SonarCloud Scan front
+                        - name: SonarCloud Scan
                           uses: SonarSource/sonarcloud-github-action@master
                           env:
                                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
                                   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONT }}
                           with:
                                   projectBaseDir: front/
+        sonarcloud-server:
+                name: SonarCloudServer
+                runs-on: ubuntu-latest
+                steps:
+                        - uses: actions/checkout@v4
+                          with:
+                                  fetch-depth: 0
+                        - name: SonarCloud Scan
+                          uses: SonarSource/sonarcloud-github-action@master
+                          env:
+                                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                                  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_SERVER }}
 
-                        # - name: SonarCloud Scan server
-                        #   uses: SonarSource/sonarcloud-github-action@master
-                        #   env:
-                        #           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                        #           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_SERVER }}
-                        #   with:
-                        #           projectBaseDir: server/
+                          with:
+                                  projectBaseDir: server/
