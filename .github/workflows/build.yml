@@ -18,9 +18,9 @@
 #         #                   uses: actions/checkout@v4
 #         #                 - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 #         #                 - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-#         #                 - name: List files in the repository
-#         #                   run: |
-#         #                           ls ${{ github.workspace }}
+# - name: List files in the repository
+#   run: |
+#           ls ${{ github.workspace }}
 #         #                 - run: echo "🍏 This job's status is ${{ job.status }}."
 #         create-server-coverage:
 #                 name: "create-server-coverage"
@@ -74,9 +74,12 @@ jobs:
                 name: SonarCloudFront
                 runs-on: ubuntu-latest
                 steps:
-                        - uses: actions/checkout@v3
+                        - uses: actions/checkout@v4
                           with:
                                   fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+                        - name: List files in the repository
+                          run: |
+                                  ls ${{ github.workspace }}
                         - name: SonarCloud Scan
                           uses: SonarSource/sonarcloud-github-action@master
                           env:
@@ -89,9 +92,12 @@ jobs:
                 name: SonarCloudServer
                 runs-on: ubuntu-latest
                 steps:
-                        - uses: actions/checkout@v3
+                        - uses: actions/checkout@v4
                           with:
                                   fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+                        - name: List files in the repository
+                          run: |
+                                  ls ${{ github.workspace }}
                         - name: SonarCloud Scan
                           uses: SonarSource/sonarcloud-github-action@master
                           env:
