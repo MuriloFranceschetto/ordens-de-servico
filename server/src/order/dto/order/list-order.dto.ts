@@ -1,7 +1,6 @@
 import { ListUserDto } from "src/user/dto/UserList.dto";
 import { PaymentStatus } from "../../enums/paymentStatus";
 import { Expose, Type } from "class-transformer";
-import { PaymentOrderDto } from "../payment/payment-order.dto";
 
 export class ListOrderDto {
     @Expose()
