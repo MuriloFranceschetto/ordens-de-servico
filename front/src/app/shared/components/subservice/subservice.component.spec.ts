@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SubserviceComponent } from './subservice.component';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SubservicesService } from '../../services/subservices.service';
 
@@ -12,13 +12,14 @@ describe('SubserviceComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SubserviceComponent, MatDialogModule, HttpClientModule, BrowserAnimationsModule],
-      providers: [
+    imports: [SubserviceComponent, MatDialogModule, BrowserAnimationsModule],
+    providers: [
         SubservicesService,
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: {} },
-      ]
-    })
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
+})
       .compileComponents();
 
     fixture = TestBed.createComponent(SubserviceComponent);

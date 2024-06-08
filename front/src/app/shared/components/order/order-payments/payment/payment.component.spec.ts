@@ -13,7 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PaymentComponent } from './payment.component';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { PaymentMethodLabelPipe } from '../../../../pipes/payment-method-label.pipe';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { ConfirmationComponent } from '../../../confirmation/confirmation.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -27,23 +27,21 @@ describe('PaymentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
+    imports: [BrowserAnimationsModule,
         PaymentComponent,
-        HttpClientModule,
         AsyncPipe,
         CurrencyMaskModule,
         ConfirmationComponent,
-        ...MATERIAL_MODULES,
-      ],
-      providers: [
+        ...MATERIAL_MODULES],
+    providers: [
         HttpClient,
         PaymentMethodLabelPipe,
         CurrencyPipe,
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: {} },
-      ],
-    })
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
+})
       .compileComponents();
 
     fixture = TestBed.createComponent(PaymentComponent);

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SubservicesComponent } from './subservices.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SubservicesComponent', () => {
   let component: SubservicesComponent;
@@ -9,8 +9,9 @@ describe('SubservicesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SubservicesComponent, HttpClientModule]
-    })
+    imports: [SubservicesComponent],
+    providers: [provideHttpClient(withInterceptorsFromDi())]
+})
       .compileComponents();
 
     fixture = TestBed.createComponent(SubservicesComponent);

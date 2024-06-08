@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SubserviceComponent } from './subservice.component';
@@ -11,12 +11,13 @@ describe('SubserviceComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SubserviceComponent, HttpClientModule, BrowserAnimationsModule],
-      providers: [
+    imports: [SubserviceComponent, BrowserAnimationsModule],
+    providers: [
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: {} },
-      ]
-    })
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
+})
       .compileComponents();
 
     fixture = TestBed.createComponent(SubserviceComponent);

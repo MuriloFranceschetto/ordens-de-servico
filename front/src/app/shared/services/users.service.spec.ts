@@ -1,15 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 
 import { UsersService } from './users.service';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('UsersService', () => {
   let service: UsersService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule]
-    });
+    imports: [],
+    providers: [provideHttpClient(withInterceptorsFromDi())]
+});
     service = TestBed.inject(UsersService);
   });
 
