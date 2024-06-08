@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegistrationsComponent } from './registrations.component';
+import { RouterModule, provideRouter, withComponentInputBinding } from '@angular/router';
+import { routes } from '../../app.routes';
 
 describe('RegistrationsComponent', () => {
   let component: RegistrationsComponent;
@@ -8,10 +10,13 @@ describe('RegistrationsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RegistrationsComponent]
+      imports: [RegistrationsComponent, RouterModule],
+      providers: [
+        provideRouter(routes, withComponentInputBinding()),
+      ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(RegistrationsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

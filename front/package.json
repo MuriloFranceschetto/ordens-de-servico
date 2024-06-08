@@ -6,7 +6,8 @@
     "start": "ng serve -o --host 0.0.0.0",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:cov": "ng test --code-coverage"
   },
   "private": true,
   "dependencies": {
@@ -39,6 +40,7 @@
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
+    "karma-typescript": "5.5.4",
     "karma-jasmine-html-reporter": "~2.1.0",
     "tailwindcss": "^3.4.1",
     "typescript": "~5.2.2"

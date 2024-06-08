@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KilometerQuantityComponent } from './kilometer-quantity.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { signal } from '@angular/core';
 
 describe('KilometerQuantityComponent', () => {
   let component: KilometerQuantityComponent;
@@ -8,11 +10,14 @@ describe('KilometerQuantityComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [KilometerQuantityComponent]
+      imports: [KilometerQuantityComponent, BrowserAnimationsModule]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(KilometerQuantityComponent);
+
+    fixture.componentRef.setInput('quantity', signal<number>(10))
+
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
