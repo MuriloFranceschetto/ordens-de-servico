@@ -1,26 +1,26 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SubserviceComponent } from './subservice.component';
+import { OrderSubserviceFormComponent } from './order-subservice-form.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('SubserviceComponent', () => {
-  let component: SubserviceComponent;
-  let fixture: ComponentFixture<SubserviceComponent>;
+describe('OrderSubserviceFormComponent', () => {
+  let component: OrderSubserviceFormComponent;
+  let fixture: ComponentFixture<OrderSubserviceFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [SubserviceComponent, BrowserAnimationsModule],
-    providers: [
+      imports: [OrderSubserviceFormComponent, BrowserAnimationsModule],
+      providers: [
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         provideHttpClient(withInterceptorsFromDi()),
-    ]
-})
+      ]
+    })
       .compileComponents();
 
-    fixture = TestBed.createComponent(SubserviceComponent);
+    fixture = TestBed.createComponent(OrderSubserviceFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
