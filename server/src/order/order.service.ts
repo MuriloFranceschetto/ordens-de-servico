@@ -14,6 +14,7 @@ import { CreatePaymentOrderDto } from "./dto/payment/create-payment-order.dto";
 import { UpdatePaymentOrderDto } from "./dto/payment/update-payment-order.dto";
 import { CreateSubserviceOrderDto } from "./dto/sub-service/create-subservice.dto";
 import { UpdateSubserviceOrderDto } from "./dto/sub-service/update-subservice.dto";
+import { OrderSubserviceEntity } from "./entities/order-subservice.entity";
 
 
 @Injectable()
@@ -22,6 +23,7 @@ export class OrderService {
     constructor(
         @InjectRepository(OrderEntity) private orderRepository: Repository<OrderEntity>,
         @InjectRepository(OrderPaymentEntity) private orderPaymentRepository: Repository<OrderPaymentEntity>,
+        @InjectRepository(OrderSubserviceEntity) private orderSubserviceRepository: Repository<OrderSubserviceEntity>,
         @Inject(UserService) private userService: UserService,
     ) { }
 
@@ -109,13 +111,33 @@ export class OrderService {
     // ------------- SUBSERVICE --------------------------------------------------
 
     public async createSubservice(subserviceData: CreateSubserviceOrderDto) {
+        const subserviceEntity = plainToClass(OrderSubserviceEntity, subserviceData);
+        subserviceEntity.order = await this.getOrderById(subserviceData.order.id);
 
+        subserviceEntity.worker = await this.userService.getUserById(subserviceData.worker.id);
+        await this.userService.verifyIfUserIsWorker(subserviceEntity.worker);
+
+        subserviceEntity.id = randomUUID();
+        await this.orderSubserviceRepository.save(subserviceEntity);
     }
 
     public async updateSubservice(subserviceData: UpdateSubserviceOrderDto) {
+        const subserviceEntity = plainToClass(OrderSubserviceEntity, subserviceData);
+        subserviceEntity.order = await this.getOrderById(subserviceData.order.id);
+
+        subserviceEntity.worker = await this.userService.getUserById(subserviceEntity.worker.id);
+        await this.userService.verifyIfUserIsWorker(subserviceEntity.worker);
+
+        await this.orderSubserviceRepository.save(subserviceEntity);
     }
 
     public async deleteSubservice(idOrder: string, idSubservice: string) {
+        await this.orderSubserviceRepository.delete({
+            id: idSubservice,
+            order: {
+                id: idOrder,
+            }
+        });
     }
 
 }

@@ -27,6 +27,11 @@ const config: Config = {
 
   testRegex: ".*\\.spec\\.ts$",
 
+  // An array of regexp pattern strings used to skip coverage collection
+  coveragePathIgnorePatterns: [
+    "node_modules"
+  ],
+
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -38,11 +43,6 @@ const config: Config = {
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   // collectCoverageFrom: undefined,
-
-  // An array of regexp pattern strings used to skip coverage collection
-  // coveragePathIgnorePatterns: [
-  //   "\\\\node_modules\\\\"
-  // ],
   // A list of reporter names that Jest uses when writing coverage reports
   // coverageReporters: [
   //   "json",

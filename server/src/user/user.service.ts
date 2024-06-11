@@ -52,6 +52,12 @@ export class UserService {
         }
     }
 
+    async verifyIfUserIsWorker(user: UserEntity) {
+        if (!user.roles.includes(UserRole.Worker) && !user.roles.includes(UserRole.Third)) {
+            throw new Error(`O cadastro de "${user.name}" não é referente a um mecânico ou terceiro`);
+        }
+    }
+
     async createUser(userData: CreateUserDto): Promise<UserEntity> {
         const userEntity = new UserEntity();
         userEntity.name = userData.name;

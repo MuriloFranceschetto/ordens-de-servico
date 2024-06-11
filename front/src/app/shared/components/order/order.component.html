@@ -64,7 +64,7 @@
         
         <!-- ------- Tabela de Sub-serviços ------ -->
         <section class="col-span-2 bg-whitesmoke rounded overflow-hidden">
-            <app-order-subservices [subservices$]="order$().subservices" [order]="order$()" (onAction)="getOrder()"></app-order-subservices>
+            <app-order-subservices-table [subservices$]="order$().subservices" [order]="order$()" (onAction)="getOrder()"></app-order-subservices-table>
         </section>
         
         <!-- ------- Tabela de Pagamentos ------ -->

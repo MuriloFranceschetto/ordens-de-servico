@@ -20,8 +20,7 @@ import { OrdersService } from '../../services/orders.service';
 import { Order, PaymentStatus } from '../../models/order/Order';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
 import { OrderPaymentsComponent } from './order-payments/order-payments.component';
-import { OrderSubservicesComponent } from './order-subservices/order-subservices.component';
-import { SubserviceOrder } from '../../models/order/SubserviceOrder';
+import { OrderSubservicesComponent } from './order-subservices-table/order-subservices-table.component';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatInputModule, MatSelectModule, MatFormFieldModule, MatIconModule,

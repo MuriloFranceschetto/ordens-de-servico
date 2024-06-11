@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OrderSubservicesComponent } from './order-subservices.component';
+import { OrderSubservicesComponent } from './order-subservices-table.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { Order } from '../../../models/order/Order';
 
@@ -11,9 +11,9 @@ describe('OrderSubservicesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [OrderSubservicesComponent],
-    providers: [provideHttpClient(withInterceptorsFromDi())]
-})
+      imports: [OrderSubservicesComponent],
+      providers: [provideHttpClient(withInterceptorsFromDi())]
+    })
       .compileComponents();
 
     fixture = TestBed.createComponent(OrderSubservicesComponent);

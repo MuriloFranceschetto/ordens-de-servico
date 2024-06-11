@@ -12,18 +12,18 @@ import { Component, Signal, computed, inject, input, output } from '@angular/cor
 
 import { IOrder } from '../../../models/order/Order';
 import { SubserviceOrder } from '../../../models/order/SubserviceOrder';
-import { SubserviceComponent } from './subservice/subservice.component';
+import { OrderSubserviceFormComponent } from './order-subservice-form/order-subservice-form.component';
 import { SubservicesService } from '../../../services/subservices.service';
 
 const MATERIAL_MODULES = [MatIconModule, MatButtonModule, MatFormFieldModule, MatSelectModule, ReactiveFormsModule, MatInputModule, MatTooltipModule];
 const ANGULAR_MODULES = [CurrencyPipe, DatePipe, NgClass, FormsModule];
 
 @Component({
-  selector: 'app-order-subservices',
+  selector: 'app-order-subservices-table',
   standalone: true,
   imports: [...ANGULAR_MODULES, ...MATERIAL_MODULES],
-  templateUrl: './order-subservices.component.html',
-  styleUrl: './order-subservices.component.scss'
+  templateUrl: './order-subservices-table.component.html',
+  styleUrl: './order-subservices-table.component.scss'
 })
 export class OrderSubservicesComponent {
 
@@ -44,12 +44,12 @@ export class OrderSubservicesComponent {
 
   public dialog = inject(MatDialog);
 
-  async openDialogSubservice(subservices?: SubserviceOrder): Promise<any> {
+  async openDialogSubservice(subservice?: SubserviceOrder): Promise<any> {
     return new Promise((resolve, reject) => {
       this.dialog.open(
-        SubserviceComponent,
+        OrderSubserviceFormComponent,
         {
-          data: { order: this.order(), subservices },
+          data: { order: this.order(), subservice },
           width: '900px',
           maxWidth: '99svw',
           panelClass: 'dialog-bg-gray',

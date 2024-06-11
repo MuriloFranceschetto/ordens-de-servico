@@ -89,8 +89,8 @@
             }
             <br>
             <span class="text-14 mr-1">Total Sugerido:</span>
-            @if (priceSugestion$ | async) {
-                <b>{{ form.value?.subservice?.price | currency }} X {{ quantity() }} = {{ priceSugestion$ | async | currency }}</b>
+            @if (priceSugestion$()) {
+                <b>{{ form.value?.subservice?.price | currency }} X {{ quantity() }} = {{ priceSugestion$() | currency }}</b>
             }
             <br>
             <span class="text-12"> * Lembrando que o valor do campo ao lado não precisa seguir a sugestão </span>

@@ -78,7 +78,7 @@ export class OrderController {
             const payment = await this.orderService.createPayment(paymentData);
             return {
                 payment: plainToInstance(PaymentOrderDto, payment),
-                message: 'Successfull order creation!'
+                message: 'Successfull payment creation!'
             };
         } catch (error) {
             throw new BadRequestException(error.message);
@@ -91,7 +91,7 @@ export class OrderController {
             const payment = await this.orderService.updatePayment(paymentData);
             return {
                 payment: plainToInstance(PaymentOrderDto, payment),
-                message: 'Successfull order creation!'
+                message: 'Successfull payment update!'
             };
         } catch (error) {
             throw new BadRequestException(error.message);
@@ -113,7 +113,7 @@ export class OrderController {
             const Subservice = await this.orderService.createSubservice(SubserviceData);
             return {
                 Subservice: plainToInstance(SubserviceOrderDTO, Subservice),
-                message: 'Successfull order creation!'
+                message: 'Successfull subservice creation!'
             };
         } catch (error) {
             throw new BadRequestException(error.message);
@@ -123,10 +123,10 @@ export class OrderController {
     @Put('/subservice')
     async updateSubservice(@Body() SubserviceData: UpdateSubserviceOrderDto) {
         try {
-            const Subservice = await this.orderService.updateSubservice(SubserviceData);
+            const subservice = await this.orderService.updateSubservice(SubserviceData);
             return {
-                Subservice: plainToInstance(SubserviceOrderDTO, Subservice),
-                message: 'Successfull order creation!'
+                subservice: plainToInstance(SubserviceOrderDTO, subservice),
+                message: 'Successfull subservice creation!'
             };
         } catch (error) {
             throw new BadRequestException(error.message);

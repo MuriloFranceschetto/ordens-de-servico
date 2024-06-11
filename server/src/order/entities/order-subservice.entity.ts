@@ -1,8 +1,9 @@
-import { SubserviceEntity } from "src/subservice/subservice.entity";
-import { UserEntity } from "src/user/user.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { EnvironmentType } from "../enums/environmentType";
+
 import { OrderEntity } from "./order.entity";
+import { UserEntity } from "src/user/user.entity";
+import { EnvironmentType } from "../enums/environmentType";
+import { SubserviceEntity } from "src/subservice/subservice.entity";
 
 @Entity({ name: 'order_subservices' })
 export class OrderSubserviceEntity {
@@ -10,16 +11,16 @@ export class OrderSubserviceEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @OneToOne(() => SubserviceEntity)
+    @Column({ name: 'amount', type: 'double precision' })
+    amount: number;
+
+    @OneToOne(() => SubserviceEntity, subservice => subservice.id, { eager: true })
     @JoinColumn()
     subservice: SubserviceEntity;
 
-    @OneToOne(() => UserEntity, user => user.id)
+    @ManyToOne(() => UserEntity, user => user.id, { eager: true })
     @JoinColumn()
     worker: UserEntity;
-
-    @Column({ name: 'amount', type: 'double precision' })
-    amount: number;
 
     @Column({ name: 'quantity', type: 'double precision' })
     quantity: number;
@@ -27,7 +28,7 @@ export class OrderSubserviceEntity {
     @Column({ name: 'type', type: 'enum', enum: EnvironmentType })
     environment: EnvironmentType;
 
-    @ManyToOne(() => OrderEntity, (order) => order.payments,
+    @ManyToOne(() => OrderEntity, (order) => order.subservices,
         { orphanedRowAction: "delete", onDelete: "CASCADE", onUpdate: "CASCADE" })
     order: OrderEntity;
 

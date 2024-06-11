@@ -32,7 +32,7 @@ const ANGULAR_MODULES = [AsyncPipe, CurrencyPipe, NgTemplateOutlet];
 const PROJECT_COMPONENTS = [ConfirmationComponent, HourQuantityComponent, KilometerQuantityComponent];
 
 @Component({
-  selector: 'app-subservice',
+  selector: 'order-subservices-form',
   standalone: true,
   imports: [
     CurrencyMaskModule,
@@ -44,10 +44,10 @@ const PROJECT_COMPONENTS = [ConfirmationComponent, HourQuantityComponent, Kilome
   providers: [
     CurrencyPipe,
   ],
-  templateUrl: './subservice.component.html',
-  styleUrl: './subservice.component.scss'
+  templateUrl: './order-subservice-form.component.html',
+  styleUrl: './order-subservice-form.component.scss'
 })
-export class SubserviceComponent {
+export class OrderSubserviceFormComponent {
 
   private readonly matDialog = inject(MatDialog);
   private readonly matSnackBar = inject(MatSnackBar);
@@ -56,7 +56,7 @@ export class SubserviceComponent {
   private readonly ordersService = inject(OrdersService);
   private readonly subservicesService = inject(SubservicesService);
 
-  public readonly dialogRef = inject(MatDialogRef<SubserviceComponent>);
+  public readonly dialogRef = inject(MatDialogRef<OrderSubserviceFormComponent>);
   public readonly data: { order: IOrder, subservice?: SubserviceOrder } = inject(MAT_DIALOG_DATA);
 
   public readonly ENVIRONMENT_OPTIONS = ENVIRONMENT_OPTIONS;
@@ -80,7 +80,12 @@ export class SubserviceComponent {
     environment: new FormControl(EnvironmentType.INTERNAL, Validators.required),
     hours: new FormControl(null),
   });
+  private formValueChanges$ = toSignal(this.form.valueChanges);
   public quantity: WritableSignal<number> = signal(0);
+
+  public priceSugestion$: Signal<number> = computed(() => {
+    return this.formValueChanges$()?.subservice?.price * this.quantity();
+  });
 
   public hoursField = viewChild<TemplateRef<any>>('hoursField');
   public unityField = viewChild<TemplateRef<any>>('unityField');
@@ -122,15 +127,6 @@ export class SubserviceComponent {
       allowSignalWrites: true,
     });
   }
-
-  public priceSugestion$: Observable<number> = this.form.valueChanges
-    .pipe(
-      takeUntilDestroyed(),
-      map((formValue) => {
-        return (formValue.subservice?.price * this.quantity()) || null;
-      }),
-      share(),
-    );
 
   ngOnInit(): void {
     if (this.data.subservice) {

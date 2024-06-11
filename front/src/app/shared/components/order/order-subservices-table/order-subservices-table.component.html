@@ -6,25 +6,36 @@
         <mat-icon class="m-1 cursor-pointer text-whitesmoke" (click)="openDialogSubservice()" matTooltip="Novo pagamento"> add </mat-icon>
     </div>
 
-    <div class="basis-full grid grid-cols-2 pt-1 child-align-vertical-center">
+    <div class="basis-full grid grid-cols-6 pt-1 child-align-vertical-center">
 
+        <section class="table-header col-span-2 pl-2"> Serviço </section>
+        <section class="table-header"> Quantidade </section>
+        <section class="table-header"> Mecânico </section>
         <section class="table-header"> Valor </section>
+        <section class="table-header justify-end pr-2"></section>
 
-        <div class="resize-y overflow-y-auto col-span-2">
+        <div class="resize-y overflow-y-auto col-span-6">
             @for (subservice of subservices$(); let i = $index; track subservice.id; let last = $last; let odd = $odd) {
                 <div class="grid grid-cols-6 child-align-vertical-center" 
                     [ngClass]="{'border-b-[1px] border-gray-400': !last, 'bg-slate-200': odd}">     
+
+                    <section class="col-span-2 pl-2"> {{ subservice.subservice?.name }} </section>
+                    <section> {{ subservice.quantity }} </section>
                     <section> {{ subservice.amount | currency }} </section>
+                    <section> {{ subservice.worker?.name }} </section>
                     <section class="justify-end pr-2">
                         <mat-icon color="primary" class="m-1 cursor-pointer" (click)="openDialogSubservice(subservice)" matTooltip="Editar pagamento"> edit </mat-icon>
                     </section>
+
                 </div>
             }
         </div>
 
     </div>
 
-    <div class="grid grid-cols-2 child-align-vertical-center py-1 bg-primary text-whitesmoke">
+    <div class="grid grid-cols-6 child-align-vertical-center py-1 bg-primary text-whitesmoke">
+        <section class="col-span-2 pl-2"> Valor Total </section>
+        <section></section>
         <section> {{ subservicesSum$() | currency }} </section>
     </div>
 
