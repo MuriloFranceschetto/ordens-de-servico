@@ -32,6 +32,7 @@ export class UsersComponent {
   async openUserForm(user?: IUser) {
     let dialogRef = this.dialog.open(UserComponent, {
       data: user,
+      autoFocus: false,
     });
     dialogRef.afterClosed().subscribe((response) => {
       this.users$ = this.usersService.users$.pipe(take(1));

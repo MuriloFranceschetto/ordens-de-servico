@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angu
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
-import { take } from 'rxjs';
+import { EMPTY, filter, iif, mergeMap, switchMap, take, tap } from 'rxjs';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 
 import { UsersService } from '../../services/users.service';
@@ -45,34 +45,49 @@ export class UserComponent implements OnInit {
     this.formUser.controls.roles.valueChanges
       .pipe(takeUntilDestroyed())
       .subscribe((roles) => {
-        const ctrlEmail = this.formUser.controls.email;
-        const ctrlPrice = this.formUser.controls.pricePerHour;
+        let { email, pricePerHour } = this.formUser.controls;
 
         if (roles.includes(UserRole.Admin)) {
-          ctrlEmail.setValidators(Validators.required);
+          email.setValidators(Validators.required);
         } else {
-          ctrlEmail.removeValidators(Validators.required);
+          email.removeValidators(Validators.required);
         }
 
         if (roles.includes(UserRole.Worker)) {
-          ctrlPrice.setValidators(Validators.required);
-          ctrlPrice.enable();
+          pricePerHour.setValidators(Validators.required);
+          pricePerHour.enable();
         } else {
-          ctrlPrice.removeValidators(Validators.required);
-          ctrlPrice.disable();
+          pricePerHour.removeValidators(Validators.required);
+          pricePerHour.disable();
         }
 
-        ctrlEmail.updateValueAndValidity();
-        ctrlPrice.updateValueAndValidity();
+        this.checkPasswordRequirement(roles);
+
+        email.updateValueAndValidity();
+        pricePerHour.updateValueAndValidity();
       })
   }
 
-  ngOnInit(): void {
+  private checkPasswordRequirement(roles?: UserRole[]) {
     if (!this.dialogData?.id) {
       this.formUser.controls.password.setValidators(Validators.required);
-      this.formUser.updateValueAndValidity();
-      return;
     }
+    if (!!roles) {
+      if (roles.includes(UserRole.Admin)) {
+        this.formUser.controls.password.setValidators(Validators.required);
+        this.formUser.controls.password.enable();
+      } else {
+        this.formUser.controls.password.removeValidators(Validators.required);
+        this.formUser.controls.password.disable();
+      }
+    }
+
+    this.formUser.controls.password.updateValueAndValidity();
+  }
+
+  ngOnInit(): void {
+    this.checkPasswordRequirement();
+    if (!this.dialogData?.id) return;
 
     this.userService.getUser(this.dialogData.id)
       .subscribe({
@@ -96,7 +111,6 @@ export class UserComponent implements OnInit {
     }
 
     this.saveMethod
-      .pipe(take(1))
       .subscribe({
         next: () => this.dialogRef.close(),
       })
@@ -112,15 +126,14 @@ export class UserComponent implements OnInit {
   public deleteUser() {
     this.matDialog.open(ConfirmationComponent, { data: 'Tem certeza que deseja excluir esse usuário?' })
       .afterClosed()
-      .subscribe((response) => {
-        if (response) {
-          this.userService.deleteUser(this.dialogData.id)
-            .pipe(take(1))
-            .subscribe({
-              next: () => this.dialogRef.close(),
-            })
-        }
-      })
+      .pipe(
+        filter((response) => !!response),
+        switchMap(() => this.userService.deleteUser(this.dialogData.id)),
+      )
+      .subscribe({
+        next: () => this.dialogRef.close(),
+        error: (err) => { throw err },
+      });
   }
 
 }

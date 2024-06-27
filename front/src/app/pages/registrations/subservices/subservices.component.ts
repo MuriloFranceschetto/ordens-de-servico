@@ -30,6 +30,7 @@ export class SubservicesComponent {
   async openSubserviceForm(subservice?: ISubservice) {
     let dialogRef = this.dialog.open(SubserviceComponent, {
       data: subservice,
+      autoFocus: false,
     });
     dialogRef.afterClosed().subscribe((response) => {
       this.subservices$ = this.subservicesService.subservices$.pipe(take(1));
