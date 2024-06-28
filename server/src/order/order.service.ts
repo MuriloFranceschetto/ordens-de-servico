@@ -15,6 +15,7 @@ import { UpdatePaymentOrderDto } from "./dto/payment/update-payment-order.dto";
 import { CreateSubserviceOrderDto } from "./dto/sub-service/create-subservice.dto";
 import { UpdateSubserviceOrderDto } from "./dto/sub-service/update-subservice.dto";
 import { OrderSubserviceEntity } from "./entities/order-subservice.entity";
+import { PaymentStatus } from "./enums/paymentStatus";
 
 
 @Injectable()
@@ -71,6 +72,12 @@ export class OrderService {
         return orderEntity;
     }
 
+    public async finishOrder(id: string): Promise<void> {
+        await this.orderRepository.update(id, {
+            open: false,
+        });
+    }
+
     public async deleteOrder(id: string) {
         return await this.orderRepository.delete(id);
     }
@@ -87,6 +94,8 @@ export class OrderService {
 
         paymentEntity.id = randomUUID();
         await this.orderPaymentRepository.save(paymentEntity);
+
+        await this.updateOrderPaymentStatus(paymentData.order.id);
     }
 
     public async updatePayment(paymentData: UpdatePaymentOrderDto) {
@@ -97,6 +106,8 @@ export class OrderService {
         await this.userService.verifyIfUserIsClient(paymentEntity.payer);
 
         await this.orderPaymentRepository.save(paymentEntity);
+
+        await this.updateOrderPaymentStatus(paymentData.order.id);
     }
 
     public async deletePayment(idOrder: string, idPayment: string) {
@@ -106,6 +117,7 @@ export class OrderService {
                 id: idOrder,
             }
         });
+        await this.updateOrderPaymentStatus(idOrder);
     }
 
     // ------------- SUBSERVICE --------------------------------------------------
@@ -119,6 +131,8 @@ export class OrderService {
 
         subserviceEntity.id = randomUUID();
         await this.orderSubserviceRepository.save(subserviceEntity);
+
+        await this.updateOrderPaymentStatus(subserviceEntity.order.id);
     }
 
     public async updateSubservice(subserviceData: UpdateSubserviceOrderDto) {
@@ -129,6 +143,8 @@ export class OrderService {
         await this.userService.verifyIfUserIsWorker(subserviceEntity.worker);
 
         await this.orderSubserviceRepository.save(subserviceEntity);
+
+        await this.updateOrderPaymentStatus(subserviceEntity.order.id);
     }
 
     public async deleteSubservice(idOrder: string, idSubservice: string) {
@@ -138,6 +154,35 @@ export class OrderService {
                 id: idOrder,
             }
         });
+        await this.updateOrderPaymentStatus(idOrder);
+    }
+
+
+    private async updateOrderPaymentStatus(idOrder: string) {
+        const order = await this.getOrderById(idOrder);
+        await this.orderRepository.update(idOrder, {
+            paymentStatus: this.getPaymentStatusFromOrder(order),
+        });
+    }
+
+    getPaymentStatusFromOrder(order: OrderEntity): PaymentStatus {
+        if (!order.payments.length) {
+            return PaymentStatus.NOT_PAID;
+        }
+
+        const getAmountFn = (list: (OrderPaymentEntity | OrderSubserviceEntity)[]) => {
+            return list.map(item => item.amount).reduce((a, b) => a + b, 0);
+        };
+
+        const totalAmountSubservices: number = getAmountFn(order.subservices);
+        const totalAmountPayments: number = getAmountFn(order.payments);
+
+        if (totalAmountSubservices > totalAmountPayments) {
+            return PaymentStatus.PARTIALLY_PAID;
+        }
+        else if (totalAmountPayments >= totalAmountSubservices) {
+            return PaymentStatus.PAID;
+        }
     }
 
 }

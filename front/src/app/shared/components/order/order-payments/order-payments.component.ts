@@ -1,14 +1,14 @@
-import { CurrencyPipe, DatePipe, NgClass } from '@angular/common';
-import { Component, Signal, computed, inject, input, output } from '@angular/core';
+import { take } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CurrencyPipe, DatePipe, NgClass } from '@angular/common';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Component, Signal, computed, inject, input, output } from '@angular/core';
 
+import { IOrder } from '../../../models/order/Order';
 import { PaymentComponent } from './payment/payment.component';
 import { IPaymentOrder } from '../../../models/order/PaymentOrder';
 import { PaymentMethodLabelPipe } from '../../../pipes/payment-method-label.pipe';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { catchError, take } from 'rxjs';
-import { IOrder } from '../../../models/order/Order';
 
 const MATERIAL_MODULES = [MatIconModule, MatTooltipModule, MatDialogModule];
 const ANGULAR_MODULES = [CurrencyPipe, DatePipe, NgClass];
@@ -40,7 +40,7 @@ export class OrderPaymentsComponent {
         .afterClosed()
         .pipe(take(1))
         .subscribe({
-          next: (response) => {
+          next: () => {
             this.onAction.emit();
           },
           error: (err) => reject(err),

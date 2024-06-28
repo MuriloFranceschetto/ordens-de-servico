@@ -21,11 +21,15 @@ export class OrdersService {
   }
 
   public async newOrder(order: IOrder) {
-    return await firstValueFrom(this.http.post(this.API_PATH, order).pipe(take(1)));
+    return await firstValueFrom(this.http.post<ResponseOrder>(this.API_PATH, order).pipe(take(1)));
   }
 
   public async updateOrder(order: IOrder) {
-    return await firstValueFrom(this.http.put(`${this.API_PATH}`, order).pipe(take(1)));
+    return await firstValueFrom(this.http.put<ResponseOrder>(`${this.API_PATH}`, order).pipe(take(1)));
+  }
+
+  public async finishOrder(id: string) {
+    return await firstValueFrom(this.http.patch(`${this.API_PATH}/${id}`, null).pipe(take(1)));
   }
 
   public deleteOrder(id: string) {
@@ -56,4 +60,9 @@ export class OrdersService {
     return this.http.delete(`${this.API_PATH}/subservice/${idOrder}/${idSubservice}`).pipe(take(1));
   }
 
+}
+
+interface ResponseOrder {
+  message: string,
+  order: IOrder,
 }

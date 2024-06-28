@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Put } from "@nestjs/common";
 import { OrderService } from "./order.service";
 import { ListOrderDto } from "./dto/order/list-order.dto";
 import { plainToInstance } from "class-transformer";
@@ -44,6 +44,18 @@ export class OrderController {
             return {
                 order: plainToInstance(ListOrderDto, order),
                 message: 'Successfull order creation!'
+            };
+        } catch (error) {
+            throw new BadRequestException(error.message);
+        }
+    }
+
+    @Patch('/:id')
+    async finishOrder(@Param('id') id: string) {
+        try {
+            await this.orderService.finishOrder(id);
+            return {
+                message: 'Successfull order update!'
             };
         } catch (error) {
             throw new BadRequestException(error.message);

@@ -13,7 +13,6 @@ async function bootstrap() {
   app.useGlobalInterceptors(
     // Exclui todos os parâmetros que não estão declarados nos DTO´s;
     new ClassSerializerInterceptor(app.get(Reflector), {
-      strategy: 'excludeAll',
       excludeExtraneousValues: true,
       exposeDefaultValues: true,
     }),

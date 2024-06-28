@@ -1,7 +1,9 @@
 import { take } from 'rxjs';
+import colors from 'tailwindcss/colors';
+import { Router } from '@angular/router';
+import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import { AsyncPipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
@@ -9,14 +11,13 @@ import { MatChipsModule } from '@angular/material/chips';
 import { IOrder } from '../../shared/models/order/Order';
 import { OrdersService } from '../../shared/services/orders.service';
 import { MyChipComponent } from '../../shared/components/my-chip/my-chip.component';
+import { PaymentStatusPipe } from '../../shared/pipes/payment-status.pipe';
 
-import colors from 'tailwindcss/colors';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [MatTableModule, AsyncPipe, MatIconModule, MatButtonModule, MatChipsModule, MyChipComponent],
+  imports: [MatTableModule, AsyncPipe, PaymentStatusPipe, MatIconModule, MatButtonModule, MatChipsModule, MyChipComponent],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss'
 })
@@ -32,7 +33,7 @@ export class OrdersComponent {
     .pipe(take(1));
 
   openOrderForm(order?: IOrder) {
-    this.router.navigate(['order', order?.id || 'new']);
+    this.router.navigate(['order', order?.id ?? 'new']);
   }
 
 }
