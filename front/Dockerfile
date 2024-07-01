@@ -18,6 +18,7 @@ RUN npm install
 # TODO - TEM QUE TIRAR ESSA GAMBIARRA AQUI
 # QUANDO NÃO TEM ESSA LINHA DA PROBLEMA NA HORA DE FAZER O BIULD
 RUN npm i @esbuild/linux-x64
+RUN npm i @lmdb/lmdb-linux-x64
 
 
 # Gera o build da aplicação

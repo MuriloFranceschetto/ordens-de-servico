@@ -6,8 +6,8 @@ import { TypeOrmModuleOptions } from "@nestjs/typeorm/dist";
 @Injectable()
 export class PostgresConfigService implements TypeOrmOptionsFactory {
 
-    constructor(private configService: ConfigService) {}
-    
+    constructor(private configService: ConfigService) { }
+
     createTypeOrmOptions(connectionName?: string): TypeOrmModuleOptions | Promise<TypeOrmModuleOptions> {
         return {
             applicationName: connectionName,
@@ -17,6 +17,7 @@ export class PostgresConfigService implements TypeOrmOptionsFactory {
             username: this.configService.get<string>('DB_USERNAME'),
             password: this.configService.get<string>('DB_PASSWORD'),
             database: this.configService.get<string>('DB_NAME'),
+            ssl: this.configService.get<boolean>('DB_SSL'),
             entities: [__dirname + '/../**/*.entity.{js,ts}'],
             synchronize: true,
         }
