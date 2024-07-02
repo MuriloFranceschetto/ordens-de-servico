@@ -71,15 +71,15 @@ export class UserService {
         return userEntity;
     }
 
-    async updateUser(id: string, userEntity: UpdateUserDto): Promise<UpdateResult> {
-        const updateUserEntity = new UpdateUserDto();
-        updateUserEntity.name = userEntity.name;
-        updateUserEntity.email = userEntity.email;
-        updateUserEntity.roles = userEntity.roles;
-        updateUserEntity.active = userEntity.active;
-        updateUserEntity.pricePerHour = userEntity.pricePerHour;
-        if (userEntity.password) {
-            updateUserEntity.password = userEntity.password;
+    async updateUser(id: string, userData: UpdateUserDto): Promise<UpdateResult> {
+        const updateUserEntity = new UserEntity();
+        updateUserEntity.name = userData.name;
+        updateUserEntity.email = userData.email;
+        updateUserEntity.roles = userData.roles;
+        updateUserEntity.active = userData.active;
+        updateUserEntity.pricePerHour = userData.pricePerHour;
+        if (userData.password) {
+            updateUserEntity.password = userData.password;
         } else {
             delete updateUserEntity.password;
         }
@@ -88,6 +88,12 @@ export class UserService {
 
     async deleteUser(id: string) {
         return await this.userRepository.delete(id);
+    }
+
+    private async checkIfNeedPassword(userData: CreateUserDto | UpdateUserDto) {
+        if (userData.roles.includes(UserRole.Admin)) {
+
+        }
     }
 
 }

@@ -16,8 +16,10 @@ export class UpdateUserDto {
     email: string;
 
     @Expose()
-    @IsOptional()
-    @MinLength(6, { message: 'Senha muito curta' })
+    @ValidateIf((obj: UpdateUserDto) => {
+        return obj.roles.includes(UserRole.Admin) && !!obj.password;
+    })
+    @MinLength(6, { message: 'Esta senha é muito curta' })
     password: string;
 
     @Expose()

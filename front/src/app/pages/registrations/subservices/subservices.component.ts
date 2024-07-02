@@ -10,6 +10,7 @@ import { ISubservice } from '../../../shared/models/subservice/ISubservice';
 import { SubservicesService } from '../../../shared/services/subservices.service';
 import { SubserviceComponent } from '../../../shared/components/subservice/subservice.component';
 import { SubserviceChargeTypeLabelPipe } from '../../../shared/pipes/subservice-charge-type-label.pipe';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-subservices',
@@ -23,7 +24,7 @@ export class SubservicesComponent {
   private subservicesService = inject(SubservicesService);
   private dialog = inject(MatDialog);
 
-  public subservices$ = this.subservicesService.subservices$;
+  public subservices$ = this.subservicesService.subservices$.pipe(take(1));
 
   public readonly columns = ['name', 'charged_per', 'price', 'actions'];
 
@@ -33,7 +34,7 @@ export class SubservicesComponent {
       autoFocus: false,
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.subservices$ = this.subservicesService.subservices$;
+      this.subservices$ = this.subservicesService.subservices$.pipe(take(1));
     });
   }
 

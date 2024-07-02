@@ -16,7 +16,11 @@ export class CreateUserDto {
     email: string;
 
     @Expose()
-    @MinLength(6, { message: 'Esta senha ta mto pequena' })
+    @ValidateIf((obj: CreateUserDto) => {
+        return obj.roles.includes(UserRole.Admin);
+    })
+    @IsNotEmpty({ message: 'Informe uma senha para o usuário se ele é do tipo "Administrador"' })
+    @MinLength(6, { message: 'Esta senha é muito curta' })
     password: string;
 
     @Expose()

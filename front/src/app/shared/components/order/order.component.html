@@ -7,7 +7,7 @@
             <button mat-icon-button (click)="returnOrCloseDialog()">
                 <mat-icon>keyboard_arrow_left</mat-icon>
             </button>
-            <h1>{{ (isNew$() ? 'Nova' : 'Editar') + ' Order de Serviço' }}</h1>
+            <h1>{{ (isNew$() ? 'Nova' : 'Editar') + ' Ordem de Serviço' }}</h1>
             <my-chip [bgColor]="(order$().paymentStatus | paymentStatus).color['300']" [color]="(order$().paymentStatus | paymentStatus).color['700']">
                 {{ (order$().paymentStatus | paymentStatus).label }}
             </my-chip>
