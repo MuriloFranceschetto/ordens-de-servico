@@ -14,7 +14,7 @@ export class SubservicesService {
 
   public FN_COMPARE_WITH_SUBSERVICES = (subserviceA: ISubservice, subserviceB: ISubservice) => subserviceA?.id === subserviceB?.id;
 
-  public subservices$ = this.http.get<ISubservice[]>(this.API_PATH).pipe(take(1));
+  public subservices$ = this.http.get<ISubservice[]>(this.API_PATH);
 
   public getSubservice(id: string) {
     return this.http.get<ISubservice>(`${this.API_PATH}/${id}`).pipe(take(1));

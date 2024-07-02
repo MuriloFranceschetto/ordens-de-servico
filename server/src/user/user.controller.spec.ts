@@ -9,6 +9,7 @@ import { UserRole } from "./user-role";
 import { CreateUserDto } from "./dto/CreateUser.dto";
 import { plainToClass } from "class-transformer";
 import { UpdateUserDto } from "./dto/UpdateUser.dto";
+import { validate } from "class-validator";
 
 export const repositoryMockFactory: () => MockType<Repository<UserEntity>> = jest.fn(() => ({
     findOne: jest.fn(entity => entity),
@@ -143,6 +144,27 @@ describe('UserService', () => {
         repositoryMock.delete.mockReturnValue(clientUser);
         expect(await userService.deleteUser(clientUser.id)).toEqual(clientUser);
         expect(repositoryMock.delete).toHaveBeenCalledWith(clientUser.id);
+    });
+
+    it('should password be required when user has role ADMIN - DTO Classes', async () => {
+        let user: Partial<CreateUserDto> = {
+            password: null,
+            roles: [UserRole.Admin]
+        }
+        let userDTO = plainToClass(CreateUserDto, user);
+        const errors = await validate(userDTO, { skipUndefinedProperties: true, });
+        expect(errors.length).toBe(1);
+        expect(errors[0]).toHaveProperty('property', 'password');
+    });
+
+    it("should password not be required when user isn't ADMIN - DTO Classes", async () => {
+        let user: Partial<CreateUserDto> = {
+            password: null,
+            roles: [UserRole.Worker, UserRole.Client]
+        }
+        let userDTO = plainToClass(CreateUserDto, user);
+        const errors = await validate(userDTO, { skipMissingProperties: true });
+        expect(errors.length).toBe(0);
     });
 
 });

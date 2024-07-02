@@ -11,7 +11,8 @@ const config: Config = {
         "**/*.(t|j)s"
     ],
     coverageDirectory: "../coverage",
-    testEnvironment: "node"
+    testEnvironment: "node",
+    silent: false,
 };
 
 export default config;

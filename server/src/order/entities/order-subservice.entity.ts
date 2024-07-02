@@ -14,7 +14,7 @@ export class OrderSubserviceEntity {
     @Column({ name: 'amount', type: 'double precision' })
     amount: number;
 
-    @OneToOne(() => SubserviceEntity, subservice => subservice.id, { eager: true })
+    @ManyToOne(() => SubserviceEntity, subservice => subservice.id, { eager: true })
     @JoinColumn()
     subservice: SubserviceEntity;
 

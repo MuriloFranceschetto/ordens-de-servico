@@ -69,20 +69,19 @@ export class UserComponent implements OnInit {
   }
 
   private checkPasswordRequirement(roles?: UserRole[]) {
-    if (!this.dialogData?.id) {
-      this.formUser.controls.password.setValidators(Validators.required);
-    }
-    if (!!roles) {
-      if (roles.includes(UserRole.Admin)) {
-        this.formUser.controls.password.setValidators(Validators.required);
-        this.formUser.controls.password.enable();
-      } else {
-        this.formUser.controls.password.removeValidators(Validators.required);
-        this.formUser.controls.password.disable();
-      }
-    }
+    let passwordCtrl = this.formUser.controls.password;
 
-    this.formUser.controls.password.updateValueAndValidity();
+    if (roles?.includes(UserRole.Admin)) {
+      passwordCtrl.enable();
+      if (!this.dialogData?.id) {
+        passwordCtrl.setValidators(Validators.required);
+      } else {
+        passwordCtrl.removeValidators(Validators.required);
+      }
+    } else {
+      passwordCtrl.disable();
+    }
+    passwordCtrl.updateValueAndValidity();
   }
 
   ngOnInit(): void {
