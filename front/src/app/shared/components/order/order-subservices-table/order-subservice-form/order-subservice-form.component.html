@@ -20,15 +20,10 @@
     </div>
     
     <form [formGroup]="form" class="grid grid-cols-2 gap-x-4 gap-y-6 items-start">
-        
-        <mat-form-field subscriptSizing="dynamic">
-            <mat-label> Sub-serviço </mat-label>
-            <mat-select formControlName="subservice" [compareWith]="FN_COMPARE_WITH_SUBSERVICES" #selectSubservice>
-                @for (subservice of subservices$ | async; track subservice.id) {
-                    <mat-option [value]="subservice"> {{ subservice.name }} </mat-option>
-                }
-            </mat-select>
-        </mat-form-field>
+
+        <app-sub-service-select ngDefaultControl [formGroup]="form" formControlName="subservice" subscriptSizing="dynamic">
+            <span label>Sub-serviço</span>
+        </app-sub-service-select>
         
         <ng-template #hoursField>
             <app-hour-quantity [quantity]="quantity"></app-hour-quantity>
@@ -61,7 +56,7 @@
             <ng-container *ngTemplateOutlet="fieldTemplateToRender$()"></ng-container>
         </div>
 
-        <app-user-select ngDefaultControl [formGroup]="form" formControlName="worker" [filterFn]="onlyWorkersFn">
+        <app-user-select ngDefaultControl [formGroup]="form" formControlName="worker" [filterFn]="onlyWorkersFn" subscriptSizing="dynamic">
             <span label>Mecânico</span>
         </app-user-select>
         

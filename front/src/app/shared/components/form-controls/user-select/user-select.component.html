@@ -1,21 +1,10 @@
-
-
-
-<mat-form-field [formGroup]="formGroup()" class="w-full">
+<mat-form-field [formGroup]="formGroup()" class="w-full" [subscriptSizing]="subscriptSizing() || 'fixed'">
     <mat-label>
         <ng-content select="[label]"></ng-content> 
     </mat-label>
-    <mat-select [formControlName]="formControlName()" [compareWith]="FN_COMPARE_WITH_USERS" (opened)="search.focus()" (closed)="searchControl.reset()">
+    <mat-select [formControlName]="formControlName()" [compareWith]="FN_COMPARE_WITH_USERS" (opened)="searchOption.focus()" (closed)="searchControl.reset()">
 
-        <mat-option disabled class="search-option">
-            <mat-form-field appearance="fill" subscriptSizing="dynamic" class="flex-1">
-                <span matTextPrefix>🔎&#160;</span>
-                <input matInput #search [formControl]="searchControl" type="text" placeholder="Digite para filtrar..." (keydown.space)="$event.stopPropagation()">
-            </mat-form-field>
-            <button mat-icon-button>
-                <mat-icon color="accent" matTooltip="criar usuário" (click)="newUser()">add</mat-icon>
-            </button>
-        </mat-option>
+        <app-search-select-option #searchOption [searchControl]="searchControl" (onNewClick)="newUser()"></app-search-select-option>
 
         @for (user of filteredUsers(); track user.id) {
             <mat-option [value]="user">{{ user.name }}</mat-option>

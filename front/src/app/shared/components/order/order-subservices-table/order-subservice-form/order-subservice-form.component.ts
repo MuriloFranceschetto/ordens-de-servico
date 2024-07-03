@@ -26,10 +26,11 @@ import { SubserviceChargeTypeLabelPipe } from '../../../../pipes/subservice-char
 import { HourQuantityComponent } from './quantity-strategies/hour-quantity/hour-quantity.component';
 import { KilometerQuantityComponent } from './quantity-strategies/kilometer-quantity/kilometer-quantity.component';
 import { ENVIRONMENT_OPTIONS, EnvironmentType, ISubserviceOrder, SubserviceOrder } from '../../../../models/order/SubserviceOrder';
+import { SubServiceSelectComponent } from '../../../form-controls/sub-service-select/sub-service-select.component';
 
 const MATERIAL_MODULES = [MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatButtonModule, MatDialogModule, MatMenuModule, MatIconModule, MatTooltipModule];
 const ANGULAR_MODULES = [AsyncPipe, CurrencyPipe, NgTemplateOutlet];
-const PROJECT_COMPONENTS = [ConfirmationComponent, HourQuantityComponent, KilometerQuantityComponent, UserSelectComponent];
+const PROJECT_COMPONENTS = [ConfirmationComponent, HourQuantityComponent, KilometerQuantityComponent, UserSelectComponent, SubServiceSelectComponent];
 
 @Component({
   selector: 'order-subservices-form',
