@@ -21,15 +21,10 @@
     
     
     <form [formGroup]="form" class="flex flex-col">
-        
-        <mat-form-field>
-            <mat-label>Pagador</mat-label>
-            <mat-select formControlName="payer" [compareWith]="FN_COMPARE_WITH_USERS">
-                @for (client of clients$ | async; track client.id) {
-                    <mat-option [value]="client"> {{ client.name }} </mat-option>
-                }
-            </mat-select>
-        </mat-form-field>
+
+        <app-user-select ngDefaultControl [formGroup]="form" formControlName="payer" [filterFn]="onlyPayersFn">
+            <span label>Pagador</span>
+        </app-user-select>
         
         <mat-form-field>
             <mat-label>Método</mat-label>

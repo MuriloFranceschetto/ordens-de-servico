@@ -1,0 +1,17 @@
+
+.search-option {
+    display: flex;
+    gap: 5px;
+    pointer-events: all !important;
+    padding: 0 5px 5px !important;
+
+    mat-icon {
+        @apply ml-4;
+        opacity: 1 !important;
+    }
+
+    span {
+        @apply w-full flex justify-between items-stretch;
+        opacity: 1 !important;
+    }
+}

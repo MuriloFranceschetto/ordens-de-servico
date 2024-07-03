@@ -6,6 +6,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -15,19 +18,17 @@ import { IOrder } from '../../../../models/order/Order';
 import { IUser, UserRole } from '../../../../models/User';
 import { UsersService } from '../../../../services/users.service';
 import { OrdersService } from '../../../../services/orders.service';
-import { IPaymentOrder, PAYMENT_METHOD_OPTIONS, PaymentType } from '../../../../models/order/PaymentOrder';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConfirmationComponent } from '../../../confirmation/confirmation.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { PaymentMethodLabelPipe } from '../../../../pipes/payment-method-label.pipe';
+import { UserSelectComponent } from '../../../form-controls/user-select/user-select.component';
+import { IPaymentOrder, PAYMENT_METHOD_OPTIONS, PaymentType } from '../../../../models/order/PaymentOrder';
 
 const MATERIAL_MODULES = [MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatButtonModule, MatDialogModule, MatMenuModule, MatIconModule, MatTooltipModule];
 
 @Component({
   selector: 'app-payment',
   standalone: true,
-  imports: [AsyncPipe, CurrencyMaskModule, ConfirmationComponent, ...MATERIAL_MODULES],
+  imports: [AsyncPipe, CurrencyMaskModule, ConfirmationComponent, UserSelectComponent, ...MATERIAL_MODULES],
   providers: [
     PaymentMethodLabelPipe,
     CurrencyPipe,
@@ -46,6 +47,8 @@ export class PaymentComponent implements OnInit {
 
   public readonly PAYMENT_METHOD_OPTIONS = PAYMENT_METHOD_OPTIONS;
   public readonly FN_COMPARE_WITH_USERS = this.usersService.FN_COMPARE_WITH_USERS;
+
+  public readonly onlyPayersFn = (user: IUser) => user.roles.some(role => [UserRole.Client, UserRole.Third].includes(role));
 
   public dialogRef = inject(MatDialogRef<PaymentComponent>);
   public data: { order: IOrder, payment?: IPaymentOrder } = inject(MAT_DIALOG_DATA);

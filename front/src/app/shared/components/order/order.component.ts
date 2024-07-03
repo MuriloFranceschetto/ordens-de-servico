@@ -25,6 +25,7 @@ import { OrderPaymentsComponent } from './order-payments/order-payments.componen
 import { OrderSubservicesComponent } from './order-subservices-table/order-subservices-table.component';
 import { MyChipComponent } from '../my-chip/my-chip.component';
 import { PaymentStatusPipe } from "../../pipes/payment-status.pipe";
+import { UserSelectComponent } from '../form-controls/user-select/user-select.component';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatInputModule, MatSelectModule, MatFormFieldModule, MatIconModule,
@@ -37,7 +38,7 @@ const ANGULAR_MATERIAL_MODULES = [
   standalone: true,
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss',
-  imports: [NgClass, AsyncPipe, OrderSubservicesComponent, OrderPaymentsComponent, MyChipComponent, ...ANGULAR_MATERIAL_MODULES, PaymentStatusPipe]
+  imports: [NgClass, AsyncPipe, PaymentStatusPipe, OrderSubservicesComponent, OrderPaymentsComponent, MyChipComponent, UserSelectComponent, ...ANGULAR_MATERIAL_MODULES]
 })
 export class OrderComponent implements OnInit {
 
@@ -55,11 +56,8 @@ export class OrderComponent implements OnInit {
 
   public FN_COMPARE_WITH_USERS = this.usersService.FN_COMPARE_WITH_USERS;
 
-  public clients$ = this.usersService.users$
-    .pipe(
-      take(1),
-      map(users => users.filter(user => user.roles.includes(UserRole.Client)))
-    );
+  public readonly onlyClientsFn = (user: IUser) => user.roles.includes(UserRole.Client);
+
   public order$: WritableSignal<Order> = signal(new Order());
 
   public isNew$ = computed(() => this.id() === 'new');

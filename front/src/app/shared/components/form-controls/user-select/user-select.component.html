@@ -1,0 +1,13 @@
+<mat-form-field [formGroup]="formGroup()" class="w-full" [subscriptSizing]="subscriptSizing() || 'fixed'">
+    <mat-label>
+        <ng-content select="[label]"></ng-content> 
+    </mat-label>
+    <mat-select [formControlName]="formControlName()" [compareWith]="FN_COMPARE_WITH_USERS" (opened)="searchOption.focus()" (closed)="searchControl.reset()">
+
+        <app-search-select-option #searchOption [searchControl]="searchControl" (onNewClick)="newUser()"></app-search-select-option>
+
+        @for (user of filteredUsers(); track user.id) {
+            <mat-option [value]="user">{{ user.name }}</mat-option>
+        }
+    </mat-select>
+</mat-form-field>
