@@ -60,16 +60,10 @@
         <div>
             <ng-container *ngTemplateOutlet="fieldTemplateToRender$()"></ng-container>
         </div>
-        
-        
-        <mat-form-field subscriptSizing="dynamic">
-            <mat-label> Mecânico </mat-label>
-            <mat-select formControlName="worker" [compareWith]="FN_COMPARE_WITH_USERS">
-                @for (worker of workers$ | async; track worker.id) {
-                    <mat-option [value]="worker"> {{ worker.name }} </mat-option>
-                }
-            </mat-select>
-        </mat-form-field>
+
+        <app-user-select ngDefaultControl [formGroup]="form" formControlName="worker" [filterFn]="onlyWorkersFn">
+            <span label>Mecânico</span>
+        </app-user-select>
         
         <mat-form-field subscriptSizing="dynamic">
             <mat-label> Ambiente de Trabalho </mat-label>

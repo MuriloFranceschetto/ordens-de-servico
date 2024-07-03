@@ -1,4 +1,4 @@
-import { Observable, firstValueFrom, map, share, take } from 'rxjs';
+import { firstValueFrom, take } from 'rxjs';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 
 import { AsyncPipe, CurrencyPipe, NgTemplateOutlet } from '@angular/common';
@@ -11,17 +11,17 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 import { IOrder } from '../../../../models/order/Order';
 import { IUser, UserRole } from '../../../../models/User';
-import { UsersService } from '../../../../services/users.service';
 import { OrdersService } from '../../../../services/orders.service';
 import { SubservicesService } from '../../../../services/subservices.service';
 import { ConfirmationComponent } from '../../../confirmation/confirmation.component';
 import { ChargeTypes, ISubservice } from '../../../../models/subservice/ISubservice';
+import { UserSelectComponent } from '../../../form-controls/user-select/user-select.component';
 import { SubserviceChargeTypeLabelPipe } from '../../../../pipes/subservice-charge-type-label.pipe';
 import { HourQuantityComponent } from './quantity-strategies/hour-quantity/hour-quantity.component';
 import { KilometerQuantityComponent } from './quantity-strategies/kilometer-quantity/kilometer-quantity.component';
@@ -29,7 +29,7 @@ import { ENVIRONMENT_OPTIONS, EnvironmentType, ISubserviceOrder, SubserviceOrder
 
 const MATERIAL_MODULES = [MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatButtonModule, MatDialogModule, MatMenuModule, MatIconModule, MatTooltipModule];
 const ANGULAR_MODULES = [AsyncPipe, CurrencyPipe, NgTemplateOutlet];
-const PROJECT_COMPONENTS = [ConfirmationComponent, HourQuantityComponent, KilometerQuantityComponent];
+const PROJECT_COMPONENTS = [ConfirmationComponent, HourQuantityComponent, KilometerQuantityComponent, UserSelectComponent];
 
 @Component({
   selector: 'order-subservices-form',
@@ -52,7 +52,6 @@ export class OrderSubserviceFormComponent {
   private readonly matDialog = inject(MatDialog);
   private readonly matSnackBar = inject(MatSnackBar);
   private readonly currencyPipe = inject(CurrencyPipe);
-  private readonly usersService = inject(UsersService);
   private readonly ordersService = inject(OrdersService);
   private readonly subservicesService = inject(SubservicesService);
 
@@ -61,14 +60,7 @@ export class OrderSubserviceFormComponent {
 
   public readonly ENVIRONMENT_OPTIONS = ENVIRONMENT_OPTIONS;
 
-  public readonly workers$ = this.usersService.users$
-    .pipe(
-      take(1),
-      map((users) => {
-        return users.filter(user => user.roles.find(role => [UserRole.Worker].includes(role)))
-      })
-    );
-  public readonly FN_COMPARE_WITH_USERS = this.usersService.FN_COMPARE_WITH_USERS;
+  public readonly onlyWorkersFn = (user: IUser) => user.roles.includes(UserRole.Worker);
 
   public readonly subservices$ = this.subservicesService.subservices$;
   public readonly FN_COMPARE_WITH_SUBSERVICES = this.subservicesService.FN_COMPARE_WITH_SUBSERVICES;

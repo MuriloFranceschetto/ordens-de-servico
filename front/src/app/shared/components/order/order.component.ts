@@ -58,11 +58,6 @@ export class OrderComponent implements OnInit {
 
   public readonly onlyClientsFn = (user: IUser) => user.roles.includes(UserRole.Client);
 
-  public clients$ = this.usersService.users$
-    .pipe(
-      take(1),
-      map(users => users.filter(this.onlyClientsFn))
-    );
   public order$: WritableSignal<Order> = signal(new Order());
 
   public isNew$ = computed(() => this.id() === 'new');
