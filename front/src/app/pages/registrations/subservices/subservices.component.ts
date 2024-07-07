@@ -29,11 +29,12 @@ export class SubservicesComponent {
   public readonly columns = ['name', 'charged_per', 'price', 'actions'];
 
   async openSubserviceForm(subservice?: ISubservice) {
-    let dialogRef = this.dialog.open(SubserviceComponent, {
+    let dialogRef = this.dialog.open<SubserviceComponent, ISubservice, boolean>(SubserviceComponent, {
       data: subservice,
       autoFocus: false,
     });
-    dialogRef.afterClosed().subscribe(() => {
+    dialogRef.afterClosed().subscribe((updateList) => {
+      if (!updateList) return;
       this.subservices$ = this.subservicesService.subservices$.pipe(take(1));
     });
   }

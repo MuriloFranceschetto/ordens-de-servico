@@ -16,7 +16,7 @@ export class SubserviceEntity {
     @Column({ name: 'charged_per', type: 'enum', enum: ChargeTypes })
     charged_per: ChargeTypes;
 
-    @Column({ name: 'price', type: 'double precision' })
+    @Column({ name: 'price', type: 'double precision', nullable: true })
     price: number;
 
 }

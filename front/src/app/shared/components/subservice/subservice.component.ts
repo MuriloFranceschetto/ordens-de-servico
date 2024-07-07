@@ -14,6 +14,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angu
 import { SubservicesService } from '../../services/subservices.service';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
 import { CHARGE_TYPES_OPTIONS, ChargeTypes, ISubservice } from '../../models/subservice/ISubservice';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-subservice',
@@ -27,7 +28,7 @@ export class SubserviceComponent {
 
   public readonly chargeTypesOptions = CHARGE_TYPES_OPTIONS;
 
-  private readonly dialogRef = inject(MatDialogRef<SubserviceComponent>);
+  private readonly dialogRef = inject(MatDialogRef<SubserviceComponent, boolean>);
   public readonly dialogData: ISubservice = inject(MAT_DIALOG_DATA);
 
   private readonly subservicesService = inject(SubservicesService);
@@ -39,6 +40,21 @@ export class SubserviceComponent {
     charged_per: new FormControl<ChargeTypes>(null, Validators.required),
     price: new FormControl<number>(null, [Validators.required, Validators.min(0)])
   });
+
+  constructor() {
+    this.formSubservice.controls.charged_per.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe((value) => {
+        if (value === ChargeTypes.REFER) {
+          this.formSubservice.controls.price.removeValidators(Validators.required);
+          this.formSubservice.controls.price.disable();
+        } else {
+          this.formSubservice.controls.price.addValidators(Validators.required);
+          this.formSubservice.controls.price.enable();
+        }
+        this.formSubservice.controls.price.updateValueAndValidity();
+      })
+  }
 
   ngOnInit(): void {
     if (!this.dialogData?.id) return;
@@ -64,7 +80,7 @@ export class SubserviceComponent {
           this.subservicesService.deleteSubservice(this.dialogData.id)
             .pipe(take(1))
             .subscribe({
-              next: () => this.dialogRef.close(),
+              next: () => this.dialogRef.close(true),
             })
         }
       })
@@ -78,7 +94,7 @@ export class SubserviceComponent {
     this.saveMethod
       .pipe(take(1))
       .subscribe({
-        next: () => this.dialogRef.close(),
+        next: () => this.dialogRef.close(true),
       })
   }
 
