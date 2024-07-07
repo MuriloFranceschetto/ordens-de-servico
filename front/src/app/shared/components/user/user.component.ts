@@ -1,19 +1,19 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-
-import { EMPTY, filter, iif, mergeMap, switchMap, take, tap } from 'rxjs';
+import { filter, switchMap, take } from 'rxjs';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
+
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { Component, OnInit, inject } from '@angular/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 import { UsersService } from '../../services/users.service';
 import { IUser, UserRole, USER_ROLES_OPTIONS } from '../../models/User';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-user',
@@ -27,7 +27,7 @@ export class UserComponent implements OnInit {
   private matDialog = inject(MatDialog);
   private userService = inject(UsersService);
 
-  private dialogRef = inject(MatDialogRef<UserComponent>);
+  private dialogRef = inject(MatDialogRef<UserComponent, boolean>);
   public dialogData: IUser = inject(MAT_DIALOG_DATA);
 
   public readonly rolesOptions = USER_ROLES_OPTIONS;
@@ -110,8 +110,9 @@ export class UserComponent implements OnInit {
     }
 
     this.saveMethod
+      .pipe(take(1))
       .subscribe({
-        next: () => this.dialogRef.close(),
+        next: () => this.dialogRef.close(true),
       })
   }
 
@@ -130,7 +131,7 @@ export class UserComponent implements OnInit {
         switchMap(() => this.userService.deleteUser(this.dialogData.id)),
       )
       .subscribe({
-        next: () => this.dialogRef.close(),
+        next: () => this.dialogRef.close(true),
         error: (err) => { throw err },
       });
   }

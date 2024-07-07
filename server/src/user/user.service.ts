@@ -22,6 +22,18 @@ export class UserService {
         return users.map((user) => plainToClass(ListUserDto, user));
     }
 
+    async listPaginatedUsers(page: number = 0, limit: number = 10) {
+        let result: [UserEntity[], number] = await this.userRepository.findAndCount({
+            order: { id: 'ASC' },
+            skip: (page * limit),
+            take: limit,
+        });
+        return {
+            users: result[0].map((user) => plainToClass(ListUserDto, user)),
+            total: result[1],
+        }
+    }
+
     async getUserById(id: string) {
         return await this.userRepository.findOne({
             where: {

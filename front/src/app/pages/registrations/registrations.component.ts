@@ -19,7 +19,7 @@ export class RegistrationsComponent {
       link: '/users'
     },
     {
-      title: 'Subserviços',
+      title: 'Sub-serviços',
       subtitle: 'Soldas, fretes, corridas, etc. ',
       img: 'assets/subservices.svg',
       link: '/subservices'

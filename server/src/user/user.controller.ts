@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ListUserDto } from './dto/UserList.dto';
 import { CreateUserDto } from './dto/CreateUser.dto';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
@@ -14,9 +14,19 @@ export class UserController {
     ) {
     }
 
+    // TODO - FAZER ROTA PARA BUSCA POR NOME E POR TIPO
+
     @Get()
     async getUsers() {
         return await this.userService.listUsers();
+    }
+
+    @Get('page')
+    async getPaginatedUsers(
+        @Query('page') page: number,
+        @Query('limit') limit: number,
+    ) {
+        return await this.userService.listPaginatedUsers(page, limit);
     }
 
     @Get('/:id')

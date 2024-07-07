@@ -14,6 +14,12 @@ export class UsersService {
 
   public users$ = this.http.get<IUser[]>(`/api/users`);
 
+  public getAllUsers(page: number = 1, limit: number = 10) {
+    return this.http.get<{ users: IUser[], total: number }>(`/api/users/page`, {
+      params: { page, limit }
+    });
+  }
+
   public getUser(id: string) {
     return this.http.get<ICompleteUser>(`/api/users/${id}`).pipe(take(1));
   }
