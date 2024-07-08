@@ -10,12 +10,9 @@
     </mat-paginator>
 </div>
 
-<div class="relative">
-
+<div>
     @if (loading()) {
-        <div class="bg-black bg-opacity-10 absolute w-full h-full flex justify-center items-center">
-            <mat-spinner mode="indeterminate" diameter="50"></mat-spinner>
-        </div>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
     <table mat-table [dataSource]="(users$ | async)?.users ?? []">
             

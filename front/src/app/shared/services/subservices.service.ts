@@ -16,6 +16,12 @@ export class SubservicesService {
 
   public subservices$ = this.http.get<ISubservice[]>(this.API_PATH);
 
+  public getAllSubservices(page: number = 1, limit: number = 10) {
+    return this.http.get<{ subservices: ISubservice[], total: number }>(`${this.API_PATH}/page`, {
+      params: { page, limit }
+    });
+  }
+
   public getSubservice(id: string) {
     return this.http.get<ISubservice>(`${this.API_PATH}/${id}`).pipe(take(1));
   }

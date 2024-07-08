@@ -21,6 +21,18 @@ export class SubserviceService {
         return subservices.map((sub) => plainToClass(ListSubserviceDto, sub));
     }
 
+    async listPaginatedSubservices(page: number = 1, limit: number = 10) {
+        let result = await this.subserviceRepository.findAndCount({
+            order: { id: 'ASC' },
+            skip: (page * limit),
+            take: limit,
+        });
+        return {
+            subservices: result[0].map((user) => plainToClass(ListSubserviceDto, user)),
+            total: result[1],
+        }
+    }
+
     async getSubserviceById(id: string) {
         return await this.subserviceRepository.findOne({
             where: {

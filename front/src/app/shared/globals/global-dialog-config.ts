@@ -4,4 +4,6 @@ export class GlobalDialogConfig<D> extends MatDialogConfig<D> {
     override width = '600px';
     override maxWidth = '95vw';
     override maxHeight = '95svh';
+    override autoFocus = false;
+    override closeOnNavigation = true;
 } 

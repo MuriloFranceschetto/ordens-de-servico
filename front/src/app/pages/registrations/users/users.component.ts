@@ -9,7 +9,7 @@ import { Component, inject, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { IUser } from '../../../shared/models/User';
 import { UsersService } from '../../../shared/services/users.service';
@@ -19,7 +19,7 @@ import { UserRoleLabelPipe } from '../../../shared/pipes/user-role-label.pipe';
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [AsyncPipe, MatTableModule, RouterLink, MatButtonModule, MatDialogModule, UserRoleLabelPipe, MatIconModule, NgClass, MatPaginatorModule, MatProgressSpinnerModule],
+  imports: [AsyncPipe, MatTableModule, RouterLink, MatButtonModule, MatDialogModule, UserRoleLabelPipe, MatIconModule, NgClass, MatPaginatorModule, MatProgressBarModule],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss'
 })
@@ -30,7 +30,6 @@ export class UsersComponent {
   public readonly columns = ['name', 'roles', 'actions'];
 
   public readonly loading = signal<boolean>(true);
-
   public readonly paginator = viewChild.required(MatPaginator);
 
   public readonly searchUsersTrigger$ = new BehaviorSubject<void>(null);
@@ -40,21 +39,20 @@ export class UsersComponent {
       takeUntilDestroyed(),
       tap(() => this.loading.set(true)),
       switchMap(() => {
-        return this.usersService.getAllUsers(this.paginator().pageIndex, this.paginator().pageSize).pipe(take(1));
+        const { pageIndex, pageSize } = this.paginator();
+        return this.usersService.getAllUsers(pageIndex, pageSize).pipe(take(1));
       }),
       tap(() => this.loading.set(false)),
       shareReplay(),
     );
 
   async openUserForm(user?: IUser) {
-    let dialogRef = this.dialog.open(UserComponent, {
-      data: user,
-      autoFocus: false,
-    });
-    dialogRef.afterClosed().subscribe((response) => {
-      if (!response) return;
-      this.searchUsersTrigger$.next();
-    });
+    this.dialog.open(UserComponent, { data: user })
+      .afterClosed()
+      .subscribe((response) => {
+        if (!response) return;
+        this.searchUsersTrigger$.next();
+      });
   }
 
 }
