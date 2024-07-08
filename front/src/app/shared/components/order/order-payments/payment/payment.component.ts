@@ -39,23 +39,17 @@ const MATERIAL_MODULES = [MatFormFieldModule, MatInputModule, MatSelectModule, R
 export class PaymentComponent implements OnInit {
 
   private readonly ordersService = inject(OrdersService);
-  private readonly usersService = inject(UsersService);
   private readonly matDialog = inject(MatDialog);
   private readonly matSnackBar = inject(MatSnackBar);
   private readonly paymentMethodLabelPipe = inject(PaymentMethodLabelPipe);
   private readonly currencyPipe = inject(CurrencyPipe);
 
   public readonly PAYMENT_METHOD_OPTIONS = PAYMENT_METHOD_OPTIONS;
-  public readonly FN_COMPARE_WITH_USERS = this.usersService.FN_COMPARE_WITH_USERS;
 
-  public readonly onlyPayersFn = (user: IUser) => user.roles.some(role => [UserRole.Client, UserRole.Third].includes(role));
+  public readonly onlyPayers = [UserRole.Client, UserRole.Third];
 
   public dialogRef = inject(MatDialogRef<PaymentComponent>);
   public data: { order: IOrder, payment?: IPaymentOrder } = inject(MAT_DIALOG_DATA);
-  public clients$ = this.usersService.users$
-    .pipe(
-      map(users => users.filter(user => user.roles.includes(UserRole.Client)))
-    );
 
   public form: FormGroup<FormGroupPayment> = new FormGroup<FormGroupPayment>({
     payer: new FormControl(null, [Validators.required]),

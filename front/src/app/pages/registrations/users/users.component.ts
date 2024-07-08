@@ -40,7 +40,7 @@ export class UsersComponent {
       tap(() => this.loading.set(true)),
       switchMap(() => {
         const { pageIndex, pageSize } = this.paginator();
-        return this.usersService.getAllUsers(pageIndex, pageSize).pipe(take(1));
+        return this.usersService.getAllUsersPaginated(pageIndex, pageSize).pipe(take(1));
       }),
       tap(() => this.loading.set(false)),
       shareReplay(),

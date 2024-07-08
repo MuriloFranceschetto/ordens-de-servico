@@ -6,8 +6,17 @@
 
         <app-search-select-option #searchOption [searchControl]="searchControl" (onNewClick)="newUser()"></app-search-select-option>
 
-        @for (user of filteredUsers(); track user.id) {
-            <mat-option [value]="user">{{ user.name }}</mat-option>
+        @if (users$ | async; as users) {
+            @if (users?.length) {
+                @for (user of users; track user.id) {
+                    <mat-option [value]="user">{{ user.name }}</mat-option>
+                }
+            } @else {
+                <mat-option disabled> Nenhum Resultado </mat-option>
+            }
+        } @else {
+            <mat-option disabled> Nenhum Resultado </mat-option>
         }
+        
     </mat-select>
 </mat-form-field>

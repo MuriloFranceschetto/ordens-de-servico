@@ -56,7 +56,7 @@ export class OrderComponent implements OnInit {
 
   public FN_COMPARE_WITH_USERS = this.usersService.FN_COMPARE_WITH_USERS;
 
-  public readonly onlyClientsFn = (user: IUser) => user.roles.includes(UserRole.Client);
+  public readonly onlyClients = [UserRole.Client];
 
   public order$: WritableSignal<Order> = signal(new Order());
 

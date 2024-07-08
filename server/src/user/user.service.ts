@@ -17,8 +17,24 @@ export class UserService {
         @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
     ) { }
 
-    async listUsers() {
-        let users = await this.userRepository.find({ order: { id: 'ASC' } });
+    async listUsers(name: string, roles: UserRole | Array<UserRole>) {
+        let query = this.userRepository
+            .createQueryBuilder('user')
+            .where('user.active = true')
+            .limit(30);
+
+        if (name) {
+            query = query.andWhere('user.name ILIKE :name', { name: `%${name}%` });
+        }
+
+        if (roles) {
+            if (Array.isArray(roles)) {
+                query = query.andWhere("user.roles && :roles", { roles });
+            } else {
+                query = query.andWhere(":roles = ANY(user.roles)", { roles });
+            }
+        }
+        let users = await query.getMany();
         return users.map((user) => plainToClass(ListUserDto, user));
     }
 
@@ -100,12 +116,6 @@ export class UserService {
 
     async deleteUser(id: string) {
         return await this.userRepository.delete(id);
-    }
-
-    private async checkIfNeedPassword(userData: CreateUserDto | UpdateUserDto) {
-        if (userData.roles.includes(UserRole.Admin)) {
-
-        }
     }
 
 }

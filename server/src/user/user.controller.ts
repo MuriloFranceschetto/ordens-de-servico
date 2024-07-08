@@ -5,6 +5,7 @@ import { UpdateUserDto } from './dto/UpdateUser.dto';
 import { UserService } from './user.service';
 import { plainToClass, plainToInstance } from 'class-transformer';
 import { ResponseUserDto } from './dto/response-user.dto';
+import { UserRole } from './user-role';
 
 @Controller('/api/users')
 export class UserController {
@@ -14,11 +15,12 @@ export class UserController {
     ) {
     }
 
-    // TODO - FAZER ROTA PARA BUSCA POR NOME E POR TIPO
-
     @Get()
-    async getUsers() {
-        return await this.userService.listUsers();
+    async getUsers(
+        @Query('name') name: string,
+        @Query('roles') roles: Array<UserRole>,
+    ) {
+        return await this.userService.listUsers(name, roles);
     }
 
     @Get('page')

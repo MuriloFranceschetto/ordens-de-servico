@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { ICompleteUser, IUser } from '../models/User';
+import { ICompleteUser, IUser, UserRole } from '../models/User';
 import { take } from 'rxjs';
 
 @Injectable({
@@ -14,9 +14,13 @@ export class UsersService {
 
   public FN_COMPARE_WITH_USERS = (clientA: IUser, clientB: IUser) => clientA?.id === clientB?.id;
 
-  public users$ = this.http.get<IUser[]>(this.API_PATH);
+  // Return a maximun length of 30 registers 
+  public getUsersWithFilter(config?: ParamsSearchUsers) {
+    let params = removeUndefineds(config);
+    return this.http.get<IUser[]>(this.API_PATH, { params: { ...params } });
+  }
 
-  public getAllUsers(page: number = 1, limit: number = 10) {
+  public getAllUsersPaginated(page: number = 1, limit: number = 10) {
     return this.http.get<{ users: IUser[], total: number }>(`${this.API_PATH}/page`, {
       params: { page, limit }
     });
@@ -38,4 +42,19 @@ export class UsersService {
     return this.http.delete(`${this.API_PATH}/${id}`).pipe(take(1));
   }
 
+}
+
+function removeUndefineds(obj: any) {
+  Object.keys({ ...obj })
+    .forEach((key) => {
+      if (!obj[key]) {
+        delete obj[key];
+      }
+    });
+  return obj;
+}
+
+interface ParamsSearchUsers {
+  name?: string,
+  roles?: Array<UserRole>,
 }
