@@ -1,23 +1,17 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { UserController } from "./user.controller";
-import { UserService } from "./user.service";
-import { getRepositoryToken } from "@nestjs/typeorm";
-import { UserEntity } from "./user.entity";
-import { Repository, UpdateResult } from "typeorm";
-import { MockType } from "test/mock-type";
-import { UserRole } from "./user-role";
-import { CreateUserDto } from "./dto/CreateUser.dto";
-import { plainToClass } from "class-transformer";
-import { UpdateUserDto } from "./dto/UpdateUser.dto";
 import { validate } from "class-validator";
+import { plainToClass } from "class-transformer";
+import { Test, TestingModule } from "@nestjs/testing";
+import { getRepositoryToken } from "@nestjs/typeorm";
+import { Repository, SelectQueryBuilder, UpdateResult } from "typeorm";
 
-export const repositoryMockFactory: () => MockType<Repository<UserEntity>> = jest.fn(() => ({
-    findOne: jest.fn(entity => entity),
-    find: jest.fn(entity => entity),
-    save: jest.fn(entity => null),
-    update: jest.fn(entity => null),
-    delete: jest.fn(entity => null),
-}));
+import { UserRole } from "./user-role";
+import { MockType } from "test/mock-type";
+import { UserEntity } from "./user.entity";
+import { UserService } from "./user.service";
+import { UserController } from "./user.controller";
+import { CreateUserDto } from "./dto/CreateUser.dto";
+import { UpdateUserDto } from "./dto/UpdateUser.dto";
+import { mockRepositoryFactory } from "../../test/test-helper";
 
 const clientUser: UserEntity = {
     id: crypto.randomUUID(),
@@ -55,7 +49,7 @@ describe('UserService', () => {
             controllers: [UserController],
             providers: [
                 UserService,
-                { provide: getRepositoryToken(UserEntity), useFactory: repositoryMockFactory }
+                { provide: getRepositoryToken(UserEntity), useFactory: mockRepositoryFactory }
             ],
         }).compile();
 
@@ -63,11 +57,14 @@ describe('UserService', () => {
         repositoryMock = moduleRef.get(getRepositoryToken(UserEntity));
     });
 
-    it('should get list with all users', async () => {
+    it('should get list with paginated users', async () => {
         const users = [clientUser];
-        repositoryMock.find.mockReturnValue(users);
-        expect(await userService.listUsers()).toEqual(users);
-        expect(repositoryMock.find).toHaveBeenCalled();
+        repositoryMock.findAndCount.mockReturnValue([users, users.length]);
+        expect(await userService.listPaginatedUsers()).toEqual({
+            total: users.length,
+            users,
+        });
+        expect(repositoryMock.findAndCount).toHaveBeenCalled();
     });
 
     it('should find a user by ID', async () => {
@@ -109,6 +106,19 @@ describe('UserService', () => {
         } catch (e) {
             expect(e).toBeInstanceOf(Error);
             expect(e).toHaveProperty('message', `O cadastro de "${workerUser.name}" não é referente a um cliente`);
+        }
+    });
+
+    it('should verify if user is a worker - Success', async () => {
+        expect(await userService.verifyIfUserIsWorker(workerUser));
+    });
+
+    it('should verify if user is a worker - Fail', async () => {
+        try {
+            await userService.verifyIfUserIsWorker(clientUser);
+        } catch (e) {
+            expect(e).toBeInstanceOf(Error);
+            expect(e).toHaveProperty('message', `O cadastro de "${clientUser.name}" não é referente a um mecânico ou terceiro`);
         }
     });
 

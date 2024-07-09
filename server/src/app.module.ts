@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { PostgresConfigService } from 'config/postgres.config.service';
+import { PostgresConfigService } from '../config/postgres.config.service';
 import { SubserviceModule } from './subservice/subservice.module';
 import { UserModule } from './user/user.module';
 import { AppController } from './app.controller';

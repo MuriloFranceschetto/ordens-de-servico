@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ListUserDto } from './dto/UserList.dto';
 import { CreateUserDto } from './dto/CreateUser.dto';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
 import { UserService } from './user.service';
 import { plainToClass, plainToInstance } from 'class-transformer';
 import { ResponseUserDto } from './dto/response-user.dto';
+import { UserRole } from './user-role';
 
 @Controller('/api/users')
 export class UserController {
@@ -15,8 +16,19 @@ export class UserController {
     }
 
     @Get()
-    async getUsers() {
-        return await this.userService.listUsers();
+    async getUsers(
+        @Query('name') name: string,
+        @Query('roles') roles: Array<UserRole>,
+    ) {
+        return await this.userService.listUsers(name, roles);
+    }
+
+    @Get('page')
+    async getPaginatedUsers(
+        @Query('page') page: number,
+        @Query('limit') limit: number,
+    ) {
+        return await this.userService.listPaginatedUsers(page, limit);
     }
 
     @Get('/:id')

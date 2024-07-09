@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { SubserviceService } from './subservice.service';
 import { ListSubserviceDto } from './dto/list-subservice.dto';
 import { CreateSubserviceDTO } from './dto/create-subservice.dto';
@@ -15,6 +15,14 @@ export class SubserviceController {
     @Get()
     async getSubservices() {
         return await this.subserviceService.listSubservices();
+    }
+
+    @Get('/page')
+    async getPaginatedSubservices(
+        @Query('page') page: number,
+        @Query('limit') limit: number,
+    ) {
+        return await this.subserviceService.listPaginatedSubservices(page, limit);
     }
 
     @Get('/:id')

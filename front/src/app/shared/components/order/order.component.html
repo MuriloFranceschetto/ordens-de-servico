@@ -43,7 +43,7 @@
                 <mat-hint align="end"> {{ title.value.length }} / {{ title.maxLength }} </mat-hint>
             </mat-form-field>
 
-            <app-user-select ngDefaultControl class="col-span-2" [formGroup]="formOrder" formControlName="client" [filterFn]="onlyClientsFn">
+            <app-user-select ngDefaultControl class="col-span-2" [formGroup]="formOrder" formControlName="client" [roles]="onlyClients">
                 <span label>Cliente</span>
             </app-user-select>
             

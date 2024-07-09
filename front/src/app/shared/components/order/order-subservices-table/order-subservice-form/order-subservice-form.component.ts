@@ -61,7 +61,7 @@ export class OrderSubserviceFormComponent {
 
   public readonly ENVIRONMENT_OPTIONS = ENVIRONMENT_OPTIONS;
 
-  public readonly onlyWorkersFn = (user: IUser) => user.roles.includes(UserRole.Worker);
+  public readonly onlyWorkers = [UserRole.Worker];
 
   public readonly subservices$ = this.subservicesService.subservices$;
   public readonly FN_COMPARE_WITH_SUBSERVICES = this.subservicesService.FN_COMPARE_WITH_SUBSERVICES;

@@ -1,30 +1,45 @@
-<h1 class="text-2xl mb-4"> Usuários </h1>
 
-<table mat-table [dataSource]="users$ | async">
-    
-    <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Nome </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
-    
-    <ng-container matColumnDef="roles">
-        <th mat-header-cell *matHeaderCellDef> Tipo </th>
-        <td mat-cell *matCellDef="let element"> {{ element.roles | userRoleLabel }} </td>
-    </ng-container>
-    
-    <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>
-            <button color="accent" class="float-right" mat-raised-button (click)="openUserForm()"> 
-                <mat-icon> add </mat-icon> Novo 
-            </button>
-        </th>
-        <td mat-cell *matCellDef="let element">
-            <button color="primary" class="float-right" mat-raised-button (click)="openUserForm(element)">
-                <mat-icon> edit </mat-icon> Editar 
-            </button>
-        </td>
-    </ng-container>
-    
-    <tr mat-header-row *matHeaderRowDef="columns"></tr>
-    <tr mat-row *matRowDef="let row; columns: columns;" [ngClass]="{'opacity-50': !row.active}"></tr>
-</table>
+<div class="flex items-center justify-between mb-4">
+    <h1 class="text-2xl"> Usuários </h1>
+    <mat-paginator [length]="(users$ | async)?.total"
+                    (page)="searchUsersTrigger$.next()"
+                    [pageSize]="10" 
+                    [pageSizeOptions]="[5, 10, 25, 100]"
+                    showFirstLastButtons 
+                    aria-label="Selecione a página">
+    </mat-paginator>
+</div>
+
+<div>
+    @if (loading()) {
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <table mat-table [dataSource]="(users$ | async)?.users ?? []">
+            
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Nome </th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="roles">
+                <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                <td mat-cell *matCellDef="let element"> {{ element.roles | userRoleLabel }} </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>
+                    <button color="accent" class="float-right" mat-raised-button (click)="openUserForm()"> 
+                        <mat-icon> add </mat-icon> Novo 
+                    </button>
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <button color="primary" class="float-right" mat-raised-button (click)="openUserForm(element)">
+                    <mat-icon> edit </mat-icon> Editar 
+                </button>
+            </td>
+        </ng-container>
+        
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns;" [ngClass]="{'opacity-50': !row.active}"></tr>
+    </table>
+</div>

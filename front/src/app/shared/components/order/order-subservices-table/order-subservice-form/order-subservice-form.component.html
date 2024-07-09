@@ -56,7 +56,7 @@
             <ng-container *ngTemplateOutlet="fieldTemplateToRender$()"></ng-container>
         </div>
 
-        <app-user-select ngDefaultControl [formGroup]="form" formControlName="worker" [filterFn]="onlyWorkersFn" subscriptSizing="dynamic">
+        <app-user-select ngDefaultControl [formGroup]="form" formControlName="worker" [roles]="onlyWorkers" subscriptSizing="dynamic">
             <span label>Mecânico</span>
         </app-user-select>
         
