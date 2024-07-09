@@ -4,7 +4,7 @@ import { OrderEntity } from "./entities/order.entity";
 import { OrderPaymentEntity } from "./entities/order-payment.entity";
 import { OrderController } from "./order.controller";
 import { OrderService } from "./order.service";
-import { UserModule } from "src/user/user.module";
+import { UserModule } from "../../src/user/user.module";
 import { OrderSubserviceEntity } from "./entities/order-subservice.entity";
 
 @Module({

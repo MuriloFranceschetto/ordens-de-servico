@@ -4,7 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Inject, Injectable } from "@nestjs/common";
 import { plainToClass, plainToInstance } from "class-transformer";
 
-import { UserService } from "src/user/user.service";
+import { UserService } from "../../src/user/user.service";
 import { OrderEntity } from "./entities/order.entity";
 import { ListOrderDto } from "./dto/order/list-order.dto";
 import { CreateOrderDTO } from "./dto/order/create-order.dto";

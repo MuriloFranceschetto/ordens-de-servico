@@ -4,6 +4,10 @@ const config: Config = {
     moduleFileExtensions: ["js", "json", "ts"],
     rootDir: "../src",
     testRegex: ".*\\.spec\\.ts$",
+    testPathIgnorePatterns: [
+        '/node_modules./',
+        '/(coverage|dist|lib|tmp)./*',
+    ],
     transform: {
         "^.+\\.(t|j)s$": "ts-jest"
     },
