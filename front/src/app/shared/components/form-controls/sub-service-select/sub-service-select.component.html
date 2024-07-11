@@ -8,6 +8,13 @@
 
         @for (user of filteredSubservices(); track user.id) {
             <mat-option [value]="user">{{ user.name }}</mat-option>
+            
+        } @empty {            
+            @if (currentValueForm()) {
+                <mat-option [value]="currentValueForm()"> {{ currentValueForm()?.name }} </mat-option>
+            } @else {
+                <mat-option disabled> Nenhum Resultado </mat-option>
+            }
         }
     </mat-select>
 </mat-form-field>

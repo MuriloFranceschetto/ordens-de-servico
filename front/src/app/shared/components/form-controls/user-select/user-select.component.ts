@@ -1,11 +1,11 @@
-import { Subject, debounceTime, distinctUntilChanged, filter, shareReplay, switchMap, take } from 'rxjs';
+import { BehaviorSubject, Subject, debounceTime, distinctUntilChanged, filter, shareReplay, switchMap, take, takeUntil } from 'rxjs';
 
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Component, OnInit, Signal, computed, inject, input, } from '@angular/core';
+import { Component, OnDestroy, OnInit, Signal, computed, inject, input, signal, } from '@angular/core';
 
 import { IUser, UserRole } from '../../../models/User';
 import { UserComponent } from '../../user/user.component';
@@ -21,7 +21,7 @@ import { AsyncPipe } from '@angular/common';
   templateUrl: './user-select.component.html',
   styleUrl: './user-select.component.scss',
 })
-export class UserSelectComponent implements OnInit {
+export class UserSelectComponent implements OnInit, OnDestroy {
 
   // ----- INPUTS ----------
   public readonly formGroup = input.required<FormGroup<any>>();
@@ -31,11 +31,12 @@ export class UserSelectComponent implements OnInit {
 
   // ----- INJECTIONS ------
   private readonly usersService = inject(UsersService);
-  private readonly utilsService = inject(UtilsService);
   private readonly dialog = inject(MatDialog);
 
   // -----------------------
   public readonly FN_COMPARE_WITH_USERS = this.usersService.FN_COMPARE_WITH_USERS;
+
+  public currentValueForm = signal<IUser>(null);
 
   public searchControl = new FormControl(null);
   public users$ = this.searchControl.valueChanges
@@ -55,6 +56,11 @@ export class UserSelectComponent implements OnInit {
 
   ngOnInit(): void {
     this.triggerUsersRequest$.next();
+    this.formGroup()
+      .get(this.formControlName())
+      .valueChanges
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((value) => this.currentValueForm.set(value))
   }
 
   public newUser() {
@@ -66,6 +72,13 @@ export class UserSelectComponent implements OnInit {
       .subscribe(() => {
         this.triggerUsersRequest$.next();
       });
+  }
+
+
+  private destroyed$ = new Subject<void>();
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
 }

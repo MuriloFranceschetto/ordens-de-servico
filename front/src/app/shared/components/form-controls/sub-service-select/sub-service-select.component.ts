@@ -1,9 +1,9 @@
-import { Subject, debounceTime, distinctUntilChanged, switchMap, take } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, switchMap, take, takeUntil } from 'rxjs';
 
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
@@ -11,6 +11,7 @@ import { UtilsService } from '../../../services/utils.service';
 import { SubservicesService } from '../../../services/subservices.service';
 import { SubserviceComponent } from '../../subservice/subservice.component';
 import { SearchSelectOptionComponent } from '../search-select-option/search-select-option.component';
+import { ISubservice } from '../../../models/subservice/ISubservice';
 
 @Component({
   selector: 'app-sub-service-select',
@@ -19,7 +20,7 @@ import { SearchSelectOptionComponent } from '../search-select-option/search-sele
   templateUrl: './sub-service-select.component.html',
   styleUrl: './sub-service-select.component.scss'
 })
-export class SubServiceSelectComponent {
+export class SubServiceSelectComponent implements OnInit, OnDestroy {
 
   // ----- INPUTS ----------
   public readonly formGroup = input.required<FormGroup<any>>();
@@ -33,6 +34,8 @@ export class SubServiceSelectComponent {
 
   // -----------------------
   public readonly FN_COMPARE_WITH_SUBSERVICES = this.subserviceService.FN_COMPARE_WITH_SUBSERVICES;
+
+  public currentValueForm = signal<ISubservice>(null);
 
   public searchControl = new FormControl(null);
   private searchFormValue = toSignal(this.searchControl.valueChanges.pipe(takeUntilDestroyed(), distinctUntilChanged(), debounceTime(500)));
@@ -58,6 +61,11 @@ export class SubServiceSelectComponent {
 
   ngOnInit(): void {
     this.triggerSubservicesRequest$.next();
+    this.formGroup()
+      .get(this.formControlName())
+      .valueChanges
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((value) => this.currentValueForm.set(value))
   }
 
   public newSubservice() {
@@ -69,6 +77,13 @@ export class SubServiceSelectComponent {
       .subscribe(() => {
         this.triggerSubservicesRequest$.next();
       });
+  }
+
+
+  private destroyed$ = new Subject<void>();
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
 }
