@@ -28,10 +28,6 @@ export class OrdersService {
     return await firstValueFrom(this.http.put<ResponseOrder>(`${this.API_PATH}`, order).pipe(take(1)));
   }
 
-  public async finishOrder(id: string) {
-    return await firstValueFrom(this.http.patch(`${this.API_PATH}/${id}`, null).pipe(take(1)));
-  }
-
   public deleteOrder(id: string) {
     return this.http.delete(`${this.API_PATH}/${id}`).pipe(take(1));
   }
@@ -65,4 +61,9 @@ export class OrdersService {
 interface ResponseOrder {
   message: string,
   order: IOrder,
+}
+
+interface ResponseUpdateOpenOrder {
+  message: string,
+  open: boolean,
 }

@@ -50,18 +50,6 @@ export class OrderController {
         }
     }
 
-    @Patch('/:id')
-    async finishOrder(@Param('id') id: string) {
-        try {
-            await this.orderService.finishOrder(id);
-            return {
-                message: 'Successfull order update!'
-            };
-        } catch (error) {
-            throw new BadRequestException(error.message);
-        }
-    }
-
     @Put()
     async updateOrder(@Body() orderData: any) {
         try {

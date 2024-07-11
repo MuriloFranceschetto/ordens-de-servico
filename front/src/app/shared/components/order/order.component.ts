@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import { filter, firstValueFrom, map, switchMap, take } from 'rxjs';
+import colors from 'tailwindcss/colors';
+import { filter, firstValueFrom, switchMap } from 'rxjs';
 import { plainToClass, plainToClassFromExist } from 'class-transformer';
 import { Router } from '@angular/router';
 import { AsyncPipe, NgClass } from '@angular/common';
@@ -12,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, input, inject, computed, Optional, signal, WritableSignal, OnInit } from '@angular/core';
@@ -29,7 +31,7 @@ import { UserSelectComponent } from '../form-controls/user-select/user-select.co
 
 const ANGULAR_MATERIAL_MODULES = [
   MatInputModule, MatSelectModule, MatFormFieldModule, MatIconModule,
-  ReactiveFormsModule, MatButtonModule, MatDialogModule,
+  ReactiveFormsModule, MatButtonModule, MatDialogModule, MatSlideToggleModule,
   MatDatepickerModule, MatNativeDateModule, MatMenuModule,
 ];
 
@@ -41,6 +43,7 @@ const ANGULAR_MATERIAL_MODULES = [
   imports: [NgClass, AsyncPipe, PaymentStatusPipe, OrderSubservicesComponent, OrderPaymentsComponent, MyChipComponent, UserSelectComponent, ...ANGULAR_MATERIAL_MODULES]
 })
 export class OrderComponent implements OnInit {
+  public readonly colors = colors;
 
   public id = input<string>();
 
@@ -114,12 +117,6 @@ export class OrderComponent implements OnInit {
       this.router.navigate(['order', this.order$().id]);
     }
     this.getOrder();
-  }
-
-  async finishOrder() {
-    if (!this.id()) return;
-    await this.ordersService.finishOrder(this.order$().id);
-    this.matSnackBar.open(`Order de serviço finalizada com sucesso`, 'X', { duration: 3000 });
   }
 
   setTodayToFormField(formControlName: 'datetimeIn' | 'datetimeOut') {

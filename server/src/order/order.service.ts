@@ -72,12 +72,6 @@ export class OrderService {
         return orderEntity;
     }
 
-    public async finishOrder(id: string): Promise<void> {
-        await this.orderRepository.update(id, {
-            open: false,
-        });
-    }
-
     public async deleteOrder(id: string) {
         return await this.orderRepository.delete(id);
     }

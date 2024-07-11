@@ -4,20 +4,29 @@
     <div class="flex justify-between items-center">
         
         <div class="text-2xl mb-4 gap-1 flex items-center">
+
             <button mat-icon-button (click)="returnOrCloseDialog()">
                 <mat-icon>keyboard_arrow_left</mat-icon>
             </button>
             <h1>{{ (isNew$() ? 'Nova' : 'Editar') + ' Ordem de Serviço' }}</h1>
+
+            <mat-slide-toggle color="primary" class="ml-4" formControlName="open" #checkOpen> 
+                @if (checkOpen.checked) {
+                    <my-chip [bgColor]="colors.green['300']" [color]="colors.green['700']">Concluído</my-chip>
+                } @else {
+                    <my-chip [bgColor]="colors.blue['300']" [color]="colors.blue['600']">Em Andamento</my-chip>
+                }
+            </mat-slide-toggle>
+            
             <my-chip [bgColor]="(order$().paymentStatus | paymentStatus).color['300']" [color]="(order$().paymentStatus | paymentStatus).color['700']">
                 {{ (order$().paymentStatus | paymentStatus).label }}
             </my-chip>
+
         </div>
         
         <section class="flex justify-between items-center gap-2 mb-4">
             <button mat-raised-button class="w-52" color="primary" (click)="registerOrder()" [disabled]="formOrder.invalid"> Salvar </button>
-            @if (!isNew$()) {
-                <button mat-raised-button color="accent" (click)="finishOrder()"> Finalizar Ordem </button>
-            }
+            
             @if (!isNew$()) {
                 <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Abrir menu">
                     <mat-icon>more_vert</mat-icon>
