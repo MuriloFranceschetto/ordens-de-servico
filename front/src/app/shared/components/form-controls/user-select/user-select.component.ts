@@ -36,7 +36,10 @@ export class UserSelectComponent implements OnInit, OnDestroy {
   // -----------------------
   public readonly FN_COMPARE_WITH_USERS = this.usersService.FN_COMPARE_WITH_USERS;
 
-  public currentValueForm = signal<IUser>(null);
+  // Para buscar os usuários novamente emitir este evento
+  private readonly triggerUsersRequest$ = new Subject<void>();
+  private readonly destroyed$ = new Subject<void>();
+
 
   public searchControl = new FormControl(null);
   public users$ = this.searchControl.valueChanges
@@ -46,13 +49,13 @@ export class UserSelectComponent implements OnInit, OnDestroy {
       filter((value) => !!value),
       debounceTime(500),
       switchMap((searchValue) => {
-        return this.usersService.getUsersWithFilter({ name: searchValue }).pipe(take(1))
+        return this.usersService.getUsersWithFilter({ name: searchValue, roles: this.roles() }).pipe(take(1))
       }),
       shareReplay(),
     );
+  public currentValueForm = signal<IUser>(null);
 
-  // Para buscar os usuários novamente emitir este evento
-  private readonly triggerUsersRequest$ = new Subject<void>();
+
 
   ngOnInit(): void {
     this.triggerUsersRequest$.next();
@@ -75,7 +78,6 @@ export class UserSelectComponent implements OnInit, OnDestroy {
   }
 
 
-  private destroyed$ = new Subject<void>();
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();

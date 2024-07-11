@@ -2,7 +2,7 @@
     <mat-label>
         <ng-content select="[label]"></ng-content> 
     </mat-label>
-    <mat-select [formControlName]="formControlName()" [compareWith]="FN_COMPARE_WITH_USERS" (opened)="searchOption.focus()" (closed)="searchControl.reset()">
+    <mat-select #select [formControlName]="formControlName()" [compareWith]="FN_COMPARE_WITH_USERS" (opened)="searchOption.focus()" (closed)="searchControl.reset()">
 
         <app-search-select-option #searchOption [searchControl]="searchControl" (onNewClick)="newUser()"></app-search-select-option>
 
@@ -10,7 +10,7 @@
             <mat-option [value]="user">{{ user.name }}</mat-option>
 
         } @empty {            
-            @if (currentValueForm()) {
+            @if (currentValueForm() && !select.panelOpen) {
                 <mat-option [value]="currentValueForm()"> {{ currentValueForm()?.name }} </mat-option>
             } @else {
                 <mat-option disabled> Nenhum Resultado </mat-option>

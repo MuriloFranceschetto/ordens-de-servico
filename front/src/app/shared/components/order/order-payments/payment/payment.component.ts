@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { map, take } from 'rxjs';
+import { take } from 'rxjs';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { Component, OnInit, inject } from '@angular/core';
@@ -16,7 +16,6 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angu
 
 import { IOrder } from '../../../../models/order/Order';
 import { IUser, UserRole } from '../../../../models/User';
-import { UsersService } from '../../../../services/users.service';
 import { OrdersService } from '../../../../services/orders.service';
 import { ConfirmationComponent } from '../../../confirmation/confirmation.component';
 import { PaymentMethodLabelPipe } from '../../../../pipes/payment-method-label.pipe';
@@ -60,10 +59,11 @@ export class PaymentComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.payment) {
+      let { amount, payer, type } = this.data.payment;
       this.form.setValue({
-        amount: this.data.payment.amount,
-        payer: this.data.payment.payer,
-        type: this.data.payment.type,
+        amount: amount,
+        payer: payer,
+        type: type,
         date: dayjs(this.data.payment.date).format('YYYY-MM-DD'),
       });
     }

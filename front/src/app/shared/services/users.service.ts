@@ -14,7 +14,7 @@ export class UsersService {
 
   public FN_COMPARE_WITH_USERS = (clientA: IUser, clientB: IUser) => clientA?.id === clientB?.id;
 
-  // Return a maximun length of 30 registers 
+  // Return a maximum length of 30 registers 
   public getUsersWithFilter(config?: ParamsSearchUsers) {
     let params = removeUndefineds(config);
     return this.http.get<IUser[]>(this.API_PATH, { params: { ...params } });
