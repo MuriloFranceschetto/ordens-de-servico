@@ -25,10 +25,10 @@
         </div>
         
         <section class="flex justify-between items-center gap-2 mb-4">
-            <button mat-raised-button class="w-52" color="primary" (click)="registerOrder()" [disabled]="formOrder.invalid"> Salvar </button>
+            <button mat-raised-button class="w-52" color="primary" (click)="registerOrder()" [disabled]="formOrder.invalid || savingOrder()"> Salvar </button>
             
             @if (!isNew$()) {
-                <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Abrir menu">
+                <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Abrir menu" [disabled]="savingOrder()">
                     <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu" xPosition="before">

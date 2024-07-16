@@ -30,17 +30,11 @@
         </ng-template>
         
         <ng-template #unityField>
-            <!-- <mat-form-field class="w-full" subscriptSizing="dynamic">
-                <mat-label> Unidade </mat-label>
-                <input matInput formControlName="quantity" type="number">
-            </mat-form-field> -->
+            <app-unity-quantity [quantity]="quantity"></app-unity-quantity>
         </ng-template>
         
         <ng-template #kilogramField>
-            <!-- <mat-form-field class="w-full" subscriptSizing="dynamic">
-                <mat-label> Kilogramas </mat-label>
-                <input matInput formControlName="quantity" type="number">
-            </mat-form-field> -->
+            <app-kilogram-quantity [quantity]="quantity"></app-kilogram-quantity>
         </ng-template>
         
         <ng-template #kilometerField>

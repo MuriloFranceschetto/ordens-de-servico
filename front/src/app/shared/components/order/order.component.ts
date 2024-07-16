@@ -20,7 +20,7 @@ import { Component, input, inject, computed, Optional, signal, WritableSignal, O
 
 import { IUser, UserRole } from '../../models/User';
 import { UsersService } from '../../services/users.service';
-import { OrdersService } from '../../services/orders.service';
+import { OrdersService, ResponseOrder } from '../../services/orders.service';
 import { Order, PaymentStatus } from '../../models/order/Order';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
 import { OrderPaymentsComponent } from './order-payments/order-payments.component';
@@ -58,6 +58,7 @@ export class OrderComponent implements OnInit {
   });
 
   public FN_COMPARE_WITH_USERS = this.usersService.FN_COMPARE_WITH_USERS;
+  public readonly savingOrder = signal<boolean>(false);
 
   public readonly onlyClients = [UserRole.Client];
 
@@ -103,13 +104,15 @@ export class OrderComponent implements OnInit {
 
   async registerOrder() {
     this.order$.update(order => plainToClassFromExist(order, this.formOrder.getRawValue()));
+    this.savingOrder.set(true);
 
-    let response;
+    let response: ResponseOrder;
     if (this.isNew$()) {
       response = await this.ordersService.newOrder(this.order$());
     } else {
       response = await this.ordersService.updateOrder(this.order$());
     }
+    this.savingOrder.set(false);
     this.matSnackBar.open(`Order de serviço ${this.id() ? 'editada' : 'registrada'} com sucesso`, 'X', { duration: 3000 });
     this.order$.set(plainToClass(Order, response.order));
 

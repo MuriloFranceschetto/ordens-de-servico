@@ -58,12 +58,7 @@ export class OrdersService {
 
 }
 
-interface ResponseOrder {
+export interface ResponseOrder {
   message: string,
   order: IOrder,
-}
-
-interface ResponseUpdateOpenOrder {
-  message: string,
-  open: boolean,
 }

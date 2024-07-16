@@ -59,8 +59,11 @@ export class UserSelectComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.triggerUsersRequest$.next();
-    this.formGroup()
-      .get(this.formControlName())
+
+    let formControlUser = this.formGroup().get(this.formControlName());
+    this.currentValueForm.set(formControlUser.getRawValue())
+
+    formControlUser
       .valueChanges
       .pipe(takeUntil(this.destroyed$))
       .subscribe((value) => this.currentValueForm.set(value))

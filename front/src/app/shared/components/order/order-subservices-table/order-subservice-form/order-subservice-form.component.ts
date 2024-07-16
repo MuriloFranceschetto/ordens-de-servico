@@ -27,6 +27,8 @@ import { HourQuantityComponent } from './quantity-strategies/hour-quantity/hour-
 import { KilometerQuantityComponent } from './quantity-strategies/kilometer-quantity/kilometer-quantity.component';
 import { ENVIRONMENT_OPTIONS, EnvironmentType, ISubserviceOrder, SubserviceOrder } from '../../../../models/order/SubserviceOrder';
 import { SubServiceSelectComponent } from '../../../form-controls/sub-service-select/sub-service-select.component';
+import { UnityQuantityComponent } from "./quantity-strategies/unity-quantity/unity-quantity.component";
+import { KilogramQuantityComponent } from "./quantity-strategies/kilogram-quantity/kilogram-quantity.component";
 
 const MATERIAL_MODULES = [MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatButtonModule, MatDialogModule, MatMenuModule, MatIconModule, MatTooltipModule];
 const ANGULAR_MODULES = [AsyncPipe, CurrencyPipe, NgTemplateOutlet];
@@ -40,7 +42,9 @@ const PROJECT_COMPONENTS = [ConfirmationComponent, HourQuantityComponent, Kilome
     SubserviceChargeTypeLabelPipe,
     ...PROJECT_COMPONENTS,
     ...ANGULAR_MODULES,
-    ...MATERIAL_MODULES
+    ...MATERIAL_MODULES,
+    UnityQuantityComponent,
+    KilogramQuantityComponent
   ],
   providers: [
     CurrencyPipe,
