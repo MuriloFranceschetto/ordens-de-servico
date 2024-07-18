@@ -1,6 +1,19 @@
 
 <h1 class="text-2xl mb-4"> Ordens de Serviço </h1>
 
+<div class="flex gap-2 w-full" [formGroup]="formFilters">
+    
+    <mat-form-field class="basis-1/4">
+        <mat-label>Título</mat-label>
+        <input matInput formControlName="title">
+    </mat-form-field>
+
+    <app-user-select ngDefaultControl class="col-span-2 basis-1/4" [formGroup]="formFilters" formControlName="client" [roles]="onlyClients">
+        <span label>Cliente</span>
+    </app-user-select>
+
+</div>
+
 <table mat-table [dataSource]="orders$ | async">
     
     <ng-container matColumnDef="title">

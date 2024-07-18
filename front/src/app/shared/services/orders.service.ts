@@ -1,9 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { IOrder } from '../models/order/Order';
+import { IOrder, PaymentStatus } from '../models/order/Order';
 import { firstValueFrom, take } from 'rxjs';
 import { IPaymentOrder } from '../models/order/PaymentOrder';
 import { ISubserviceOrder } from '../models/order/SubserviceOrder';
+import { IUser } from '../models/User';
+import { UtilsService } from './utils.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +14,15 @@ export class OrdersService {
 
   private readonly API_PATH = `/api/orders`;
 
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
+  private readonly utils = inject(UtilsService);
 
   public orders$ = this.http.get<IOrder[]>(this.API_PATH);
+
+  public getOrders(queryParams: UserParams) {
+    let params = this.utils.removeUndefineds(queryParams);
+    return this.http.get<IOrder[]>(this.API_PATH, { params: { ...params } });
+  }
 
   public getOrderById(id: string) {
     return this.http.get<IOrder>(`${this.API_PATH}/${id}`).pipe(take(1));
@@ -56,6 +64,13 @@ export class OrdersService {
     return this.http.delete(`${this.API_PATH}/subservice/${idOrder}/${idSubservice}`).pipe(take(1));
   }
 
+}
+
+interface UserParams {
+  open?: boolean,
+  payment_status?: PaymentStatus,
+  client?: IUser,
+  title?: string,
 }
 
 export interface ResponseOrder {

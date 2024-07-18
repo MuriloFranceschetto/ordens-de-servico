@@ -17,6 +17,11 @@ import { UpdateSubserviceOrderDto } from "./dto/sub-service/update-subservice.dt
 import { OrderSubserviceEntity } from "./entities/order-subservice.entity";
 import { PaymentStatus } from "./enums/paymentStatus";
 
+interface OrderFilterParams {
+    title?: string,
+    payment_status?: PaymentStatus,
+    open?: boolean,
+}
 
 @Injectable()
 export class OrderService {
@@ -28,9 +33,24 @@ export class OrderService {
         @Inject(UserService) private userService: UserService,
     ) { }
 
-    public async listOrders() {
-        let orders = await this.orderRepository.find({ order: { id: 'ASC' } });
-        return orders.map((order) => plainToInstance(ListOrderDto, order));
+    public async listOrders(filterParams: OrderFilterParams) {
+        let query = this.orderRepository
+            .createQueryBuilder('order')
+            .leftJoinAndSelect("order.client", "user")
+            .limit(10);
+
+        if (filterParams?.open) {
+            query = query.andWhere('order.open = :open', { open: filterParams.open });
+        }
+        if (filterParams?.title) {
+            query = query.andWhere('order.title ILIKE :title', { title: `%${filterParams.title}%` });
+        }
+        if (filterParams.payment_status !== undefined) {
+            query = query.andWhere('order.paymentStatus = :paymentStatus', { paymentStatus: filterParams.payment_status });
+        }
+
+        let orders = await query.getMany();
+        return orders.map((order) => plainToClass(ListOrderDto, order));
     }
 
     public async getOrderById(id: string) {
@@ -180,3 +200,4 @@ export class OrderService {
     }
 
 }
+

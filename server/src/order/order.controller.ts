@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Put } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from "@nestjs/common";
 import { OrderService } from "./order.service";
 import { ListOrderDto } from "./dto/order/list-order.dto";
 import { plainToInstance } from "class-transformer";
@@ -10,6 +10,7 @@ import { UpdatePaymentOrderDto } from "./dto/payment/update-payment-order.dto";
 import { CreateSubserviceOrderDto } from "./dto/sub-service/create-subservice.dto";
 import { SubserviceOrderDTO } from "./dto/sub-service/subservice-order.dto";
 import { UpdateSubserviceOrderDto } from "./dto/sub-service/update-subservice.dto";
+import { PaymentStatus } from "./enums/paymentStatus";
 
 @Controller('/api/orders')
 export class OrderController {
@@ -19,9 +20,13 @@ export class OrderController {
     ) { }
 
     @Get()
-    async getOrders() {
+    async getOrders(
+        @Query('title') title: string,
+        @Query('payment_status') payment_status: PaymentStatus,
+        @Query('open') open: boolean,
+    ) {
         try {
-            return await this.orderService.listOrders();
+            return await this.orderService.listOrders({ title, payment_status, open });
         } catch (error) {
             throw new BadRequestException(error.message)
         }

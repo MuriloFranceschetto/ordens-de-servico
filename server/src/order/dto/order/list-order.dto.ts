@@ -1,6 +1,6 @@
-import { ListUserDto } from "../../../../src/user/dto/UserList.dto";
-import { PaymentStatus } from "../../enums/paymentStatus";
 import { Expose, Type } from "class-transformer";
+import { PaymentStatus } from "../../enums/paymentStatus";
+import { ListUserDto } from "../../../../src/user/dto/UserList.dto";
 
 export class ListOrderDto {
 
@@ -22,7 +22,7 @@ export class ListOrderDto {
     @Expose()
     paymentStatus: PaymentStatus;
 
-    @Type()
     @Expose()
+    @Type(() => ListUserDto)
     client: ListUserDto;
 }

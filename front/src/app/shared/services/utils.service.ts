@@ -9,4 +9,14 @@ export class UtilsService {
     return str.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
 
+  public removeUndefineds(obj: any) {
+    Object.keys({ ...obj })
+      .forEach((key) => {
+        if (!obj[key]) {
+          delete obj[key];
+        }
+      });
+    return obj;
+  }
+
 }
