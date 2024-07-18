@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, UsePipes, ValidationPipe } from "@nestjs/common";
 import { OrderService } from "./order.service";
 import { ListOrderDto } from "./dto/order/list-order.dto";
 import { plainToInstance } from "class-transformer";
@@ -10,7 +10,7 @@ import { UpdatePaymentOrderDto } from "./dto/payment/update-payment-order.dto";
 import { CreateSubserviceOrderDto } from "./dto/sub-service/create-subservice.dto";
 import { SubserviceOrderDTO } from "./dto/sub-service/subservice-order.dto";
 import { UpdateSubserviceOrderDto } from "./dto/sub-service/update-subservice.dto";
-import { PaymentStatus } from "./enums/paymentStatus";
+import { QueryParamsOrderDto } from "./dto/order/query-params-order.dto";
 
 @Controller('/api/orders')
 export class OrderController {
@@ -20,13 +20,16 @@ export class OrderController {
     ) { }
 
     @Get()
+    @UsePipes(new ValidationPipe({
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+        forbidNonWhitelisted: true,
+    }))
     async getOrders(
-        @Query('title') title: string,
-        @Query('payment_status') payment_status: PaymentStatus,
-        @Query('open') open: boolean,
+        @Query() queryParams: QueryParamsOrderDto,
     ) {
         try {
-            return await this.orderService.listOrders({ title, payment_status, open });
+            return await this.orderService.listOrders(queryParams);
         } catch (error) {
             throw new BadRequestException(error.message)
         }

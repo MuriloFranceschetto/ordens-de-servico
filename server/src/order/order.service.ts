@@ -2,7 +2,7 @@ import { randomUUID } from "crypto";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Inject, Injectable } from "@nestjs/common";
-import { plainToClass, plainToInstance } from "class-transformer";
+import { plainToClass } from "class-transformer";
 
 import { UserService } from "../../src/user/user.service";
 import { OrderEntity } from "./entities/order.entity";
@@ -16,12 +16,7 @@ import { CreateSubserviceOrderDto } from "./dto/sub-service/create-subservice.dt
 import { UpdateSubserviceOrderDto } from "./dto/sub-service/update-subservice.dto";
 import { OrderSubserviceEntity } from "./entities/order-subservice.entity";
 import { PaymentStatus } from "./enums/paymentStatus";
-
-interface OrderFilterParams {
-    title?: string,
-    payment_status?: PaymentStatus,
-    open?: boolean,
-}
+import { QueryParamsOrderDto } from "./dto/order/query-params-order.dto";
 
 @Injectable()
 export class OrderService {
@@ -33,24 +28,40 @@ export class OrderService {
         @Inject(UserService) private userService: UserService,
     ) { }
 
-    public async listOrders(filterParams: OrderFilterParams) {
+    public async listOrders(filterParams: QueryParamsOrderDto) {
+
+        const { page, limit } = filterParams;
+
         let query = this.orderRepository
             .createQueryBuilder('order')
             .leftJoinAndSelect("order.client", "user")
-            .limit(10);
+            .skip(page * limit)
+            .take(limit);
 
         if (filterParams?.open) {
-            query = query.andWhere('order.open = :open', { open: filterParams.open });
+            query.andWhere('order.open = :open', { open: filterParams.open });
         }
         if (filterParams?.title) {
-            query = query.andWhere('order.title ILIKE :title', { title: `%${filterParams.title}%` });
+            query.andWhere('order.title ILIKE :title', { title: `%${filterParams.title}%` });
         }
-        if (filterParams.payment_status !== undefined) {
-            query = query.andWhere('order.paymentStatus = :paymentStatus', { paymentStatus: filterParams.payment_status });
+        if (filterParams?.payment_status !== undefined) {
+            query.andWhere('order.paymentStatus = :paymentStatus', { paymentStatus: filterParams.payment_status });
+        }
+        if (filterParams?.checkout_date_init) {
+            query.andWhere('order.datetimeOut >= :checkoutDateInit', { checkoutDateInit: filterParams?.checkout_date_init })
+        }
+        if (filterParams?.checkout_date_end) {
+            query.andWhere('order.datetimeOut <= :checkoutDateEnd', { checkoutDateEnd: filterParams?.checkout_date_end })
+        }
+        if (filterParams?.client_id) {
+            query.andWhere('user.id = :clientId', { clientId: filterParams.client_id })
         }
 
-        let orders = await query.getMany();
-        return orders.map((order) => plainToClass(ListOrderDto, order));
+        let [orders, total] = await query.getManyAndCount();
+        return {
+            total,
+            orders: orders.map((order) => plainToClass(ListOrderDto, order))
+        }
     }
 
     public async getOrderById(id: string) {
