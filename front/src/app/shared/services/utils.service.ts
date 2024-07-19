@@ -10,9 +10,10 @@ export class UtilsService {
   }
 
   public removeUndefineds(obj: any) {
+    if (!obj) return {};
     Object.keys({ ...obj })
       .forEach((key) => {
-        if (!obj[key]) {
+        if (obj[key] === undefined || obj[key] === null) {
           delete obj[key];
         }
       });

@@ -71,7 +71,7 @@ export class OrderComponent implements OnInit {
     client: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required, Validators.maxLength(8000)]),
     datetimeIn: new FormControl(null, [Validators.required]),
-    datetimeOut: new FormControl(null, [Validators.required]),
+    datetimeOut: new FormControl(null),
     open: new FormControl(true, [Validators.required]),
     paymentStatus: new FormControl(PaymentStatus.NOT_PAID, [Validators.required]),
   });

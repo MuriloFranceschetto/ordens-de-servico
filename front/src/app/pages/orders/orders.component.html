@@ -1,20 +1,61 @@
 
-<h1 class="text-2xl mb-4"> Ordens de Serviço </h1>
+<div class="flex items-center justify-between mb-4">
+    <h1 class="text-2xl"> Ordens de Serviço </h1>
+    <mat-paginator [length]="(orders$ | async)?.total"
+                    (page)="paginatorChanges$.next()"
+                    [pageSize]="10" 
+                    [pageSizeOptions]="[5, 10, 25, 100]"
+                    showFirstLastButtons 
+                    aria-label="Selecione a página">
+    </mat-paginator>
+</div>
 
 <div class="flex gap-2 w-full" [formGroup]="formFilters">
     
-    <mat-form-field class="basis-1/4">
+    <mat-form-field class="basis-1/5">
         <mat-label>Título</mat-label>
         <input matInput formControlName="title">
     </mat-form-field>
-
-    <app-user-select ngDefaultControl class="col-span-2 basis-1/4" [formGroup]="formFilters" formControlName="client" [roles]="onlyClients">
+    
+    <app-user-select ngDefaultControl class="col-span-2 basis-1/5" [formGroup]="formFilters" formControlName="client" [roles]="onlyClients" optional>
         <span label>Cliente</span>
     </app-user-select>
-
+    
+    <mat-form-field class="basis-1/5">
+        <mat-label> Status de Pagamento </mat-label>
+        <mat-select formControlName="payment_status" #selectPayment>
+            @for (status of [0, 1, 2]; track $index) {
+                <mat-option [value]="status">
+                    <my-chip [bgColor]="(status | paymentStatus).color['300']" [color]="(status | paymentStatus).color['700']">
+                        {{ (status | paymentStatus).label }}
+                    </my-chip>
+                </mat-option>
+            }
+        </mat-select>
+        @if (selectPayment.value !== null) {
+            <mat-icon matSuffix color="warn" class="cursor-pointer" type="button" (click)="$event.stopPropagation(); clear('payment_status')"> close </mat-icon>
+        }
+    </mat-form-field>
+    
+    <mat-form-field class="basis-1/5">
+        <mat-label>Intervalo de saída</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+            <input matStartDate formControlName="checkout_date_init" placeholder="Start date" #dateStart>
+            <input matEndDate formControlName="checkout_date_end" placeholder="End date" #dateEnd>
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+        @if (!!dateStart.value || !!dateEnd.value) {
+            <mat-icon matSuffix color="warn" class="cursor-pointer" type="button" (click)="$event.stopPropagation(); clear('checkout_date_init'); clear('checkout_date_end')"> close </mat-icon>
+        }
+    </mat-form-field>
+    
 </div>
 
-<table mat-table [dataSource]="orders$ | async">
+@if (loading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+<table mat-table [dataSource]="(orders$ | async)?.orders">
     
     <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef> Título </th>
@@ -45,7 +86,12 @@
             </my-chip>
         </td>
     </ng-container>
-
+    
+    <ng-container matColumnDef="datetimeOut">
+        <th mat-header-cell *matHeaderCellDef> Data de saída </th>
+        <td mat-cell *matCellDef="let order"> {{ order?.datetimeOut | date : "dd MMM yyyy - hh:mm" }} </td>
+    </ng-container>
+    
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>
             <button color="accent" class="float-right" mat-raised-button (click)="openOrderForm()"> 
@@ -61,5 +107,5 @@
     
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
     <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-
+    
 </table>
