@@ -9,13 +9,22 @@
         @for (user of (users$ | async); track user.id) {
             <mat-option [value]="user">{{ user.name }}</mat-option>
 
-        } @empty {            
-            @if (currentValueForm() && !select.panelOpen) {
-                <mat-option [value]="currentValueForm()"> {{ currentValueForm()?.name }} </mat-option>
-            } @else {
-                <mat-option disabled> Nenhum Resultado </mat-option>
-            }
+        } @empty {      
+            @if (!select.panelOpen) { 
+                @if (currentValueForm()) {
+                    <mat-option [value]="currentValueForm()"> {{ currentValueForm()?.name }} </mat-option>
+                } @else {
+                    <!-- Precisa desse options para o mat-select abrir -->
+                    <mat-option disabled></mat-option>
+                }
+            } 
+        }
+        @if (showNoResults$ | async) {
+            <mat-option disabled> Nenhum Resultado Encontrado</mat-option>
         }
         
     </mat-select>
+    @if (!!selectControl.value) {
+        <mat-icon matSuffix color="warn" class="cursor-pointer" type="button" (click)="$event.stopPropagation(); clear()"> close </mat-icon>
+    }
 </mat-form-field>

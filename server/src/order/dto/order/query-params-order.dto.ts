@@ -1,5 +1,5 @@
 import { Transform } from "class-transformer";
-import { IsBoolean, IsDate, IsEnum, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsBoolean, IsDate, IsEnum, IsOptional, IsString, IsUUID, ValidateIf } from "class-validator";
 import * as moment from "moment";
 
 import { PaymentStatus } from "src/order/enums/paymentStatus";
@@ -15,8 +15,8 @@ export class QueryParamsOrderDto extends PaginationRequestDto {
     @IsUUID()
     public readonly client_id?: string;
 
-    @IsOptional()
-    @Transform(({ obj, key }) => obj[key] ? Number(obj[key]) : undefined)
+    @ValidateIf((obj) => Number(obj.payment_status) > -1)
+    @Transform(({ obj, key }) => Number(obj[key]))
     @IsEnum(PaymentStatus)
     public readonly payment_status?: PaymentStatus;
 
@@ -34,4 +34,5 @@ export class QueryParamsOrderDto extends PaginationRequestDto {
     @Transform(({ obj, key }) => moment(obj[key]).set('hour', 23).set('minutes', 59).set('seconds', 59).toDate())
     @IsDate()
     public readonly checkout_date_end: Date;
+
 }

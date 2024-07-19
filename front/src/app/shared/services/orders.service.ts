@@ -4,7 +4,6 @@ import { IOrder, PaymentStatus } from '../models/order/Order';
 import { firstValueFrom, take } from 'rxjs';
 import { IPaymentOrder } from '../models/order/PaymentOrder';
 import { ISubserviceOrder } from '../models/order/SubserviceOrder';
-import { IUser } from '../models/User';
 import { UtilsService } from './utils.service';
 
 @Injectable({
@@ -17,11 +16,9 @@ export class OrdersService {
   private readonly http = inject(HttpClient);
   private readonly utils = inject(UtilsService);
 
-  public orders$ = this.http.get<IOrder[]>(this.API_PATH);
-
-  public getOrders(queryParams: UserParams) {
+  public getOrders(queryParams?: QueryParamsOrder) {
     let params = this.utils.removeUndefineds(queryParams);
-    return this.http.get<IOrder[]>(this.API_PATH, { params: { ...params } });
+    return this.http.get<{ total: number, orders: IOrder[] }>(this.API_PATH, { params: { ...params } });
   }
 
   public getOrderById(id: string) {
@@ -66,11 +63,15 @@ export class OrdersService {
 
 }
 
-interface UserParams {
+export interface QueryParamsOrder {
+  title?: string,
+  client_id?: string,
   open?: boolean,
   payment_status?: PaymentStatus,
-  client?: IUser,
-  title?: string,
+  checkout_date_init?: string,
+  checkout_date_end?: string,
+  page: number,
+  limit: number,
 }
 
 export interface ResponseOrder {

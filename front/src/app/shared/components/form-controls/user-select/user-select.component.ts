@@ -1,23 +1,24 @@
-import { BehaviorSubject, Subject, debounceTime, distinctUntilChanged, filter, shareReplay, switchMap, take, takeUntil } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, filter, map, shareReplay, switchMap, take, takeUntil } from 'rxjs';
 
+import { AsyncPipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Component, OnDestroy, OnInit, Signal, computed, inject, input, signal, } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnDestroy, OnInit, inject, input, signal, } from '@angular/core';
 
 import { IUser, UserRole } from '../../../models/User';
 import { UserComponent } from '../../user/user.component';
 import { UsersService } from '../../../services/users.service';
-import { UtilsService } from '../../../services/utils.service';
 import { SearchSelectOptionComponent } from '../search-select-option/search-select-option.component';
-import { AsyncPipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-user-select',
   standalone: true,
-  imports: [MatFormFieldModule, MatSelectModule, ReactiveFormsModule, SearchSelectOptionComponent, AsyncPipe],
+  imports: [MatFormFieldModule, MatSelectModule, MatIconModule, ReactiveFormsModule, SearchSelectOptionComponent, AsyncPipe],
   templateUrl: './user-select.component.html',
   styleUrl: './user-select.component.scss',
 })
@@ -26,6 +27,7 @@ export class UserSelectComponent implements OnInit, OnDestroy {
   // ----- INPUTS ----------
   public readonly formGroup = input.required<FormGroup<any>>();
   public readonly formControlName = input.required<string>();
+  public readonly optinal = input<boolean>();
   public readonly roles = input<UserRole[]>();
   public readonly subscriptSizing = input<'dynamic' | 'fixed'>();
 
@@ -35,6 +37,9 @@ export class UserSelectComponent implements OnInit, OnDestroy {
 
   // -----------------------
   public readonly FN_COMPARE_WITH_USERS = this.usersService.FN_COMPARE_WITH_USERS;
+  public get selectControl(): AbstractControl {
+    return this.formGroup().get(this.formControlName());
+  }
 
   // Para buscar os usuários novamente emitir este evento
   private readonly triggerUsersRequest$ = new Subject<void>();
@@ -46,24 +51,22 @@ export class UserSelectComponent implements OnInit, OnDestroy {
     .pipe(
       takeUntilDestroyed(),
       distinctUntilChanged(),
-      filter((value) => !!value),
       debounceTime(500),
+      filter((value) => !!value),
       switchMap((searchValue) => {
         return this.usersService.getUsersWithFilter({ name: searchValue, roles: this.roles() }).pipe(take(1))
       }),
       shareReplay(),
     );
   public currentValueForm = signal<IUser>(null);
-
-
+  public showNoResults$ = this.users$.pipe(map(users => users.length === 0))
 
   ngOnInit(): void {
     this.triggerUsersRequest$.next();
 
-    let formControlUser = this.formGroup().get(this.formControlName());
-    this.currentValueForm.set(formControlUser.getRawValue())
+    this.currentValueForm.set(this.selectControl.getRawValue())
 
-    formControlUser
+    this.selectControl
       .valueChanges
       .pipe(takeUntil(this.destroyed$))
       .subscribe((value) => this.currentValueForm.set(value))
@@ -80,6 +83,9 @@ export class UserSelectComponent implements OnInit, OnDestroy {
       });
   }
 
+  clear() {
+    this.selectControl.reset();
+  }
 
   ngOnDestroy(): void {
     this.destroyed$.next();

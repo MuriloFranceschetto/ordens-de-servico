@@ -22,7 +22,7 @@ export class UsersService {
     return this.http.get<IUser[]>(this.API_PATH, { params: { ...params } });
   }
 
-  public getAllUsersPaginated(page: number = 1, limit: number = 10) {
+  public getAllUsersPaginated(page: number = 0, limit: number = 10) {
     return this.http.get<{ users: IUser[], total: number }>(`${this.API_PATH}/page`, {
       params: { page, limit }
     });
