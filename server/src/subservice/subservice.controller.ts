@@ -1,11 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { plainToClass } from 'class-transformer';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+
 import { SubserviceService } from './subservice.service';
 import { ListSubserviceDto } from './dto/list-subservice.dto';
 import { CreateSubserviceDTO } from './dto/create-subservice.dto';
 import { UpdateSubserviceDTO } from './dto/update-subservice.dto';
-import { plainToClass, plainToInstance } from 'class-transformer';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('/api/subservices')
+@UseGuards(AuthGuard)
 export class SubserviceController {
 
     constructor(

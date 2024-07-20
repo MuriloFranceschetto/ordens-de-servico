@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ListUserDto } from './dto/UserList.dto';
 import { CreateUserDto } from './dto/CreateUser.dto';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
@@ -6,8 +6,10 @@ import { UserService } from './user.service';
 import { plainToClass, plainToInstance } from 'class-transformer';
 import { ResponseUserDto } from './dto/response-user.dto';
 import { UserRole } from './user-role';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('/api/users')
+@UseGuards(AuthGuard)
 export class UserController {
 
     constructor(

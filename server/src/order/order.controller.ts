@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, UsePipes, ValidationPipe } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { OrderService } from "./order.service";
 import { ListOrderDto } from "./dto/order/list-order.dto";
 import { plainToInstance } from "class-transformer";
@@ -11,8 +11,10 @@ import { CreateSubserviceOrderDto } from "./dto/sub-service/create-subservice.dt
 import { SubserviceOrderDTO } from "./dto/sub-service/subservice-order.dto";
 import { UpdateSubserviceOrderDto } from "./dto/sub-service/update-subservice.dto";
 import { QueryParamsOrderDto } from "./dto/order/query-params-order.dto";
+import { AuthGuard } from "src/guards/auth.guard";
 
 @Controller('/api/orders')
+@UseGuards(AuthGuard)
 export class OrderController {
 
     constructor(

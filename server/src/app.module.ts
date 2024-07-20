@@ -9,6 +9,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { OrderModule } from './order/order.module';
 import { LoggerMiddleware } from './interceptors/logger.middleware';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -25,6 +26,8 @@ import { LoggerMiddleware } from './interceptors/logger.middleware';
       useClass: PostgresConfigService,
       inject: [PostgresConfigService]
     }),
+
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

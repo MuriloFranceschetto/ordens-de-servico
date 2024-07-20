@@ -6,11 +6,13 @@ import { OrderController } from "./order.controller";
 import { OrderService } from "./order.service";
 import { UserModule } from "../../src/user/user.module";
 import { OrderSubserviceEntity } from "./entities/order-subservice.entity";
+import { JwtModule } from "@nestjs/jwt";
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([OrderEntity, OrderPaymentEntity, OrderSubserviceEntity]),
         UserModule,
+        JwtModule,
     ],
     controllers: [
         OrderController,
