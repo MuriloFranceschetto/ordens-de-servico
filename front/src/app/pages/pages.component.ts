@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-pages',
@@ -11,4 +12,5 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   styleUrl: './pages.component.scss'
 })
 export class PagesComponent {
+  public authService = inject(AuthService)
 }

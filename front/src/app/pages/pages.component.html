@@ -1,9 +1,14 @@
-<mat-toolbar class="gap-2">
-    <button mat-stroked-button routerLink="/registrations">
-        Cadastros
-    </button>
-    <button mat-stroked-button routerLink="/orders">
-        Ordens de Serviço
+<mat-toolbar class="flex justify-between items-center">
+    <div class="flex gap-2">
+        <button mat-stroked-button routerLink="/registrations">
+            Cadastros
+        </button>
+        <button mat-stroked-button routerLink="/orders">
+            Ordens de Serviço
+        </button>
+    </div>
+    <button mat-stroked-button color="warn" (click)="authService.logout()">
+        Sair
     </button>
 </mat-toolbar>
 

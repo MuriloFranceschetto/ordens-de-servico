@@ -1,13 +1,17 @@
 import { Routes } from '@angular/router';
+import { isAuthenticatedGuard } from './shared/interceptors/auth.guard';
 
 export const routes: Routes = [
     {
         path: "",
         loadComponent: () => import('./pages/pages.component').then(c => c.PagesComponent),
+        canActivate: [isAuthenticatedGuard],
+        canActivateChild: [isAuthenticatedGuard],
         children: [
             {
                 path: 'registrations',
                 loadComponent: () => import('./pages/registrations/registrations.component').then(c => c.RegistrationsComponent),
+                canActivate: [isAuthenticatedGuard],
             },
             {
                 path: 'users',
@@ -25,7 +29,7 @@ export const routes: Routes = [
                 path: 'order/:id',
                 loadComponent: () => import('./shared/components/order/order.component').then(c => c.OrderComponent),
             },
-        ]
+        ],
     },
     {
         path: "login",

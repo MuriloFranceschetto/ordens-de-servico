@@ -13,11 +13,14 @@ export class AuthService {
 
     async signIn(email: string, pass: string): Promise<any> {
         const user = await this.userService.getUserByEmail(email);
+        if (!user) {
+            throw new UnauthorizedException('Usuário não encontrado');
+        }
         if (!user.roles.includes(UserRole.Admin)) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException('Usuário não tem permissão de administrador');
         }
         if (user?.password !== pass) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException('Senha incorreta');
         }
 
         const { password, ...result } = user;
