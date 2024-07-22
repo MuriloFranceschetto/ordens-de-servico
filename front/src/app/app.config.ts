@@ -16,6 +16,7 @@ import localePt from '@angular/common/locales/pt';
 import { MyCustomPaginatorIntl } from './shared/globals/global-paginator-config';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { authInterceptor } from './shared/interceptors/http/auth.interceptor';
+import { expiredTokenInterceptor } from './shared/interceptors/http/expired-token.interceptor';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: "left",
@@ -49,6 +50,6 @@ export const appConfig: ApplicationConfig = {
 
     provideRouter(routes, withComponentInputBinding()),
     provideAnimations(),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, expiredTokenInterceptor])),
   ]
 };

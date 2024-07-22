@@ -43,7 +43,6 @@ export class LoginComponent {
           this.router.navigate(['']);
         },
         error: (e) => {
-          console.log(e);
           this.snackBar.open(`Login não é válido: ${e?.error?.message || ''}`, 'X');
           this.loading.set(false)
         }
