@@ -2,7 +2,7 @@ import { Type } from "class-transformer";
 import { IsBoolean, IsEnum, IsNotEmpty, IsString } from "class-validator";
 
 import { PaymentStatus } from "../../enums/paymentStatus";
-import { ListUserDto } from "../../../../src/user/dto/UserList.dto";
+import { ListUserDto } from "../../../user/dto/user-list.dto";
 
 export class CreateOrderDTO {
 

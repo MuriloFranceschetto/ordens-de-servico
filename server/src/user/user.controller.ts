@@ -1,12 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
-import { ListUserDto } from './dto/UserList.dto';
-import { CreateUserDto } from './dto/CreateUser.dto';
-import { UpdateUserDto } from './dto/UpdateUser.dto';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { ListUserDto } from './dto/user-list.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 import { plainToClass, plainToInstance } from 'class-transformer';
 import { ResponseUserDto } from './dto/response-user.dto';
 import { UserRole } from './user-role';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { QueryParamsUserDto } from './dto/query-params-user.dto';
 
 @Controller('/api/users')
 @UseGuards(AuthGuard)
@@ -18,19 +19,15 @@ export class UserController {
     }
 
     @Get()
+    @UsePipes(new ValidationPipe({
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+        forbidNonWhitelisted: true,
+    }))
     async getUsers(
-        @Query('name') name: string,
-        @Query('roles') roles: Array<UserRole>,
+        @Query() queryParams: QueryParamsUserDto,
     ) {
-        return await this.userService.listUsers(name, roles);
-    }
-
-    @Get('page')
-    async getPaginatedUsers(
-        @Query('page') page: number,
-        @Query('limit') limit: number,
-    ) {
-        return await this.userService.listPaginatedUsers(page, limit);
+        return await this.userService.listUsers(queryParams);
     }
 
     @Get('/:id')

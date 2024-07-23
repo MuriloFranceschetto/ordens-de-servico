@@ -1,7 +1,7 @@
 import * as moment from "moment";
 import { Expose, Transform, Type } from "class-transformer";
 
-import { ListUserDto } from "../../../../src/user/dto/UserList.dto";
+import { ListUserDto } from "../../../user/dto/user-list.dto";
 import { PaymentStatus } from "../../enums/paymentStatus";
 import { PaymentOrderDto } from "../payment/payment-order.dto";
 import { SubserviceOrderDTO } from "../sub-service/subservice-order.dto";

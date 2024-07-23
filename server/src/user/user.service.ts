@@ -4,11 +4,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserEntity } from './user.entity';
-import { ListUserDto } from './dto/UserList.dto';
-import { UpdateUserDto } from './dto/UpdateUser.dto';
-import { CreateUserDto } from './dto/CreateUser.dto';
+import { ListUserDto } from './dto/user-list.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { plainToClass } from 'class-transformer';
 import { UserRole } from './user-role';
+import { QueryParamsUserDto } from './dto/query-params-user.dto';
 
 @Injectable()
 export class UserService {
@@ -17,36 +18,28 @@ export class UserService {
         @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
     ) { }
 
-    async listUsers(name: string, roles: UserRole | Array<UserRole>) {
+    async listUsers(queryParams: Partial<QueryParamsUserDto>) {
+
         let query = this.userRepository
             .createQueryBuilder('user')
-            .where('user.active = true')
-            .limit(30);
+            .skip(queryParams.page * queryParams.limit)
+            .take(queryParams.limit);
 
-        if (name) {
-            query = query.andWhere('user.name ILIKE :name', { name: `%${name}%` });
+        if (!queryParams.show_inactives) {
+            query.andWhere('user.active = true');
         }
 
-        if (roles) {
-            if (Array.isArray(roles)) {
-                query = query.andWhere("user.roles && :roles", { roles });
-            } else {
-                query = query.andWhere(":roles = ANY(user.roles)", { roles });
-            }
+        if (queryParams.name) {
+            query.andWhere('user.name ILIKE :name', { name: `%${queryParams.name}%` });
         }
-        let users = await query.getMany();
-        return users.map((user) => plainToClass(ListUserDto, user));
-    }
 
-    async listPaginatedUsers(page: number = 0, limit: number = 10) {
-        let result: [UserEntity[], number] = await this.userRepository.findAndCount({
-            order: { id: 'ASC' },
-            skip: (page * limit),
-            take: limit,
-        });
+        if (queryParams?.roles?.length) {
+            query.andWhere("user.roles && :roles", { roles: queryParams.roles });
+        }
+        let [users, count] = await query.getManyAndCount();
         return {
-            users: result[0].map((user) => plainToClass(ListUserDto, user)),
-            total: result[1],
+            users: users.map((user) => plainToClass(ListUserDto, user)),
+            total: count,
         }
     }
 

@@ -54,8 +54,9 @@ export class UserSelectComponent implements OnInit, OnDestroy {
       debounceTime(500),
       filter((value) => !!value),
       switchMap((searchValue) => {
-        return this.usersService.getUsersWithFilter({ name: searchValue, roles: this.roles() }).pipe(take(1))
+        return this.usersService.getUsers({ name: searchValue, roles: this.roles() }).pipe(take(1))
       }),
+      map((response) => response.users),
       shareReplay(),
     );
   public currentValueForm = signal<IUser>(null);

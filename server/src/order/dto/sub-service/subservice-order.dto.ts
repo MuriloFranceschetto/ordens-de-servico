@@ -1,9 +1,9 @@
 import { Expose, Type } from "class-transformer";
 import { EnvironmentType } from "src/order/enums/environmentType";
 import { ListSubserviceDto } from "src/subservice/dto/list-subservice.dto";
-import { ListUserDto } from "src/user/dto/UserList.dto";
 import { ListOrderDto } from "../order/list-order.dto";
 import { IsEnum } from "class-validator";
+import { ListUserDto } from "src/user/dto/user-list.dto";
 
 export class SubserviceOrderDTO {
 
