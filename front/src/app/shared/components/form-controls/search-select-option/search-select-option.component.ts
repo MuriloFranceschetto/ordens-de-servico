@@ -17,6 +17,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 export class SearchSelectOptionComponent {
 
   public readonly searchControl = input.required<FormControl>();
+  public readonly showCreationBtn = input<boolean>(false);
 
   public readonly onNewClick = output<void>();
 

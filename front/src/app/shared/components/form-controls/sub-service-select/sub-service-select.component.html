@@ -4,7 +4,7 @@
     </mat-label>
     <mat-select [formControlName]="formControlName()" [compareWith]="FN_COMPARE_WITH_SUBSERVICES" (opened)="searchOption.focus()" (closed)="searchControl.reset()">
 
-        <app-search-select-option #searchOption [searchControl]="searchControl" (onNewClick)="newSubservice()"></app-search-select-option>
+        <app-search-select-option #searchOption [showCreationBtn]="showCreationBtn()" [searchControl]="searchControl" (onNewClick)="newSubservice()"></app-search-select-option>
 
         @for (user of filteredSubservices(); track user.id) {
             <mat-option [value]="user">{{ user.name }}</mat-option>

@@ -30,6 +30,7 @@ export class UserSelectComponent implements OnInit, OnDestroy {
   public readonly optinal = input<boolean>();
   public readonly roles = input<UserRole[]>();
   public readonly subscriptSizing = input<'dynamic' | 'fixed'>();
+  public readonly showCreationBtn = input<boolean>(false);
 
   // ----- INJECTIONS ------
   private readonly usersService = inject(UsersService);

@@ -21,7 +21,7 @@
     
     <form [formGroup]="form" class="grid grid-cols-2 gap-x-4 gap-y-6 items-start">
 
-        <app-sub-service-select ngDefaultControl [formGroup]="form" formControlName="subservice" subscriptSizing="dynamic">
+        <app-sub-service-select [showCreationBtn]="true" ngDefaultControl [formGroup]="form" formControlName="subservice" subscriptSizing="dynamic">
             <span label>Sub-serviço</span>
         </app-sub-service-select>
         
@@ -50,7 +50,7 @@
             <ng-container *ngTemplateOutlet="fieldTemplateToRender$()"></ng-container>
         </div>
 
-        <app-user-select ngDefaultControl [formGroup]="form" formControlName="worker" [roles]="onlyWorkers" subscriptSizing="dynamic">
+        <app-user-select [showCreationBtn]="true" ngDefaultControl [formGroup]="form" formControlName="worker" [roles]="onlyWorkers" subscriptSizing="dynamic">
             <span label>Mecânico</span>
         </app-user-select>
         

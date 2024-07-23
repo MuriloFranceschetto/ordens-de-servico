@@ -26,6 +26,7 @@ export class SubServiceSelectComponent implements OnInit, OnDestroy {
   public readonly formGroup = input.required<FormGroup<any>>();
   public readonly formControlName = input.required<string>();
   public readonly subscriptSizing = input<'dynamic' | 'fixed'>();
+  public readonly showCreationBtn = input<boolean>(true);
 
   // ----- INJECTIONS ------
   private readonly subserviceService = inject(SubservicesService);

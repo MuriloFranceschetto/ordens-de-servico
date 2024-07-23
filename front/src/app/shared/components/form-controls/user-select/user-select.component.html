@@ -4,7 +4,7 @@
     </mat-label>
     <mat-select #select [formControlName]="formControlName()" [compareWith]="FN_COMPARE_WITH_USERS" (opened)="searchOption.focus()" (closed)="searchControl.reset()">
 
-        <app-search-select-option #searchOption [searchControl]="searchControl" (onNewClick)="newUser()"></app-search-select-option>
+        <app-search-select-option #searchOption [showCreationBtn]="showCreationBtn()" [searchControl]="searchControl" (onNewClick)="newUser()"></app-search-select-option>
 
         @for (user of (users$ | async); track user.id) {
             <mat-option [value]="user">{{ user.name }}</mat-option>
