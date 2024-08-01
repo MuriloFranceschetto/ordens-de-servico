@@ -66,12 +66,12 @@ export class OrdersService {
 export interface QueryParamsOrder {
   title?: string,
   client_id?: string,
-  open?: boolean,
+  status?: boolean | null,
   payment_status?: PaymentStatus,
   checkout_date_init?: string,
   checkout_date_end?: string,
-  page: number,
-  limit: number,
+  page?: number,
+  limit?: number,
 }
 
 export interface ResponseOrder {

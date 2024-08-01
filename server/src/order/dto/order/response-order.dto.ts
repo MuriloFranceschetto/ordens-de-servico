@@ -26,7 +26,7 @@ export class ResponseOrderDto {
     datetimeOut: Date;
 
     @Expose()
-    open: boolean;
+    closed: boolean;
 
     @Expose()
     paymentStatus: PaymentStatus;

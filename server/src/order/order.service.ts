@@ -38,8 +38,8 @@ export class OrderService {
             .skip(page * limit)
             .take(limit);
 
-        if (filterParams?.open) {
-            query.andWhere('order.open = :open', { open: filterParams.open });
+        if (filterParams?.status !== null) {
+            query.andWhere('order.closed = :status', { status: filterParams.status });
         }
         if (filterParams?.title) {
             query.andWhere('order.title ILIKE :title', { title: `%${filterParams.title}%` });

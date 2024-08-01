@@ -27,9 +27,9 @@ export class QueryParamsOrderDto extends PaginationRequestDto {
     public readonly payment_status?: PaymentStatus[];
 
     @IsOptional()
-    @Transform(({ obj, key }) => obj[key] === 'true' ? true : obj[key] === 'false' ? false : obj[key])
+    @Transform(({ obj, key }) => obj[key] === 'true' ? true : obj[key] === 'false' ? false : null)
     @IsBoolean()
-    public readonly open?: boolean;
+    public readonly status?: boolean = null;
 
     @IsOptional()
     @Transform(({ obj, key }) => moment(obj[key]).set('hour', 0).set('minutes', 0).set('seconds', 0).toDate())

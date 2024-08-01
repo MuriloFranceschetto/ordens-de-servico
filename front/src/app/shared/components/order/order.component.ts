@@ -72,7 +72,7 @@ export class OrderComponent implements OnInit {
     description: new FormControl(null, [Validators.required, Validators.maxLength(8000)]),
     datetimeIn: new FormControl(null, [Validators.required]),
     datetimeOut: new FormControl(null),
-    open: new FormControl(true, [Validators.required]),
+    closed: new FormControl(true, [Validators.required]),
     paymentStatus: new FormControl(PaymentStatus.NOT_PAID, [Validators.required]),
   });
 
@@ -91,10 +91,10 @@ export class OrderComponent implements OnInit {
 
     this.order$.set(plainToClass(Order, order));
 
-    let { title, description, datetimeIn, datetimeOut, open, paymentStatus, client } = this.order$();
+    let { title, description, datetimeIn, datetimeOut, closed, paymentStatus, client } = this.order$();
 
     this.formOrder.setValue({
-      title, description, datetimeIn, datetimeOut, open: !open, paymentStatus, client
+      title, description, datetimeIn, datetimeOut, closed, paymentStatus, client
     });
   }
 
@@ -155,7 +155,7 @@ interface IFormOrder {
   description: FormControl<string>;
   datetimeIn: FormControl<string>;
   datetimeOut: FormControl<string>;
-  open: FormControl<boolean>;
+  closed: FormControl<boolean>;
   paymentStatus: FormControl<number>;
   client: FormControl<IUser>;
 }

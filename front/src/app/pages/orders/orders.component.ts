@@ -1,8 +1,8 @@
-import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, shareReplay, Subject, switchMap, take, tap } from 'rxjs';
+import { debounceTime, merge, shareReplay, Subject, switchMap, take, tap } from 'rxjs';
 import colors from 'tailwindcss/colors';
 import { Router } from '@angular/router';
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { AfterViewInit, Component, inject, signal, viewChild, ViewChild } from '@angular/core';
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -38,11 +38,11 @@ const MATERIAL_MODULES = [
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss'
 })
-export class OrdersComponent implements AfterViewInit {
+export class OrdersComponent {
 
   public readonly colors = colors;
   public readonly onlyClients = [UserRole.Client];
-  public readonly columns: Array<keyof IOrder | 'actions'> = ['title', 'client', 'open', 'paymentStatus', 'datetimeOut', 'actions'];
+  public readonly columns: Array<keyof IOrder | 'actions'> = ['title', 'client', 'closed', 'paymentStatus', 'datetimeOut', 'actions'];
 
   private readonly ordersService = inject(OrdersService);
   private readonly router = inject(Router);
@@ -50,7 +50,7 @@ export class OrdersComponent implements AfterViewInit {
   public readonly paginator = viewChild.required(MatPaginator);
 
   public readonly formFilters = new FormGroup({
-    open: new FormControl<boolean>(null),
+    status: new FormControl<boolean>(false),
     payment_status: new FormControl<PaymentStatus>(null),
     client: new FormControl<IUser>(null),
     title: new FormControl<string>(null),
@@ -61,7 +61,7 @@ export class OrdersComponent implements AfterViewInit {
   public readonly loading = signal<boolean>(true);
 
   public readonly paginatorChanges$ = new Subject<void>();
-  private readonly searchOrdersOnInit$ = this.ordersService.getOrders().pipe(take(1));
+  private readonly searchOrdersOnInit$ = this.ordersService.getOrders({ status: false }).pipe(take(1));
 
   private searchOrdersOnFormChange$ = merge(
     this.paginatorChanges$,
@@ -74,7 +74,7 @@ export class OrdersComponent implements AfterViewInit {
       let formValue = this.formFilters.getRawValue();
       let queryParams: QueryParamsOrder = {
         title: formValue.title,
-        open: formValue.open,
+        status: formValue.status,
         payment_status: formValue.payment_status,
         client_id: formValue.client?.id,
         checkout_date_init: formValue.checkout_date_init,
@@ -85,11 +85,8 @@ export class OrdersComponent implements AfterViewInit {
       return this.ordersService.getOrders(queryParams).pipe(take(1))
     }),
   );
+
   public orders$ = merge(this.searchOrdersOnInit$, this.searchOrdersOnFormChange$).pipe(tap(() => this.loading.set(false)), shareReplay());
-
-  ngAfterViewInit(): void {
-
-  }
 
   openOrderForm(order?: IOrder) {
     this.router.navigate(['order', order?.id ?? 'new']);

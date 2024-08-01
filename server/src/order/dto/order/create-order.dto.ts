@@ -24,7 +24,7 @@ export class CreateOrderDTO {
 
     @IsNotEmpty({ message: 'The property open cannot be empty' })
     @IsBoolean({ message: 'The property open must be a boolean' })
-    open: boolean;
+    closed: boolean;
 
     @IsNotEmpty({ message: 'The property paymentStatus cannot be empty' })
     @IsEnum(PaymentStatus)

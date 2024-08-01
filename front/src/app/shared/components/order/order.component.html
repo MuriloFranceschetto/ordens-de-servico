@@ -10,7 +10,7 @@
             </button>
             <h1>{{ (isNew$() ? 'Nova' : 'Editar') + ' Ordem de Serviço' }}</h1>
 
-            <mat-slide-toggle color="primary" class="ml-4" formControlName="open" #checkOpen> 
+            <mat-slide-toggle color="primary" class="ml-4" formControlName="closed" #checkOpen> 
                 @if (checkOpen.checked) {
                     <my-chip [bgColor]="colors.green['300']" [color]="colors.green['700']">Concluído</my-chip>
                 } @else {
