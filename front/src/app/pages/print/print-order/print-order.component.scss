@@ -1,0 +1,44 @@
+@page {
+    size: A4;
+    margin: 10mm 5mm;
+}
+
+@media print {
+    body {
+        background-color: white;
+    }
+    table > table > tr {page-break-inside: avoid;}
+}
+
+table {
+    border: 1px solid black;
+    width: 100%;
+    border-collapse: collapse;
+    word-break: break-all;
+    
+    th {
+        background: rgb(67, 67, 67);
+        color: white;
+    }
+    
+    td:has(table) {
+        padding: 0;
+    }
+    
+    table {
+        border: none;
+        td {
+            border: 1px solid gray;
+        }
+        th {
+            background: rgb(234, 234, 234);
+            color: rgb(21, 21, 21);
+        }
+    }
+}
+
+td, th {
+    padding: 2px 5px;
+    text-align: left;
+}
+

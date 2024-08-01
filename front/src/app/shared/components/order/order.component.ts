@@ -94,7 +94,7 @@ export class OrderComponent implements OnInit {
     let { title, description, datetimeIn, datetimeOut, open, paymentStatus, client } = this.order$();
 
     this.formOrder.setValue({
-      title, description, datetimeIn, datetimeOut, open, paymentStatus, client
+      title, description, datetimeIn, datetimeOut, open: !open, paymentStatus, client
     });
   }
 
@@ -120,6 +120,13 @@ export class OrderComponent implements OnInit {
       this.router.navigate(['order', this.order$().id]);
     }
     this.getOrder();
+  }
+
+  openPrintOrderNewTab() {
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree([`/print/order/${this.order$().id}`])
+    );
+    window.open(url, '_blank');
   }
 
   setTodayToFormField(formControlName: 'datetimeIn' | 'datetimeOut') {
