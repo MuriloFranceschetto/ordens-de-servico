@@ -47,9 +47,19 @@
     <section class="flex justify-between gap-2">
         <div>
             @if (dialogData?.id) {
-                <button mat-stroked-button class="w-52" color="warn" (click)="deleteUser()"> Excluir </button>
+                <button mat-stroked-button class="w-52" color="warn" (click)="deleteUser()" [disabled]="loadingDelete() || loadingSave()"> 
+                    Excluir
+                    @if (loadingDelete()) {
+                        <app-loading-spinner></app-loading-spinner>
+                    }  
+                </button>
             }
         </div>
-        <button mat-raised-button class="w-52" color="primary" (click)="registerUser()" [disabled]="formUser.invalid"> Salvar </button>
+        <button mat-raised-button class="w-52" color="primary" (click)="registerUser()" [disabled]="loadingDelete() || loadingSave() || formUser.invalid"> 
+            Salvar
+            @if (loadingSave()) {
+                <app-loading-spinner></app-loading-spinner>
+            } 
+        </button>
     </section>
 </div>

@@ -1,9 +1,9 @@
-import { filter, switchMap, take } from 'rxjs';
+import { filter, switchMap, take, tap } from 'rxjs';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -14,11 +14,12 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angu
 import { UsersService } from '../../services/users.service';
 import { IUser, UserRole, USER_ROLES_OPTIONS } from '../../models/User';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
+import { LoadingSpinnerComponent } from "../loading-spinner/loading-spinner.component";
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [ReactiveFormsModule, MatInputModule, MatSelectModule, MatCheckboxModule, CurrencyMaskModule, MatButtonModule, MatIconModule, MatDialogModule],
+  imports: [ReactiveFormsModule, MatInputModule, MatSelectModule, MatCheckboxModule, CurrencyMaskModule, MatButtonModule, MatIconModule, MatDialogModule, LoadingSpinnerComponent],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
 })
@@ -40,6 +41,9 @@ export class UserComponent implements OnInit {
     pricePerHour: new FormControl<number>(null),
     active: new FormControl<boolean>(true),
   });
+
+  public loadingSave = signal<boolean>(false);
+  public loadingDelete = signal<boolean>(false);
 
   constructor() {
     this.formUser.controls.roles.valueChanges
@@ -108,11 +112,15 @@ export class UserComponent implements OnInit {
       this.formUser.markAllAsTouched();
       return;
     }
-
+    this.loadingSave.set(true);
     this.saveMethod
       .pipe(take(1))
       .subscribe({
         next: () => this.dialogRef.close(true),
+        error: (e) => {
+          this.loadingSave.set(false);
+          throw e;
+        }
       })
   }
 
@@ -128,11 +136,15 @@ export class UserComponent implements OnInit {
       .afterClosed()
       .pipe(
         filter((response) => !!response),
+        tap(() => this.loadingDelete.set(true)),
         switchMap(() => this.userService.deleteUser(this.dialogData.id)),
       )
       .subscribe({
         next: () => this.dialogRef.close(true),
-        error: (err) => { throw err },
+        error: (err) => {
+          this.loadingDelete.set(false);
+          throw err
+        },
       });
   }
 

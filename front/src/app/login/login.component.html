@@ -1,16 +1,22 @@
 
 <section class="flex flex-col justify-center items-center" [formGroup]="form">
-
+    
     <mat-form-field class="w-[500px]">
         <mat-label>E-mail</mat-label>
         <input matInput formControlName="email" type="email" autocomplete="email">
     </mat-form-field>
-
+    
     <mat-form-field class="w-[500px]">
         <mat-label>Senha</mat-label>
         <input matInput formControlName="password" type="password" autocomplete="current-password">
     </mat-form-field>
     
-    <button color="accent" mat-raised-button [disabled]="loading() || form.invalid" (click)="login()"> Entrar </button>
-    
+    <button color="accent" mat-raised-button 
+        [disabled]="loading() || form.invalid" (click)="login()">
+        Entrar 
+        @if (loading()) {
+            <app-loading-spinner></app-loading-spinner>
+        }
+    </button>
+
 </section>

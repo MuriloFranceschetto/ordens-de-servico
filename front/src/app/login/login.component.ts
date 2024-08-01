@@ -4,14 +4,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../shared/services/auth.service';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { LoadingSpinnerComponent } from "../shared/components/loading-spinner/loading-spinner.component";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule],
+  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, LoadingSpinnerComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   host: {
@@ -33,10 +33,8 @@ export class LoginComponent {
 
   login() {
     let { email, password } = this.form.getRawValue();
+    this.loading.set(true);
     this.authService.login(email, password)
-      .pipe(
-        tap(() => this.loading.set(true))
-      )
       .subscribe({
         next: ({ access_token }) => {
           this.authService.setTokenToLocalStorage(access_token);
