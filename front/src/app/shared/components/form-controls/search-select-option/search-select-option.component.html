@@ -1,9 +1,14 @@
 <mat-option disabled class="search-option">
+
     <mat-form-field appearance="fill" subscriptSizing="dynamic" class="flex-1">
         <span matTextPrefix>🔎&#160;</span>
         <input matInput id="search" [formControl]="searchControl()" type="text" placeholder="Digite para buscar..." (keydown.space)="$event.stopPropagation()">
     </mat-form-field>
-    <button mat-icon-button>
-        <mat-icon color="accent" matTooltip="Criar" (click)="onNewClick.emit()">add</mat-icon>
-    </button>
+
+    @if (showCreationBtn()) {
+        <button mat-icon-button>
+            <mat-icon color="accent" matTooltip="Criar" (click)="onNewClick.emit()">add</mat-icon>
+        </button>
+    }
+
 </mat-option>

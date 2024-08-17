@@ -17,15 +17,9 @@ export class UsersService {
   public FN_COMPARE_WITH_USERS = (clientA: IUser, clientB: IUser) => clientA?.id === clientB?.id;
 
   // Return a maximum length of 30 registers 
-  public getUsersWithFilter(config?: ParamsSearchUsers) {
-    let params = this.utils.removeUndefineds(config);
-    return this.http.get<IUser[]>(this.API_PATH, { params: { ...params } });
-  }
-
-  public getAllUsersPaginated(page: number = 0, limit: number = 10) {
-    return this.http.get<{ users: IUser[], total: number }>(`${this.API_PATH}/page`, {
-      params: { page, limit }
-    });
+  public getUsers(config?: ParamsSearchUsers) {
+    let params: Partial<ParamsSearchUsers> = this.utils.removeUndefineds(config);
+    return this.http.get<{ users: IUser[], total: number }>(this.API_PATH, { params: { ...params } });
   }
 
   public getUser(id: string) {
@@ -49,4 +43,7 @@ export class UsersService {
 interface ParamsSearchUsers {
   name?: string,
   roles?: Array<UserRole>,
+  page?: number;
+  limit?: number;
+  show_inactives?: boolean;
 }

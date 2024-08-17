@@ -30,6 +30,7 @@ export class UserSelectComponent implements OnInit, OnDestroy {
   public readonly optinal = input<boolean>();
   public readonly roles = input<UserRole[]>();
   public readonly subscriptSizing = input<'dynamic' | 'fixed'>();
+  public readonly showCreationBtn = input<boolean>(false);
 
   // ----- INJECTIONS ------
   private readonly usersService = inject(UsersService);
@@ -54,8 +55,9 @@ export class UserSelectComponent implements OnInit, OnDestroy {
       debounceTime(500),
       filter((value) => !!value),
       switchMap((searchValue) => {
-        return this.usersService.getUsersWithFilter({ name: searchValue, roles: this.roles() }).pipe(take(1))
+        return this.usersService.getUsers({ name: searchValue, roles: this.roles() }).pipe(take(1))
       }),
+      map((response) => response.users),
       shareReplay(),
     );
   public currentValueForm = signal<IUser>(null);

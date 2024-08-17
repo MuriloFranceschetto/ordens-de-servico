@@ -1,52 +1,47 @@
 import { randomUUID } from 'crypto';
 import { Repository, UpdateResult } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserEntity } from './user.entity';
-import { ListUserDto } from './dto/UserList.dto';
-import { UpdateUserDto } from './dto/UpdateUser.dto';
-import { CreateUserDto } from './dto/CreateUser.dto';
+import { ListUserDto } from './dto/user-list.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { plainToClass } from 'class-transformer';
 import { UserRole } from './user-role';
+import { QueryParamsUserDto } from './dto/query-params-user.dto';
+import { HashingService } from 'src/globals/services/hashing.service';
 
 @Injectable()
 export class UserService {
 
     constructor(
         @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
+        private hashingService: HashingService,
     ) { }
 
-    async listUsers(name: string, roles: UserRole | Array<UserRole>) {
+    async listUsers(queryParams: Partial<QueryParamsUserDto>) {
+
         let query = this.userRepository
             .createQueryBuilder('user')
-            .where('user.active = true')
-            .limit(30);
+            .skip(queryParams.page * queryParams.limit)
+            .take(queryParams.limit);
 
-        if (name) {
-            query = query.andWhere('user.name ILIKE :name', { name: `%${name}%` });
+        if (!queryParams.show_inactives) {
+            query.andWhere('user.active = true');
         }
 
-        if (roles) {
-            if (Array.isArray(roles)) {
-                query = query.andWhere("user.roles && :roles", { roles });
-            } else {
-                query = query.andWhere(":roles = ANY(user.roles)", { roles });
-            }
+        if (queryParams.name) {
+            query.andWhere('user.name ILIKE :name', { name: `%${queryParams.name}%` });
         }
-        let users = await query.getMany();
-        return users.map((user) => plainToClass(ListUserDto, user));
-    }
 
-    async listPaginatedUsers(page: number = 0, limit: number = 10) {
-        let result: [UserEntity[], number] = await this.userRepository.findAndCount({
-            order: { id: 'ASC' },
-            skip: (page * limit),
-            take: limit,
-        });
+        if (queryParams?.roles?.length) {
+            query.andWhere("user.roles && :roles", { roles: queryParams.roles });
+        }
+        let [users, count] = await query.getManyAndCount();
         return {
-            users: result[0].map((user) => plainToClass(ListUserDto, user)),
-            total: result[1],
+            users: users.map((user) => plainToClass(ListUserDto, user)),
+            total: count,
         }
     }
 
@@ -90,11 +85,15 @@ export class UserService {
         const userEntity = new UserEntity();
         userEntity.name = userData.name;
         userEntity.email = userData.email;
-        userEntity.password = userData.password;
         userEntity.roles = userData.roles;
         userEntity.pricePerHour = userData.pricePerHour;
         userEntity.active = userData.active;
         userEntity.id = randomUUID();
+
+        const [salt, hashPassword] = this.hashingService.generatePasswordHash(userData.password);
+        userEntity.salt = salt;
+        userEntity.password = hashPassword;
+
         await this.userRepository.save(userEntity);
         return userEntity;
     }
@@ -107,7 +106,9 @@ export class UserService {
         updateUserEntity.active = userData.active;
         updateUserEntity.pricePerHour = userData.pricePerHour;
         if (userData.password) {
-            updateUserEntity.password = userData.password;
+            const [salt, hashPassword] = this.hashingService.generatePasswordHash(userData.password);
+            updateUserEntity.salt = salt;
+            updateUserEntity.password = hashPassword;
         } else {
             delete updateUserEntity.password;
         }

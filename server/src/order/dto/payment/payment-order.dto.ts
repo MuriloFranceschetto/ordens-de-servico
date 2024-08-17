@@ -1,8 +1,8 @@
 import { PaymentType } from "../../enums/paymentType";
 import { Expose, Type } from "class-transformer";
-import { ListUserDto } from "src/user/dto/UserList.dto";
 import { ListOrderDto } from "../order/list-order.dto";
 import { IsEnum } from "class-validator";
+import { ListUserDto } from "src/user/dto/user-list.dto";
 
 export class PaymentOrderDto {
 

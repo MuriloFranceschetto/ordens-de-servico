@@ -9,8 +9,8 @@ import { MockType } from "test/mock-type";
 import { UserEntity } from "./user.entity";
 import { UserService } from "./user.service";
 import { UserController } from "./user.controller";
-import { CreateUserDto } from "./dto/CreateUser.dto";
-import { UpdateUserDto } from "./dto/UpdateUser.dto";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
 import { mockRepositoryFactory } from "../../test/test-helper";
 
 const clientUser: UserEntity = {
@@ -55,16 +55,6 @@ describe('UserService', () => {
 
         userService = moduleRef.get<UserService>(UserService);
         repositoryMock = moduleRef.get(getRepositoryToken(UserEntity));
-    });
-
-    it('should get list with paginated users', async () => {
-        const users = [clientUser];
-        repositoryMock.findAndCount.mockReturnValue([users, users.length]);
-        expect(await userService.listPaginatedUsers()).toEqual({
-            total: users.length,
-            users,
-        });
-        expect(repositoryMock.findAndCount).toHaveBeenCalled();
     });
 
     it('should find a user by ID', async () => {

@@ -8,7 +8,7 @@ export interface IOrder {
     description: string;
     datetimeIn: string;
     datetimeOut: string;
-    open: boolean;
+    closed: boolean;
     paymentStatus: PaymentStatus;
     client: IUser;
     payments: IPaymentOrder[];
@@ -21,7 +21,7 @@ export class Order implements IOrder {
     description: string;
     datetimeIn: string;
     datetimeOut: string;
-    open: boolean;
+    closed: boolean;
     paymentStatus: PaymentStatus;
     client: IUser;
 

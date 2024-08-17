@@ -6,7 +6,7 @@ import { Component, input } from '@angular/core';
   standalone: true,
   imports: [NgStyle, NgClass],
   templateUrl: './my-chip.component.html',
-  styleUrl: './my-chip.component.scss'
+  styleUrl: './my-chip.component.scss',
 })
 export class MyChipComponent {
   bgColor = input();

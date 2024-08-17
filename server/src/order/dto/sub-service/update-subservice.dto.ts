@@ -2,8 +2,8 @@ import { Type } from "class-transformer";
 import { IsEnum, IsNotEmpty, IsUUID } from "class-validator";
 import { EnvironmentType } from "src/order/enums/environmentType";
 import { ListSubserviceDto } from "src/subservice/dto/list-subservice.dto";
-import { ListUserDto } from "src/user/dto/UserList.dto";
 import { ListOrderDto } from "../order/list-order.dto";
+import { ListUserDto } from "src/user/dto/user-list.dto";
 
 export class UpdateSubserviceOrderDto {
 

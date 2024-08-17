@@ -38,14 +38,14 @@ export class OrderService {
             .skip(page * limit)
             .take(limit);
 
-        if (filterParams?.open) {
-            query.andWhere('order.open = :open', { open: filterParams.open });
+        if (filterParams?.status !== null) {
+            query.andWhere('order.closed = :status', { status: filterParams.status });
         }
         if (filterParams?.title) {
             query.andWhere('order.title ILIKE :title', { title: `%${filterParams.title}%` });
         }
-        if (filterParams?.payment_status !== undefined) {
-            query.andWhere('order.paymentStatus = :paymentStatus', { paymentStatus: filterParams.payment_status });
+        if (filterParams?.payment_status?.length) {
+            query.andWhere("order.paymentStatus IN(:...paymentStatus)", { paymentStatus: filterParams.payment_status });
         }
         if (filterParams?.checkout_date_init) {
             query.andWhere('order.datetimeOut >= :checkoutDateInit', { checkoutDateInit: filterParams?.checkout_date_init })

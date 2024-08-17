@@ -22,8 +22,8 @@ export class OrderEntity {
     @Column({ name: 'datetime_out', type: 'timestamptz' })
     datetimeOut: Date;
 
-    @Column({ name: 'open', type: 'boolean' })
-    open: boolean;
+    @Column({ name: 'closed', type: 'boolean', nullable: true })
+    closed: boolean;
 
     @Column({ name: 'payment_status', type: 'enum', enum: PaymentStatus })
     paymentStatus: PaymentStatus;

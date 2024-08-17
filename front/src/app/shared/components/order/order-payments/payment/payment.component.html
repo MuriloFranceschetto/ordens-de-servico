@@ -22,7 +22,7 @@
     
     <form [formGroup]="form" class="flex flex-col">
 
-        <app-user-select ngDefaultControl [formGroup]="form" formControlName="payer" [roles]="onlyPayers">
+        <app-user-select [showCreationBtn]="true" ngDefaultControl [formGroup]="form" formControlName="payer" [roles]="onlyPayers">
             <span label>Pagador</span>
         </app-user-select>
         

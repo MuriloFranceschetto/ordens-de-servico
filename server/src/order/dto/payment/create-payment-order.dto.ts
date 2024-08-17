@@ -1,8 +1,8 @@
 import { IsEnum, IsNotEmpty } from "class-validator";
 import { PaymentType } from "src/order/enums/paymentType";
-import { ListUserDto } from "src/user/dto/UserList.dto";
 import { ListOrderDto } from "../order/list-order.dto";
 import { Type } from "class-transformer";
+import { ListUserDto } from "src/user/dto/user-list.dto";
 
 export class CreatePaymentOrderDto {
 

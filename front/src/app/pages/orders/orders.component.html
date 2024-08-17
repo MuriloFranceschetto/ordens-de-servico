@@ -11,6 +11,18 @@
 </div>
 
 <div class="flex gap-2 w-full" [formGroup]="formFilters">
+
+    <mat-form-field class="basis-1/5">
+        <mat-label> Status da ordem </mat-label>
+        <mat-select formControlName="status" #selectStatus>
+            <mat-option [value]="null"> Ambos </mat-option>
+            <mat-option [value]="false"> <my-chip [bgColor]="colors.blue['300']" [color]="colors.blue['600']">Em Andamento</my-chip> </mat-option>
+            <mat-option [value]="true"> <my-chip [bgColor]="colors.green['300']" [color]="colors.green['700']">Concluídos</my-chip> </mat-option>
+        </mat-select>
+        @if (selectStatus.value !== null) {
+            <mat-icon matSuffix color="warn" class="cursor-pointer" type="button" (click)="$event.stopPropagation(); clear('status')"> close </mat-icon>
+        }
+    </mat-form-field>
     
     <mat-form-field class="basis-1/5">
         <mat-label>Título</mat-label>
@@ -23,7 +35,7 @@
     
     <mat-form-field class="basis-1/5">
         <mat-label> Status de Pagamento </mat-label>
-        <mat-select formControlName="payment_status" #selectPayment>
+        <mat-select formControlName="payment_status" multiple #selectPayment>
             @for (status of [0, 1, 2]; track $index) {
                 <mat-option [value]="status">
                     <my-chip [bgColor]="(status | paymentStatus).color['300']" [color]="(status | paymentStatus).color['700']">
@@ -67,13 +79,13 @@
         <td mat-cell *matCellDef="let order"> {{ order?.client?.name }} </td>
     </ng-container>
     
-    <ng-container matColumnDef="open">
+    <ng-container matColumnDef="closed">
         <th mat-header-cell *matHeaderCellDef>Status do serviço</th>
         <td mat-cell *matCellDef="let order">
-            @if (order.open) {
-                <my-chip [bgColor]="colors.blue['300']" [color]="colors.blue['600']">Em Andamento</my-chip>
-            } @else {
+            @if (order.closed) {
                 <my-chip [bgColor]="colors.green['300']" [color]="colors.green['700']">Concluído</my-chip>
+            } @else {
+                <my-chip [bgColor]="colors.blue['300']" [color]="colors.blue['600']">Em Andamento</my-chip>
             }
         </td>
     </ng-container>
@@ -89,7 +101,7 @@
     
     <ng-container matColumnDef="datetimeOut">
         <th mat-header-cell *matHeaderCellDef> Data de saída </th>
-        <td mat-cell *matCellDef="let order"> {{ order?.datetimeOut | date : "dd MMM yyyy - hh:mm" }} </td>
+        <td mat-cell *matCellDef="let order"> {{ order?.datetimeOut | date : "dd MMM yyyy - HH:mm" }} </td>
     </ng-container>
     
     <ng-container matColumnDef="actions">

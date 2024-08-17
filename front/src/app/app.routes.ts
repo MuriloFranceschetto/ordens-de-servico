@@ -11,7 +11,6 @@ export const routes: Routes = [
             {
                 path: 'registrations',
                 loadComponent: () => import('./pages/registrations/registrations.component').then(c => c.RegistrationsComponent),
-                canActivate: [isAuthenticatedGuard],
             },
             {
                 path: 'users',
@@ -34,6 +33,17 @@ export const routes: Routes = [
     {
         path: "login",
         loadComponent: () => import('./login/login.component').then(l => l.LoginComponent)
+    },
+    {
+        path: 'print',
+        canActivate: [isAuthenticatedGuard],
+        canActivateChild: [isAuthenticatedGuard],
+        children: [
+            {
+                path: 'order/:id',
+                loadComponent: () => import('./pages/print/print-order/print-order.component').then(c => c.PrintOrderComponent),
+            }
+        ]
     },
     {
         path: '**',

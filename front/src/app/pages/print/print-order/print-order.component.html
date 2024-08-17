@@ -1,0 +1,50 @@
+
+@if ((order$ | async); as order) {
+    <table>
+        
+        <tr><th colspan="2"> Cliente </th></tr>
+        <tr><td colspan="2"> {{ order?.client?.name }} </td></tr>
+        
+        <tr><th colspan="2"> Título </th></tr> 
+        <tr><td colspan="2"> {{ order?.title }} </td></tr>
+        
+        <tr>
+            <th> Data de entrada </th>
+            <th> Data de saída </th>
+        </tr>
+        <tr>
+            <td> {{ order?.datetimeIn | date:'dd/MM/yyyy HH:mm' }} </td>
+            <td> {{ order?.datetimeOut | date:'dd/MM/yyyy HH:mm' }} </td>
+        </tr>
+        
+        <tr><th colspan="2"> Descrição </th></tr>
+        <tr><td colspan="2" class="text-12"> {{ order?.description }} </td></tr>
+        
+        <tr><th colspan="2"> Serviços </th></tr>
+        <tr>
+            <td colspan="2">
+                <table>
+                    <tr>
+                        <th>Serviço</th> 
+                        <th>Quantidade</th>
+                        <th>Valor</th>
+                        <th>Mecânico</th>
+                    </tr>
+                    @for (subservice of order.subservices; track $index) {
+                        <tr>
+                            <td> {{ subservice.subservice.name }} </td>
+                            <td> {{ subservice.quantity }} </td>
+                            <td> {{ subservice.amount | currency }} </td>
+                            <td> {{ subservice.worker.name }} </td>
+                        </tr>
+                    }
+                    <tr>
+                        <th colspan="2">Total:</th>
+                        <th colspan="2"> {{ totalSubservices$ | async | currency }} </th>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        
+    </table>
+}
