@@ -47,7 +47,7 @@ $my-custom-level: mat.m2-define-typography-level(
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: 'Inter', sans-serif; background-color: rgb(195, 195, 195) }
+body { margin: 0; font-family: 'Roboto', sans-serif; background-color: rgb(195, 195, 195) }
 
 @tailwind base;
 @tailwind components;

@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
 import { Repository, UpdateResult } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserEntity } from './user.entity';
@@ -10,12 +10,14 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { plainToClass } from 'class-transformer';
 import { UserRole } from './user-role';
 import { QueryParamsUserDto } from './dto/query-params-user.dto';
+import { HashingService } from 'src/globals/services/hashing.service';
 
 @Injectable()
 export class UserService {
 
     constructor(
         @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
+        private hashingService: HashingService,
     ) { }
 
     async listUsers(queryParams: Partial<QueryParamsUserDto>) {
@@ -83,11 +85,15 @@ export class UserService {
         const userEntity = new UserEntity();
         userEntity.name = userData.name;
         userEntity.email = userData.email;
-        userEntity.password = userData.password;
         userEntity.roles = userData.roles;
         userEntity.pricePerHour = userData.pricePerHour;
         userEntity.active = userData.active;
         userEntity.id = randomUUID();
+
+        const [salt, hashPassword] = this.hashingService.generatePasswordHash(userData.password);
+        userEntity.salt = salt;
+        userEntity.password = hashPassword;
+
         await this.userRepository.save(userEntity);
         return userEntity;
     }
@@ -100,7 +106,9 @@ export class UserService {
         updateUserEntity.active = userData.active;
         updateUserEntity.pricePerHour = userData.pricePerHour;
         if (userData.password) {
-            updateUserEntity.password = userData.password;
+            const [salt, hashPassword] = this.hashingService.generatePasswordHash(userData.password);
+            updateUserEntity.salt = salt;
+            updateUserEntity.password = hashPassword;
         } else {
             delete updateUserEntity.password;
         }
