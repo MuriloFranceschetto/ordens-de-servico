@@ -37,7 +37,7 @@ services:
     image: front
     container_name: front
     ports:
-      - 4200:80
+      - 80:80
     depends_on:
       - server
     networks:
