@@ -1,16 +1,15 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
-import { ListUserDto } from './dto/user-list.dto';
+import { plainToClass, plainToInstance } from 'class-transformer';
+import { QueryParamsUserDto } from './dto/query-params-user.dto';
+import { ResponseUserDto } from './dto/response-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserService } from './user.service';
-import { plainToClass, plainToInstance } from 'class-transformer';
-import { ResponseUserDto } from './dto/response-user.dto';
-import { UserRole } from './user-role';
 import { AuthGuard } from 'src/guards/auth.guard';
-import { QueryParamsUserDto } from './dto/query-params-user.dto';
+import { ListUserDto } from './dto/user-list.dto';
+import { UserService } from './user.service';
 
 @Controller('/api/users')
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 export class UserController {
 
     constructor(
@@ -41,7 +40,7 @@ export class UserController {
         const userEntity = await this.userService.createUser(userData);
         return {
             user: plainToClass(ListUserDto, userEntity),
-            message: 'Successfull user creation!'
+            message: 'Successfully user creation!'
         };
     }
 
@@ -49,7 +48,7 @@ export class UserController {
     async updateUser(@Param('id') id: string, @Body() userData: UpdateUserDto) {
         await this.userService.updateUser(id, userData);
         return {
-            message: 'Successfull user update!'
+            message: 'Successfully user update!'
         };
     }
 
@@ -58,7 +57,7 @@ export class UserController {
         let deleteResult = await this.userService.deleteUser(id);
         return {
             deleteResult,
-            message: 'Successfull user delete!'
+            message: 'Successfully user delete!'
         };
     }
 

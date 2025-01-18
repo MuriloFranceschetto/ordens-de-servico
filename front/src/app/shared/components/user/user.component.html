@@ -1,6 +1,5 @@
-
 <div class="p-6" [formGroup]="formUser">
-    
+
     <div class="flex justify-between items-center">
         <h1 class="text-2xl flex items-center">
             <button mat-icon-button matDialogClose>
@@ -8,58 +7,65 @@
             </button>
             {{ !!dialogData ? 'Editar Usuário' : 'Novo Usuário' }}
         </h1>
-        <mat-checkbox formControlName="active"> Ativo </mat-checkbox>
+        <mat-checkbox formControlName="active"> Ativo</mat-checkbox>
     </div>
-    
+
     <form class="flex flex-col">
-        
+
         <mat-form-field>
             <mat-label>Nome</mat-label>
             <input matInput formControlName="name">
         </mat-form-field>
-        
+
         <mat-form-field>
-            <mat-label> Tipos </mat-label>
+            <mat-label> Tipos</mat-label>
             <mat-select multiple formControlName="roles">
                 @for (opt of rolesOptions; track opt.value) {
-                    <mat-option [value]="opt.value"> {{ opt.label }} </mat-option>
+                    <mat-option [value]="opt.value"> {{ opt.label }}</mat-option>
                 }
             </mat-select>
         </mat-form-field>
-        
+
         <mat-form-field>
             <mat-label>E-mail</mat-label>
             <input matInput formControlName="email">
         </mat-form-field>
-        
+
+        <mat-form-field>
+            <mat-label>Telefone</mat-label>
+            <input matInput type="tel" formControlName="phone">
+        </mat-form-field>
+
         <mat-form-field>
             <mat-label>Senha</mat-label>
             <input matInput formControlName="password">
         </mat-form-field>
-        
+
         <mat-form-field>
             <mat-label>Valor da Hora</mat-label>
             <input currencyMask matInput formControlName="pricePerHour">
         </mat-form-field>
-        
+
     </form>
-    
+
     <section class="flex justify-between gap-2">
         <div>
             @if (dialogData?.id) {
-                <button mat-stroked-button class="w-52" color="warn" (click)="deleteUser()" [disabled]="loadingDelete() || loadingSave()"> 
+                <button mat-stroked-button class="w-52" color="warn" (click)="deleteUser()"
+                        [disabled]="loadingDelete() || loadingSave()">
                     Excluir
                     @if (loadingDelete()) {
                         <app-loading-spinner></app-loading-spinner>
-                    }  
+                    }
                 </button>
             }
         </div>
-        <button mat-raised-button class="w-52" color="primary" (click)="registerUser()" [disabled]="loadingDelete() || loadingSave() || formUser.invalid"> 
+        <button mat-raised-button class="w-52" color="primary" (click)="registerUser()"
+                [disabled]="loadingDelete() || loadingSave() || formUser.invalid">
             Salvar
             @if (loadingSave()) {
                 <app-loading-spinner></app-loading-spinner>
-            } 
+            }
         </button>
     </section>
 </div>

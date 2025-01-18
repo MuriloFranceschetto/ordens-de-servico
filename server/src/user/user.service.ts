@@ -85,6 +85,7 @@ export class UserService {
         const userEntity = new UserEntity();
         userEntity.name = userData.name;
         userEntity.email = userData.email;
+        userEntity.phone = userData.phone;
         userEntity.roles = userData.roles;
         userEntity.pricePerHour = userData.pricePerHour;
         userEntity.active = userData.active;
@@ -102,6 +103,7 @@ export class UserService {
         const updateUserEntity = new UserEntity();
         updateUserEntity.name = userData.name;
         updateUserEntity.email = userData.email;
+        updateUserEntity.phone = userData.phone;
         updateUserEntity.roles = userData.roles;
         updateUserEntity.active = userData.active;
         updateUserEntity.pricePerHour = userData.pricePerHour;

@@ -12,6 +12,7 @@ export interface ICompleteUser extends IUser {
     deletedAt: Date;
     updatedAt: Date;
     email: string;
+    phone: string;
 }
 
 export enum UserRole {

@@ -1,4 +1,13 @@
-import { IsArray, IsBoolean, IsEmail, IsNotEmpty, IsOptional, MinLength, ValidateIf } from "class-validator";
+import {
+    IsArray,
+    IsBoolean,
+    IsEmail,
+    IsMobilePhone,
+    IsNotEmpty,
+    IsOptional,
+    MinLength,
+    ValidateIf
+} from "class-validator";
 import { UserRole } from "../user-role";
 import { Expose } from "class-transformer";
 
@@ -14,6 +23,11 @@ export class UpdateUserDto {
     })
     @IsEmail(undefined, { message: 'E-mail incorreto para usuário do tipo "Administrador"' })
     email: string;
+
+    @Expose()
+    @IsOptional()
+    @IsMobilePhone("pt-BR", null, {message: `Telefone incorreto`})
+    phone: string;
 
     @Expose()
     @ValidateIf((obj: UpdateUserDto) => {
