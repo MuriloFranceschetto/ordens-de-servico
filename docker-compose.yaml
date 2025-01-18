@@ -1,22 +1,33 @@
-version: '3.5'
-
 services:
   postgres:
     image: postgres
+    container_name: my-postgres
     environment:
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: root
+      PGUSER: root
+      POSTGRES_PASSWORD: root
       PGDATA: /data/postgres
     volumes:
-      - postgres:/data/postgres
+      - postgres2:/data/postgres2
     ports:
       - "5432:5432"
-    networks:
-      - ordens-de-servico
-    restart: unless-stopped
+    restart: always
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: my-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${DB_ADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "8081:80"
+    depends_on:
+      - postgres
+    volumes:
+      - ./data/pgadmin:/var/lib/pgadmin
 
   server:
-    image: server
+    image: murilo1704/ordens-de-servico-server
     container_name: server
     ports:
       - "3000:3000"
@@ -34,7 +45,7 @@ services:
       - ordens-de-servico
 
   front:
-    image: front
+    image: murilo1704/ordens-de-servico-front
     container_name: front
     ports:
       - 80:80
@@ -43,21 +54,10 @@ services:
     networks:
       - ordens-de-servico
 
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${DB_ADMIN_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "8081:80"
-    depends_on:
-      - postgres
-    networks:
-      - ordens-de-servico
-
 networks:
   ordens-de-servico:
+    name: network-ordens-de-servico
     driver: bridge
 
 volumes:
-    postgres:
+  postgres2:

@@ -10,7 +10,7 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { QueryParamsUserDto } from './dto/query-params-user.dto';
 
 @Controller('/api/users')
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 export class UserController {
 
     constructor(

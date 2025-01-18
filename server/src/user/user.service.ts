@@ -90,9 +90,9 @@ export class UserService {
         userEntity.active = userData.active;
         userEntity.id = randomUUID();
 
-        const [salt, hashPassword] = this.hashingService.generatePasswordHash(userData.password);
-        userEntity.salt = salt;
-        userEntity.password = hashPassword;
+        // const [salt, hashPassword] = this.hashingService.generatePasswordHash(userData.password);
+        // userEntity.salt = salt;
+        userEntity.password = userData.password;
 
         await this.userRepository.save(userEntity);
         return userEntity;
@@ -106,9 +106,9 @@ export class UserService {
         updateUserEntity.active = userData.active;
         updateUserEntity.pricePerHour = userData.pricePerHour;
         if (userData.password) {
-            const [salt, hashPassword] = this.hashingService.generatePasswordHash(userData.password);
-            updateUserEntity.salt = salt;
-            updateUserEntity.password = hashPassword;
+            // const [salt, hashPassword] = this.hashingService.generatePasswordHash(userData.password);
+            // updateUserEntity.salt = salt;
+            updateUserEntity.password = userData.password;
         } else {
             delete updateUserEntity.password;
         }
