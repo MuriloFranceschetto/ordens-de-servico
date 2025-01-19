@@ -27,7 +27,7 @@ export class UserSelectComponent implements OnInit, OnDestroy {
   // ----- INPUTS ----------
   public readonly formGroup = input.required<FormGroup<any>>();
   public readonly formControlName = input.required<string>();
-  public readonly optinal = input<boolean>();
+  public readonly optional = input<boolean>(true);
   public readonly roles = input<UserRole[]>();
   public readonly subscriptSizing = input<'dynamic' | 'fixed'>();
   public readonly showCreationBtn = input<boolean>(false);

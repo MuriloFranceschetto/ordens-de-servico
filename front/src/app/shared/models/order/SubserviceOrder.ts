@@ -1,6 +1,6 @@
-import { IUser } from "../User";
-import { ISubservice } from "../subservice/ISubservice";
-import { IOrder } from "./Order";
+import {IUser} from "../User";
+import {ISubservice} from "../subservice/ISubservice";
+import {IOrder} from "./Order";
 
 export interface ISubserviceOrder {
     id: string;
@@ -28,7 +28,7 @@ export enum EnvironmentType {
 }
 
 export const ENVIRONMENT_OPTIONS: { label: string, value: EnvironmentType }[] = [
-    { label: 'Interno (Oficina)', value: EnvironmentType.INTERNAL },
-    { label: 'Externo (Campo)', value: EnvironmentType.EXTERNAL },
+    {label: 'Interno (Oficina)', value: EnvironmentType.INTERNAL},
+    {label: 'Externo (Campo)', value: EnvironmentType.EXTERNAL},
 ]
 

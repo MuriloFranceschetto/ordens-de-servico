@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
 import { IsEnum, IsNotEmpty } from "class-validator";
 
-import { EnvironmentType } from "src/order/enums/environmentType";
+import { EnvironmentType } from "src/order/enums/EnvironmentType";
 import { ListSubserviceDto } from "src/subservice/dto/list-subservice.dto";
 import { ListOrderDto } from "../order/list-order.dto";
 import { ListUserDto } from "src/user/dto/user-list.dto";

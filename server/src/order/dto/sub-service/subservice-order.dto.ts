@@ -1,5 +1,5 @@
 import { Expose, Type } from "class-transformer";
-import { EnvironmentType } from "src/order/enums/environmentType";
+import { EnvironmentType } from "src/order/enums/EnvironmentType";
 import { ListSubserviceDto } from "src/subservice/dto/list-subservice.dto";
 import { ListOrderDto } from "../order/list-order.dto";
 import { IsEnum } from "class-validator";

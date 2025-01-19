@@ -15,7 +15,7 @@ import { UpdatePaymentOrderDto } from "./dto/payment/update-payment-order.dto";
 import { CreateSubserviceOrderDto } from "./dto/sub-service/create-subservice.dto";
 import { UpdateSubserviceOrderDto } from "./dto/sub-service/update-subservice.dto";
 import { OrderSubserviceEntity } from "./entities/order-subservice.entity";
-import { PaymentStatus } from "./enums/paymentStatus";
+import { PaymentStatus } from "./enums/PaymentStatus";
 import { QueryParamsOrderDto } from "./dto/order/query-params-order.dto";
 
 @Injectable()
@@ -38,8 +38,8 @@ export class OrderService {
             .skip(page * limit)
             .take(limit);
 
-        if (filterParams?.status !== null) {
-            query.andWhere('order.closed = :status', { status: filterParams.status });
+        if (filterParams?.order_status?.length) {
+            query.andWhere('order.orderStatus IN(:...orderStatus)', { orderStatus: filterParams.order_status });
         }
         if (filterParams?.title) {
             query.andWhere('order.title ILIKE :title', { title: `%${filterParams.title}%` });
@@ -60,7 +60,7 @@ export class OrderService {
         let [orders, total] = await query.getManyAndCount();
         return {
             total,
-            orders: orders.map((order) => plainToClass(ListOrderDto, order))
+            orders: orders?.map((order) => plainToClass(ListOrderDto, order)) ?? []
         }
     }
 

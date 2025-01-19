@@ -1,9 +1,10 @@
-import { Transform } from "class-transformer";
-import { IsArray, IsBoolean, IsDate, IsEnum, IsOptional, IsString, IsUUID, ValidateIf } from "class-validator";
-import * as moment from "moment";
+import {Transform} from "class-transformer";
+import {IsArray, IsDate, IsEnum, IsOptional, IsString, IsUUID} from "class-validator";
+import moment from "moment";
 
-import { PaymentStatus } from "src/order/enums/paymentStatus";
-import { PaginationRequestDto } from "src/pipes/pagination-transform.pipe";
+import {PaymentStatus} from "src/order/enums/PaymentStatus";
+import {PaginationRequestDto} from "src/pipes/pagination-transform.pipe";
+import {OrderStatus} from "../../enums/OrderStatus";
 
 export class QueryParamsOrderDto extends PaginationRequestDto {
 
@@ -17,27 +18,33 @@ export class QueryParamsOrderDto extends PaginationRequestDto {
 
     @IsOptional()
     @IsArray()
-    @Transform(({ value }) => {
+    @Transform(({value}) => {
         if (!Array.isArray(value)) {
             value = [value]
         }
         return value.map(e => +e);
     })
-    @IsEnum(PaymentStatus, { each: true })
+    @IsEnum(PaymentStatus, {each: true})
     public readonly payment_status?: PaymentStatus[];
 
     @IsOptional()
-    @Transform(({ obj, key }) => obj[key] === 'true' ? true : obj[key] === 'false' ? false : null)
-    @IsBoolean()
-    public readonly status?: boolean = null;
+    @IsArray()
+    @Transform(({value}) => {
+        if (!Array.isArray(value)) {
+            value = [value]
+        }
+        return value;
+    })
+    @IsEnum(OrderStatus, {each: true})
+    public readonly order_status?: OrderStatus[];
 
     @IsOptional()
-    @Transform(({ obj, key }) => moment(obj[key]).set('hour', 0).set('minutes', 0).set('seconds', 0).toDate())
+    @Transform(({obj, key}) => moment(obj[key]).set('hour', 0).set('minutes', 0).set('seconds', 0).toDate())
     @IsDate()
     public readonly checkout_date_init: Date;
 
     @IsOptional()
-    @Transform(({ obj, key }) => moment(obj[key]).set('hour', 23).set('minutes', 59).set('seconds', 59).toDate())
+    @Transform(({obj, key}) => moment(obj[key]).set('hour', 23).set('minutes', 59).set('seconds', 59).toDate())
     @IsDate()
     public readonly checkout_date_end: Date;
 

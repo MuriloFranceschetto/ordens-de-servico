@@ -1,6 +1,7 @@
-import { Expose, Type } from "class-transformer";
-import { PaymentStatus } from "../../enums/paymentStatus";
-import { ListUserDto } from "../../../user/dto/user-list.dto";
+import {Expose, Type} from "class-transformer";
+import {PaymentStatus} from "../../enums/PaymentStatus";
+import {ListUserDto} from "../../../user/dto/user-list.dto";
+import {OrderStatus} from "../../enums/OrderStatus";
 
 export class ListOrderDto {
 
@@ -17,7 +18,7 @@ export class ListOrderDto {
     datetimeOut: Date;
 
     @Expose()
-    closed: boolean;
+    orderStatus: OrderStatus;
 
     @Expose()
     paymentStatus: PaymentStatus;

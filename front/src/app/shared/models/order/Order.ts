@@ -1,6 +1,6 @@
-import { IUser } from "../User";
-import { IPaymentOrder } from "./PaymentOrder";
-import { ISubserviceOrder, SubserviceOrder } from "./SubserviceOrder";
+import {IUser} from "../User";
+import {IPaymentOrder} from "./PaymentOrder";
+import {ISubserviceOrder, SubserviceOrder} from "./SubserviceOrder";
 
 export interface IOrder {
     id?: string;
@@ -8,7 +8,7 @@ export interface IOrder {
     description: string;
     datetimeIn: string;
     datetimeOut: string;
-    closed: boolean;
+    orderStatus: OrderStatus;
     paymentStatus: PaymentStatus;
     client: IUser;
     payments: IPaymentOrder[];
@@ -21,7 +21,7 @@ export class Order implements IOrder {
     description: string;
     datetimeIn: string;
     datetimeOut: string;
-    closed: boolean;
+    orderStatus: OrderStatus;
     paymentStatus: PaymentStatus;
     client: IUser;
 
@@ -33,4 +33,10 @@ export enum PaymentStatus {
     NOT_PAID,
     PARTIALLY_PAID,
     PAID,
+}
+
+export enum OrderStatus {
+    SCHEDULED = 'SCHEDULED',
+    ON_GOING = 'ON_GOING',
+    COMPLETED = 'COMPLETED',
 }

@@ -1,17 +1,30 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
-import { OrderService } from "./order.service";
-import { ListOrderDto } from "./dto/order/list-order.dto";
-import { plainToInstance } from "class-transformer";
-import { ResponseOrderDto } from "./dto/order/response-order.dto";
-import { PaymentOrderDto } from "./dto/payment/payment-order.dto";
-import { CreatePaymentOrderDto } from "./dto/payment/create-payment-order.dto";
-import { CreateOrderDTO } from "./dto/order/create-order.dto";
-import { UpdatePaymentOrderDto } from "./dto/payment/update-payment-order.dto";
-import { CreateSubserviceOrderDto } from "./dto/sub-service/create-subservice.dto";
-import { SubserviceOrderDTO } from "./dto/sub-service/subservice-order.dto";
-import { UpdateSubserviceOrderDto } from "./dto/sub-service/update-subservice.dto";
-import { QueryParamsOrderDto } from "./dto/order/query-params-order.dto";
-import { AuthGuard } from "src/guards/auth.guard";
+import {
+    BadRequestException,
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    Put,
+    Query,
+    UseGuards,
+    UsePipes,
+    ValidationPipe
+} from "@nestjs/common";
+import {OrderService} from "./order.service";
+import {ListOrderDto} from "./dto/order/list-order.dto";
+import {plainToInstance} from "class-transformer";
+import {ResponseOrderDto} from "./dto/order/response-order.dto";
+import {PaymentOrderDto} from "./dto/payment/payment-order.dto";
+import {CreatePaymentOrderDto} from "./dto/payment/create-payment-order.dto";
+import {CreateOrderDTO} from "./dto/order/create-order.dto";
+import {UpdatePaymentOrderDto} from "./dto/payment/update-payment-order.dto";
+import {CreateSubserviceOrderDto} from "./dto/sub-service/create-subservice.dto";
+import {SubserviceOrderDTO} from "./dto/sub-service/subservice-order.dto";
+import {UpdateSubserviceOrderDto} from "./dto/sub-service/update-subservice.dto";
+import {QueryParamsOrderDto} from "./dto/order/query-params-order.dto";
+import {AuthGuard} from "src/guards/auth.guard";
 
 @Controller('/api/orders')
 @UseGuards(AuthGuard)
@@ -19,12 +32,13 @@ export class OrderController {
 
     constructor(
         private orderService: OrderService,
-    ) { }
+    ) {
+    }
 
     @Get()
     @UsePipes(new ValidationPipe({
         transform: true,
-        transformOptions: { enableImplicitConversion: true },
+        transformOptions: {enableImplicitConversion: true},
         forbidNonWhitelisted: true,
     }))
     async getOrders(
@@ -53,7 +67,7 @@ export class OrderController {
             const order = await this.orderService.createOrder(orderData);
             return {
                 order: plainToInstance(ListOrderDto, order),
-                message: 'Successfull order creation!'
+                message: 'Successfully order creation!'
             };
         } catch (error) {
             throw new BadRequestException(error.message);
@@ -66,7 +80,7 @@ export class OrderController {
             const order = await this.orderService.updateOrder(orderData);
             return {
                 order: plainToInstance(ListOrderDto, order),
-                message: 'Successfull order update!'
+                message: 'Successfully order update!'
             };
         } catch (error) {
             throw new BadRequestException(error.message);
@@ -78,7 +92,7 @@ export class OrderController {
         let deleteResult = await this.orderService.deleteOrder(id);
         return {
             deleteResult,
-            message: 'Successfull order delete!'
+            message: 'Successfully order delete!'
         };
     }
 
@@ -88,7 +102,7 @@ export class OrderController {
             const payment = await this.orderService.createPayment(paymentData);
             return {
                 payment: plainToInstance(PaymentOrderDto, payment),
-                message: 'Successfull payment creation!'
+                message: 'Successfully payment creation!'
             };
         } catch (error) {
             throw new BadRequestException(error.message);
@@ -101,7 +115,7 @@ export class OrderController {
             const payment = await this.orderService.updatePayment(paymentData);
             return {
                 payment: plainToInstance(PaymentOrderDto, payment),
-                message: 'Successfull payment update!'
+                message: 'Successfully payment update!'
             };
         } catch (error) {
             throw new BadRequestException(error.message);
@@ -113,7 +127,7 @@ export class OrderController {
         let deleteResult = await this.orderService.deletePayment(idOrder, idPayment);
         return {
             deleteResult,
-            message: 'Successfull payment delete!'
+            message: 'Successfully payment delete!'
         };
     }
 
@@ -123,7 +137,7 @@ export class OrderController {
             const Subservice = await this.orderService.createSubservice(SubserviceData);
             return {
                 Subservice: plainToInstance(SubserviceOrderDTO, Subservice),
-                message: 'Successfull subservice creation!'
+                message: 'Successfully subservice creation!'
             };
         } catch (error) {
             throw new BadRequestException(error.message);
@@ -136,7 +150,7 @@ export class OrderController {
             const subservice = await this.orderService.updateSubservice(SubserviceData);
             return {
                 subservice: plainToInstance(SubserviceOrderDTO, subservice),
-                message: 'Successfull subservice creation!'
+                message: 'Successfully subservice creation!'
             };
         } catch (error) {
             throw new BadRequestException(error.message);
@@ -148,7 +162,7 @@ export class OrderController {
         let deleteResult = await this.orderService.deleteSubservice(idOrder, idSubservice);
         return {
             deleteResult,
-            message: 'Successfull Subservice delete!'
+            message: 'Successfully Subservice delete!'
         };
     }
 

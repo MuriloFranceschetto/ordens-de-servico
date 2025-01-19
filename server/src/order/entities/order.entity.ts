@@ -1,50 +1,65 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { PaymentStatus } from "../enums/paymentStatus";
-import { UserEntity } from "../../../src/user/user.entity";
-import { OrderPaymentEntity } from "./order-payment.entity";
-import { OrderSubserviceEntity } from "./order-subservice.entity";
+import {
+    Column,
+    CreateDateColumn,
+    DeleteDateColumn,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn
+} from "typeorm";
+import {PaymentStatus} from "../enums/PaymentStatus";
+import {UserEntity} from "../../user/user.entity";
+import {OrderPaymentEntity} from "./order-payment.entity";
+import {OrderSubserviceEntity} from "./order-subservice.entity";
+import {OrderStatus} from "../enums/OrderStatus";
 
-@Entity({ name: 'orders' })
+@Entity({name: 'orders'})
 export class OrderEntity {
 
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ name: 'title', length: 100 })
+    @Column({name: 'title', length: 100})
     title: string;
 
-    @Column({ name: 'description', length: 8000 })
+    @Column({name: 'description', length: 8000})
     description: string;
 
-    @Column({ name: 'datetime_in', type: 'timestamptz' })
+    @Column({name: 'datetime_in', type: 'timestamptz'})
     datetimeIn: Date;
 
-    @Column({ name: 'datetime_out', type: 'timestamptz' })
+    @Column({name: 'datetime_out', type: 'timestamptz'})
     datetimeOut: Date;
 
-    @Column({ name: 'closed', type: 'boolean', nullable: true })
-    closed: boolean;
+    @Column({name: 'order_status', type: 'enum', enum: OrderStatus})
+    orderStatus: OrderStatus;
 
-    @Column({ name: 'payment_status', type: 'enum', enum: PaymentStatus })
+    @Column({name: 'payment_status', type: 'enum', enum: PaymentStatus})
     paymentStatus: PaymentStatus;
 
-    @ManyToOne(() => UserEntity, user => user.id, { eager: true })
+    @ManyToOne(() => UserEntity, user => user.id, {eager: true})
     @JoinColumn()
     client: UserEntity;
 
-    @OneToMany(() => OrderPaymentEntity, payment => payment.order, { cascade: true, eager: true, nullable: true })
+    @OneToMany(() => OrderPaymentEntity, payment => payment.order, {cascade: true, eager: true, nullable: true})
     payments: OrderPaymentEntity[];
 
-    @OneToMany(() => OrderSubserviceEntity, subservice => subservice.order, { cascade: true, eager: true, nullable: true })
+    @OneToMany(() => OrderSubserviceEntity, subservice => subservice.order, {
+        cascade: true,
+        eager: true,
+        nullable: true
+    })
     subservices: OrderSubserviceEntity[];
 
-    @CreateDateColumn({ name: 'created_at' })
+    @CreateDateColumn({name: 'created_at'})
     createdAt: string;
 
-    @UpdateDateColumn({ name: 'updated_at' })
+    @UpdateDateColumn({name: 'updated_at'})
     updatedAt: string;
 
-    @DeleteDateColumn({ name: 'deleted_at' })
+    @DeleteDateColumn({name: 'deleted_at'})
     deletedAt: string;
 
 }
