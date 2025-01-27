@@ -24,7 +24,7 @@ import {CreateSubserviceOrderDto} from "./dto/sub-service/create-subservice.dto"
 import {SubserviceOrderDTO} from "./dto/sub-service/subservice-order.dto";
 import {UpdateSubserviceOrderDto} from "./dto/sub-service/update-subservice.dto";
 import {QueryParamsOrderDto} from "./dto/order/query-params-order.dto";
-import {AuthGuard} from "src/guards/auth.guard";
+import {AuthGuard} from "../shared/guards/auth.guard";
 
 @Controller('/api/orders')
 @UseGuards(AuthGuard)

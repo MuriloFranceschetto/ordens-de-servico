@@ -1,24 +1,23 @@
-import { randomUUID } from 'crypto';
-import { Repository, UpdateResult } from 'typeorm';
-import { Inject, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import {randomUUID} from 'crypto';
+import {Repository, UpdateResult} from 'typeorm';
+import {Injectable} from '@nestjs/common';
+import {InjectRepository} from '@nestjs/typeorm';
 
-import { UserEntity } from './user.entity';
-import { ListUserDto } from './dto/user-list.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { CreateUserDto } from './dto/create-user.dto';
-import { plainToClass } from 'class-transformer';
-import { UserRole } from './user-role';
-import { QueryParamsUserDto } from './dto/query-params-user.dto';
-import { HashingService } from 'src/globals/services/hashing.service';
+import {UserEntity} from './user.entity';
+import {ListUserDto} from './dto/user-list.dto';
+import {UpdateUserDto} from './dto/update-user.dto';
+import {CreateUserDto} from './dto/create-user.dto';
+import {plainToClass} from 'class-transformer';
+import {UserRole} from './user-role';
+import {QueryParamsUserDto} from './dto/query-params-user.dto';
 
 @Injectable()
 export class UserService {
 
     constructor(
         @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
-        private hashingService: HashingService,
-    ) { }
+    ) {
+    }
 
     async listUsers(queryParams: Partial<QueryParamsUserDto>) {
 
@@ -32,11 +31,11 @@ export class UserService {
         }
 
         if (queryParams.name) {
-            query.andWhere('user.name ILIKE :name', { name: `%${queryParams.name}%` });
+            query.andWhere('user.name ILIKE :name', {name: `%${queryParams.name}%`});
         }
 
         if (queryParams?.roles?.length) {
-            query.andWhere("user.roles && :roles", { roles: queryParams.roles });
+            query.andWhere("user.roles && :roles", {roles: queryParams.roles});
         }
         let [users, count] = await query.getManyAndCount();
         return {
@@ -86,6 +85,7 @@ export class UserService {
         userEntity.name = userData.name;
         userEntity.email = userData.email;
         userEntity.phone = userData.phone;
+        userEntity.address = userData.address;
         userEntity.roles = userData.roles;
         userEntity.pricePerHour = userData.pricePerHour;
         userEntity.active = userData.active;
@@ -104,9 +104,11 @@ export class UserService {
         updateUserEntity.name = userData.name;
         updateUserEntity.email = userData.email;
         updateUserEntity.phone = userData.phone;
+        updateUserEntity.address = userData.address;
         updateUserEntity.roles = userData.roles;
         updateUserEntity.active = userData.active;
         updateUserEntity.pricePerHour = userData.pricePerHour;
+
         if (userData.password) {
             // const [salt, hashPassword] = this.hashingService.generatePasswordHash(userData.password);
             // updateUserEntity.salt = salt;

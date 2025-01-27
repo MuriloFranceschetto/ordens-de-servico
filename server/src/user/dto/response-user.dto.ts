@@ -17,6 +17,9 @@ export class ResponseUserDto {
     phone: string;
 
     @Expose()
+    address: string;
+
+    @Expose()
     active: boolean;
 
     @IsCurrency()

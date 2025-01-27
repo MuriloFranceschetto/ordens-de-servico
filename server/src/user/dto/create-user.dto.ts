@@ -26,8 +26,12 @@ export class CreateUserDto {
 
     @Expose()
     @IsOptional()
-    // @IsMobilePhone("pt-BR", null, {message: `Telefone incorreto`})
+    @IsMobilePhone("pt-BR", null, {message: `Telefone incorreto`})
     phone: string;
+
+    @Expose()
+    @IsOptional()
+    address: string;
 
     @Expose()
     @ValidateIf((obj: CreateUserDto) => {

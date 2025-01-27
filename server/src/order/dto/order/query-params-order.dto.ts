@@ -3,8 +3,8 @@ import {IsArray, IsDate, IsEnum, IsOptional, IsString, IsUUID} from "class-valid
 import moment from "moment";
 
 import {PaymentStatus} from "src/order/enums/PaymentStatus";
-import {PaginationRequestDto} from "src/pipes/pagination-transform.pipe";
 import {OrderStatus} from "../../enums/OrderStatus";
+import {PaginationRequestDto} from "../../../shared/pipes/pagination-transform.pipe";
 
 export class QueryParamsOrderDto extends PaginationRequestDto {
 

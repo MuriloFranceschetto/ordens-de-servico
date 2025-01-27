@@ -90,7 +90,7 @@ export class UsersComponent {
         );
 
     async openUserForm(user?: IUser) {
-        this.dialog.open(UserComponent, {data: user})
+        this.dialog.open(UserComponent, {data: user, width: '1000px', maxWidth: '95svw'})
             .afterClosed()
             .subscribe((response) => {
                 if (!response) return;

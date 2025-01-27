@@ -1,12 +1,24 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
-import { plainToClass, plainToInstance } from 'class-transformer';
-import { QueryParamsUserDto } from './dto/query-params-user.dto';
-import { ResponseUserDto } from './dto/response-user.dto';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { ListUserDto } from './dto/user-list.dto';
-import { UserService } from './user.service';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    Put,
+    Query,
+    UseGuards,
+    UsePipes,
+    ValidationPipe
+} from '@nestjs/common';
+import {plainToClass, plainToInstance} from 'class-transformer';
+import {QueryParamsUserDto} from './dto/query-params-user.dto';
+import {ResponseUserDto} from './dto/response-user.dto';
+import {CreateUserDto} from './dto/create-user.dto';
+import {UpdateUserDto} from './dto/update-user.dto';
+import {ListUserDto} from './dto/user-list.dto';
+import {UserService} from './user.service';
+import {AuthGuard} from "../shared/guards/auth.guard";
 
 @Controller('/api/users')
 @UseGuards(AuthGuard)
@@ -20,7 +32,7 @@ export class UserController {
     @Get()
     @UsePipes(new ValidationPipe({
         transform: true,
-        transformOptions: { enableImplicitConversion: true },
+        transformOptions: {enableImplicitConversion: true},
         forbidNonWhitelisted: true,
     }))
     async getUsers(

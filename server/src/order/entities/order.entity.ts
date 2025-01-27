@@ -33,7 +33,7 @@ export class OrderEntity {
     @Column({name: 'datetime_out', type: 'timestamptz'})
     datetimeOut: Date;
 
-    @Column({name: 'order_status', type: 'enum', enum: OrderStatus}, {nullable: true})
+    @Column({name: 'order_status', type: 'enum', enum: OrderStatus})
     orderStatus: OrderStatus;
 
     @Column({name: 'payment_status', type: 'enum', enum: PaymentStatus})

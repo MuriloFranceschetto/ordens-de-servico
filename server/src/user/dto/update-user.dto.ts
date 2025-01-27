@@ -30,6 +30,10 @@ export class UpdateUserDto {
     phone: string;
 
     @Expose()
+    @IsOptional()
+    address: string;
+
+    @Expose()
     @ValidateIf((obj: UpdateUserDto) => {
         return obj.roles.includes(UserRole.Admin) && !!obj.password;
     })

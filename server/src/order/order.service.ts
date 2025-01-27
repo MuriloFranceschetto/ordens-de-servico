@@ -1,22 +1,22 @@
-import { randomUUID } from "crypto";
-import { Repository } from "typeorm";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Inject, Injectable } from "@nestjs/common";
-import { plainToClass } from "class-transformer";
+import {randomUUID} from "crypto";
+import {Repository} from "typeorm";
+import {InjectRepository} from "@nestjs/typeorm";
+import {Inject, Injectable} from "@nestjs/common";
+import {plainToClass} from "class-transformer";
 
-import { UserService } from "../../src/user/user.service";
-import { OrderEntity } from "./entities/order.entity";
-import { ListOrderDto } from "./dto/order/list-order.dto";
-import { CreateOrderDTO } from "./dto/order/create-order.dto";
-import { UpdateOrderDTO } from "./dto/order/update-order.dto";
-import { OrderPaymentEntity } from "./entities/order-payment.entity";
-import { CreatePaymentOrderDto } from "./dto/payment/create-payment-order.dto";
-import { UpdatePaymentOrderDto } from "./dto/payment/update-payment-order.dto";
-import { CreateSubserviceOrderDto } from "./dto/sub-service/create-subservice.dto";
-import { UpdateSubserviceOrderDto } from "./dto/sub-service/update-subservice.dto";
-import { OrderSubserviceEntity } from "./entities/order-subservice.entity";
-import { PaymentStatus } from "./enums/PaymentStatus";
-import { QueryParamsOrderDto } from "./dto/order/query-params-order.dto";
+import {OrderEntity} from "./entities/order.entity";
+import {ListOrderDto} from "./dto/order/list-order.dto";
+import {CreateOrderDTO} from "./dto/order/create-order.dto";
+import {UpdateOrderDTO} from "./dto/order/update-order.dto";
+import {OrderPaymentEntity} from "./entities/order-payment.entity";
+import {CreatePaymentOrderDto} from "./dto/payment/create-payment-order.dto";
+import {UpdatePaymentOrderDto} from "./dto/payment/update-payment-order.dto";
+import {CreateSubserviceOrderDto} from "./dto/sub-service/create-subservice.dto";
+import {UpdateSubserviceOrderDto} from "./dto/sub-service/update-subservice.dto";
+import {OrderSubserviceEntity} from "./entities/order-subservice.entity";
+import {PaymentStatus} from "./enums/PaymentStatus";
+import {QueryParamsOrderDto} from "./dto/order/query-params-order.dto";
+import {UserService} from "../user/user.service";
 
 @Injectable()
 export class OrderService {
@@ -26,11 +26,12 @@ export class OrderService {
         @InjectRepository(OrderPaymentEntity) private orderPaymentRepository: Repository<OrderPaymentEntity>,
         @InjectRepository(OrderSubserviceEntity) private orderSubserviceRepository: Repository<OrderSubserviceEntity>,
         @Inject(UserService) private userService: UserService,
-    ) { }
+    ) {
+    }
 
     public async listOrders(filterParams: QueryParamsOrderDto) {
 
-        const { page, limit } = filterParams;
+        const {page, limit} = filterParams;
 
         let query = this.orderRepository
             .createQueryBuilder('order')
@@ -39,22 +40,22 @@ export class OrderService {
             .take(limit);
 
         if (filterParams?.order_status?.length) {
-            query.andWhere('order.orderStatus IN(:...orderStatus)', { orderStatus: filterParams.order_status });
+            query.andWhere('order.orderStatus IN(:...orderStatus)', {orderStatus: filterParams.order_status});
         }
         if (filterParams?.title) {
-            query.andWhere('order.title ILIKE :title', { title: `%${filterParams.title}%` });
+            query.andWhere('order.title ILIKE :title', {title: `%${filterParams.title}%`});
         }
         if (filterParams?.payment_status?.length) {
-            query.andWhere("order.paymentStatus IN(:...paymentStatus)", { paymentStatus: filterParams.payment_status });
+            query.andWhere("order.paymentStatus IN(:...paymentStatus)", {paymentStatus: filterParams.payment_status});
         }
         if (filterParams?.checkout_date_init) {
-            query.andWhere('order.datetimeOut >= :checkoutDateInit', { checkoutDateInit: filterParams?.checkout_date_init })
+            query.andWhere('order.datetimeOut >= :checkoutDateInit', {checkoutDateInit: filterParams?.checkout_date_init})
         }
         if (filterParams?.checkout_date_end) {
-            query.andWhere('order.datetimeOut <= :checkoutDateEnd', { checkoutDateEnd: filterParams?.checkout_date_end })
+            query.andWhere('order.datetimeOut <= :checkoutDateEnd', {checkoutDateEnd: filterParams?.checkout_date_end})
         }
         if (filterParams?.client_id) {
-            query.andWhere('user.id = :clientId', { clientId: filterParams.client_id })
+            query.andWhere('user.id = :clientId', {clientId: filterParams.client_id})
         }
 
         let [orders, total] = await query.getManyAndCount();
@@ -204,8 +205,7 @@ export class OrderService {
 
         if (totalAmountSubservices > totalAmountPayments) {
             return PaymentStatus.PARTIALLY_PAID;
-        }
-        else if (totalAmountPayments >= totalAmountSubservices) {
+        } else if (totalAmountPayments >= totalAmountSubservices) {
             return PaymentStatus.PAID;
         }
     }

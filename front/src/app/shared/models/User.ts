@@ -13,6 +13,7 @@ export interface ICompleteUser extends IUser {
     updatedAt: Date;
     email: string;
     phone: string;
+    address: string;
 }
 
 export enum UserRole {
