@@ -1,4 +1,3 @@
-import * as moment from "moment";
 import {Expose, Transform, Type} from "class-transformer";
 
 import {ListUserDto} from "../../../user/dto/user-list.dto";
@@ -6,6 +5,7 @@ import {PaymentStatus} from "../../enums/PaymentStatus";
 import {PaymentOrderDto} from "../payment/payment-order.dto";
 import {SubserviceOrderDTO} from "../sub-service/subservice-order.dto";
 import {OrderStatus} from "../../enums/OrderStatus";
+import {formatedDateIfValid} from "../../../shared/utils/Utils";
 
 export class ResponseOrderDto {
 
@@ -19,11 +19,11 @@ export class ResponseOrderDto {
     description: string;
 
     @Expose()
-    @Transform(({value}) => moment(value).format('YYYY-MM-DDTHH:mm'))
+    @Transform(formatedDateIfValid)
     datetimeIn: Date;
 
     @Expose()
-    @Transform(({value}) => moment(value).format('YYYY-MM-DDTHH:mm'))
+    @Transform(formatedDateIfValid)
     datetimeOut: Date;
 
     @Expose()

@@ -5,4 +5,5 @@ export enum PaymentType {
     PIX = 'PIX',
     CHECK = 'CHECK',
     BANK_SLIP = 'BANK_SLIP',
+    INTERNAL = 'INTERNAL',
 }

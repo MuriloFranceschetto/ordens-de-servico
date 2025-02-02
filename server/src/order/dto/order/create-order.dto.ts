@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsBoolean, IsEnum, IsNotEmpty, IsString } from "class-validator";
+import {IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString} from "class-validator";
 
 import { PaymentStatus } from "../../enums/PaymentStatus";
 import { ListUserDto } from "../../../user/dto/user-list.dto";
@@ -19,7 +19,7 @@ export class CreateOrderDTO {
     @Type(() => Date)
     datetimeIn: Date;
 
-    @IsNotEmpty({ message: 'The property datetimeOut cannot be empty' })
+    @IsOptional()
     @Type(() => Date)
     datetimeOut: Date;
 

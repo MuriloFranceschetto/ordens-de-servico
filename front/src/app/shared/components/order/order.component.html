@@ -64,12 +64,20 @@
                 <mat-label>Data / Horário de entrada</mat-label>
                 <input matInput type="datetime-local" formControlName="datetimeIn">
                 <button mat-icon-button matSuffix (click)="setTodayToFormField('datetimeIn')"><mat-icon> event </mat-icon></button>
+                @if (formOrder?.value?.datetimeIn) {
+                    <mat-icon matSuffix color="warn" class="cursor-pointer" type="button"
+                              (click)="$event.stopPropagation(); clearControl('datetimeIn')"> close </mat-icon>
+                }
             </mat-form-field>
 
             <mat-form-field class="col-span-1">
                 <mat-label>Data / Horário de saída </mat-label>
                 <input matInput type="datetime-local" formControlName="datetimeOut">
                 <button mat-icon-button matSuffix (click)="setTodayToFormField('datetimeOut')"><mat-icon> event </mat-icon></button>
+                @if (formOrder?.value?.datetimeOut) {
+                    <mat-icon matSuffix color="warn" class="cursor-pointer" type="button"
+                              (click)="$event.stopPropagation(); clearControl('datetimeOut')"> close </mat-icon>
+                }
             </mat-form-field>
 
         </section>

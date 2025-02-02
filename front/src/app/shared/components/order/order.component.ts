@@ -28,6 +28,7 @@ import {OrderSubservicesComponent} from './order-subservices-table/order-subserv
 import {MyChipComponent} from '../my-chip/my-chip.component';
 import {PaymentStatusPipe} from "../../pipes/payment-status.pipe";
 import {UserSelectComponent} from '../form-controls/user-select/user-select.component';
+import {MatTooltip} from "@angular/material/tooltip";
 
 const ANGULAR_MATERIAL_MODULES = [
     MatInputModule, MatSelectModule, MatFormFieldModule, MatIconModule,
@@ -40,7 +41,7 @@ const ANGULAR_MATERIAL_MODULES = [
     standalone: true,
     templateUrl: './order.component.html',
     styleUrl: './order.component.scss',
-    imports: [NgClass, PaymentStatusPipe, OrderSubservicesComponent, OrderPaymentsComponent, MyChipComponent, UserSelectComponent, ...ANGULAR_MATERIAL_MODULES]
+    imports: [NgClass, PaymentStatusPipe, OrderSubservicesComponent, OrderPaymentsComponent, MyChipComponent, UserSelectComponent, ...ANGULAR_MATERIAL_MODULES, MatTooltip]
 })
 export class OrderComponent implements OnInit {
     public readonly colors = colors;
@@ -49,7 +50,6 @@ export class OrderComponent implements OnInit {
     public id = input<string>();
 
     private ordersService = inject(OrdersService);
-    private usersService = inject(UsersService);
     private matDialog = inject(MatDialog);
     private matSnackBar = inject(MatSnackBar);
     private router = inject(Router);
@@ -59,11 +59,9 @@ export class OrderComponent implements OnInit {
     });
 
     public readonly savingOrder = signal<boolean>(false);
-
     public readonly onlyClients = [UserRole.Client];
 
     public order$: WritableSignal<Order> = signal(new Order());
-
     public isNew$ = computed(() => this.id() === 'new');
 
     public formOrder: FormGroup<IFormOrder> = new FormGroup({
@@ -103,23 +101,32 @@ export class OrderComponent implements OnInit {
     }
 
     async registerOrder() {
-        this.order$.update(order => plainToClassFromExist(order, this.formOrder.getRawValue()));
-        this.savingOrder.set(true);
+        try {
+            this.order$.update(order => plainToClassFromExist(order, this.formOrder.getRawValue()));
+            this.savingOrder.set(true);
 
-        let response: ResponseOrder;
-        if (this.isNew$()) {
-            response = await this.ordersService.newOrder(this.order$());
-        } else {
-            response = await this.ordersService.updateOrder(this.order$());
-        }
-        this.savingOrder.set(false);
-        this.matSnackBar.open(`Order de serviço ${this.id() ? 'editada' : 'registrada'} com sucesso`, 'X', {duration: 3000});
-        this.order$.set(plainToClass(Order, response.order));
+            let response: ResponseOrder;
+            if (this.isNew$()) {
+                response = await this.ordersService.newOrder(this.order$());
+            } else {
+                response = await this.ordersService.updateOrder(this.order$());
+            }
+            this.savingOrder.set(false);
+            this.matSnackBar.open(`Order de serviço ${this.id() ? 'editada' : 'registrada'} com sucesso`, 'X', {duration: 3000});
+            this.order$.set(plainToClass(Order, response.order));
 
-        if (!this.dialogRef) {
-            this.router.navigate(['order', this.order$().id]);
+            if (!this.dialogRef) {
+                this.router.navigate(['order', this.order$().id]);
+            }
+            this.getOrder();
+
+        } catch (e) {
+            throw e;
+
+        } finally {
+            this.savingOrder.set(false);
         }
-        this.getOrder();
+
     }
 
     openPrintOrderNewTab() {
@@ -146,6 +153,10 @@ export class OrderComponent implements OnInit {
                     this.matSnackBar.open('Order de serviço excluída com sucesso', 'X', {duration: 3000});
                 },
             })
+    }
+
+    clearControl(ctrlName: keyof IFormOrder) {
+        this.formOrder.controls[ctrlName]?.reset();
     }
 
 }
