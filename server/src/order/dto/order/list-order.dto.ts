@@ -24,6 +24,9 @@ export class ListOrderDto {
     paymentStatus: PaymentStatus;
 
     @Expose()
+    totalAmountSubservices: number;
+
+    @Expose()
     @Type(() => ListUserDto)
     client: ListUserDto;
 }

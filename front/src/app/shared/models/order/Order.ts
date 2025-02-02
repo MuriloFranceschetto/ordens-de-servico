@@ -10,6 +10,7 @@ export interface IOrder {
     datetimeOut: string;
     orderStatus: OrderStatus;
     paymentStatus: PaymentStatus;
+    totalAmountSubservices: number;
     client: IUser;
     payments: IPaymentOrder[];
     subservices: ISubserviceOrder[];
@@ -24,7 +25,7 @@ export class Order implements IOrder {
     orderStatus: OrderStatus;
     paymentStatus: PaymentStatus;
     client: IUser;
-
+    totalAmountSubservices: number;
     payments: IPaymentOrder[];
     subservices: SubserviceOrder[];
 }

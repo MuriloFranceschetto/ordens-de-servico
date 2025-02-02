@@ -36,6 +36,7 @@ export class OrderService {
         let query = this.orderRepository
             .createQueryBuilder('order')
             .leftJoinAndSelect("order.client", "user")
+            .leftJoinAndSelect("order.subservices", "subservices")
             .skip(page * limit)
             .take(limit);
 
@@ -58,10 +59,13 @@ export class OrderService {
             query.andWhere('user.id = :clientId', {clientId: filterParams.client_id})
         }
 
-        let [orders, total] = await query.getManyAndCount();
+        const [orders, total] = await query.getManyAndCount();
         return {
             total,
-            orders: orders?.map((order) => plainToClass(ListOrderDto, order)) ?? []
+            orders: orders?.map((order) => {
+                const totalAmountSubservices = order.subservices.map(s => s.amount).reduce((a, b) => a + b);
+                return plainToClass(ListOrderDto, {...order, totalAmountSubservices});
+            }) ?? []
         }
     }
 
@@ -89,7 +93,7 @@ export class OrderService {
         orderEntity.client = clientById;
 
         await this.orderRepository.save(orderEntity);
-        return orderEntity;
+        return plainToClass(ListOrderDto, orderEntity);
     }
 
     public async updateOrder(orderData: UpdateOrderDTO): Promise<ListOrderDto> {
@@ -101,7 +105,7 @@ export class OrderService {
         orderEntity.client = clientById;
 
         await this.orderRepository.save(orderEntity);
-        return orderEntity;
+        return plainToClass(ListOrderDto, orderEntity);
     }
 
     public async deleteOrder(id: string) {

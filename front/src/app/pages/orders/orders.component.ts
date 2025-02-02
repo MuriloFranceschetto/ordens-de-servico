@@ -1,7 +1,7 @@
 import {debounceTime, merge, shareReplay, Subject, switchMap, take, tap} from 'rxjs';
 import colors from 'tailwindcss/colors';
 import {Router} from '@angular/router';
-import {AsyncPipe, DatePipe} from '@angular/common';
+import {AsyncPipe, CurrencyPipe, DatePipe} from '@angular/common';
 import {Component, inject, signal, viewChild} from '@angular/core';
 import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
@@ -34,7 +34,7 @@ const MATERIAL_MODULES = [
     selector: 'app-orders',
     standalone: true,
     providers: [provideNativeDateAdapter()],
-    imports: [AsyncPipe, DatePipe, PaymentStatusPipe, ReactiveFormsModule, MyChipComponent, UserSelectComponent, ...MATERIAL_MODULES],
+    imports: [AsyncPipe, DatePipe, PaymentStatusPipe, ReactiveFormsModule, MyChipComponent, UserSelectComponent, ...MATERIAL_MODULES, CurrencyPipe],
     templateUrl: './orders.component.html',
     styleUrl: './orders.component.scss'
 })
@@ -43,7 +43,7 @@ export class OrdersComponent {
     public readonly colors = colors;
     public readonly OrderStatus = OrderStatus;
     public readonly onlyClients = [UserRole.Client];
-    public readonly columns: Array<keyof IOrder | 'actions'> = ['title', 'client', 'orderStatus', 'paymentStatus', 'datetimeOut', 'actions'];
+    public readonly columns: Array<keyof IOrder | 'actions'> = ['datetimeIn', 'client', 'title', 'orderStatus', 'paymentStatus', 'totalAmountSubservices', 'actions'];
 
     private readonly ordersService = inject(OrdersService);
     private readonly router = inject(Router);
@@ -90,7 +90,7 @@ export class OrdersComponent {
     public orders$ = merge(this.searchOrdersOnInit$, this.searchOrdersOnFormChange$).pipe(tap(() => this.loading.set(false)), shareReplay());
 
     openOrderForm(order?: IOrder) {
-        this.router.navigate(['order', order?.id ?? 'new']);
+        this.router.navigate(['order', order?.id ?? 'new']).then();
     }
 
     clear(formControl: keyof IFilters) {
