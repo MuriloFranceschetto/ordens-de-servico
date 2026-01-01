@@ -2,12 +2,12 @@ import {randomUUID} from 'crypto';
 import {Repository, UpdateResult} from 'typeorm';
 import {Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
+import {plainToClass} from 'class-transformer';
 
 import {UserEntity} from './user.entity';
 import {ListUserDto} from './dto/user-list.dto';
 import {UpdateUserDto} from './dto/update-user.dto';
 import {CreateUserDto} from './dto/create-user.dto';
-import {plainToClass} from 'class-transformer';
 import {UserRole} from './user-role';
 import {QueryParamsUserDto} from './dto/query-params-user.dto';
 
