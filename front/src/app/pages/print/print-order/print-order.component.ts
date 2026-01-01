@@ -6,12 +6,11 @@ import { Component, inject, input, ViewEncapsulation } from '@angular/core';
 import { OrdersService } from '../../../shared/services/orders.service';
 
 @Component({
-  selector: 'app-print-order',
-  standalone: true,
-  templateUrl: './print-order.component.html',
-  styleUrl: './print-order.component.scss',
-  imports: [AsyncPipe, DatePipe, CurrencyPipe],
-  encapsulation: ViewEncapsulation.None,
+    selector: 'app-print-order',
+    templateUrl: './print-order.component.html',
+    styleUrl: './print-order.component.scss',
+    imports: [AsyncPipe, DatePipe, CurrencyPipe],
+    encapsulation: ViewEncapsulation.None
 })
 export class PrintOrderComponent {
 

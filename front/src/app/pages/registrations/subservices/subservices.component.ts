@@ -1,5 +1,4 @@
 import { BehaviorSubject, shareReplay, switchMap, take, tap } from 'rxjs';
-import { RouterLink } from '@angular/router';
 import { Component, inject, signal, viewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
@@ -18,11 +17,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 const MATERIAL_MODULES = [MatTableModule, MatButtonModule, MatDialogModule, MatIconModule, MatPaginatorModule, MatProgressBarModule]
 
 @Component({
-  selector: 'app-subservices',
-  standalone: true,
-  imports: [...MATERIAL_MODULES, AsyncPipe, RouterLink, SubserviceChargeTypeLabelPipe, NgClass, CurrencyPipe],
-  templateUrl: './subservices.component.html',
-  styleUrl: './subservices.component.scss'
+    selector: 'app-subservices',
+    imports: [...MATERIAL_MODULES, AsyncPipe, SubserviceChargeTypeLabelPipe, NgClass, CurrencyPipe],
+    templateUrl: './subservices.component.html',
+    styleUrl: './subservices.component.scss'
 })
 export class SubservicesComponent {
 

@@ -38,7 +38,6 @@ const ANGULAR_MATERIAL_MODULES = [
 
 @Component({
     selector: 'app-order',
-    standalone: true,
     templateUrl: './order.component.html',
     styleUrl: './order.component.scss',
     imports: [NgClass, PaymentStatusPipe, OrderSubservicesComponent, OrderPaymentsComponent, MyChipComponent, UserSelectComponent, ...ANGULAR_MATERIAL_MODULES, MatTooltip]

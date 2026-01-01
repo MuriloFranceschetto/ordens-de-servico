@@ -41,7 +41,6 @@ const MATERIAL_MODULES = [
 
 @Component({
     selector: 'app-users',
-    standalone: true,
     imports: [AsyncPipe, UserRoleLabelPipe, NgClass, ReactiveFormsModule, ...MATERIAL_MODULES],
     templateUrl: './users.component.html',
     styleUrl: './users.component.scss'

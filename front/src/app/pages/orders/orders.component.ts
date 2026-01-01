@@ -32,7 +32,6 @@ const MATERIAL_MODULES = [
 
 @Component({
     selector: 'app-orders',
-    standalone: true,
     providers: [provideNativeDateAdapter()],
     imports: [AsyncPipe, DatePipe, PaymentStatusPipe, ReactiveFormsModule, MyChipComponent, UserSelectComponent, ...MATERIAL_MODULES, CurrencyPipe],
     templateUrl: './orders.component.html',

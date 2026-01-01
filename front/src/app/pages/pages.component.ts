@@ -5,11 +5,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { AuthService } from '../shared/services/auth.service';
 
 @Component({
-  selector: 'app-pages',
-  standalone: true,
-  imports: [RouterModule, MatToolbarModule, MatButtonModule],
-  templateUrl: './pages.component.html',
-  styleUrl: './pages.component.scss'
+    selector: 'app-pages',
+    imports: [RouterModule, MatToolbarModule, MatButtonModule],
+    templateUrl: './pages.component.html',
+    styleUrl: './pages.component.scss'
 })
 export class PagesComponent {
   public authService = inject(AuthService)

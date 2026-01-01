@@ -18,7 +18,6 @@ import {LoadingSpinnerComponent} from "../loading-spinner/loading-spinner.compon
 
 @Component({
     selector: 'app-user',
-    standalone: true,
     imports: [ReactiveFormsModule, MatInputModule, MatSelectModule, MatCheckboxModule, CurrencyMaskModule, MatButtonModule, MatIconModule, MatDialogModule, LoadingSpinnerComponent],
     templateUrl: './user.component.html',
     styleUrl: './user.component.scss'

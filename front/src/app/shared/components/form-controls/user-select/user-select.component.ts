@@ -16,11 +16,10 @@ import { SearchSelectOptionComponent } from '../search-select-option/search-sele
 
 
 @Component({
-  selector: 'app-user-select',
-  standalone: true,
-  imports: [MatFormFieldModule, MatSelectModule, MatIconModule, ReactiveFormsModule, SearchSelectOptionComponent, AsyncPipe],
-  templateUrl: './user-select.component.html',
-  styleUrl: './user-select.component.scss',
+    selector: 'app-user-select',
+    imports: [MatFormFieldModule, MatSelectModule, MatIconModule, ReactiveFormsModule, SearchSelectOptionComponent, AsyncPipe],
+    templateUrl: './user-select.component.html',
+    styleUrl: './user-select.component.scss'
 })
 export class UserSelectComponent implements OnInit, OnDestroy {
 

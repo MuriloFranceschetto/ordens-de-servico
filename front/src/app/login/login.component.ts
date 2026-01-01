@@ -9,14 +9,13 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { LoadingSpinnerComponent } from "../shared/components/loading-spinner/loading-spinner.component";
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, LoadingSpinnerComponent],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
-  host: {
-    'class': 'w-full h-svh flex justify-center items-center'
-  }
+    selector: 'app-login',
+    imports: [MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, LoadingSpinnerComponent],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss',
+    host: {
+        'class': 'w-full h-svh flex justify-center items-center'
+    }
 })
 export class LoginComponent {
 

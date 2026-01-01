@@ -17,14 +17,13 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
 };
 
 @Component({
-  selector: 'app-unity-quantity',
-  standalone: true,
-  imports: [MatInputModule, ReactiveFormsModule, CurrencyMaskModule, MatIconModule, MatButtonModule],
-  templateUrl: './unity-quantity.component.html',
-  styleUrl: './unity-quantity.component.scss',
-  providers: [
-    { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
-  ],
+    selector: 'app-unity-quantity',
+    imports: [MatInputModule, ReactiveFormsModule, CurrencyMaskModule, MatIconModule, MatButtonModule],
+    templateUrl: './unity-quantity.component.html',
+    styleUrl: './unity-quantity.component.scss',
+    providers: [
+        { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
+    ]
 })
 export class UnityQuantityComponent {
 

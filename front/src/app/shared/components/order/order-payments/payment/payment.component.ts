@@ -26,7 +26,6 @@ const MATERIAL_MODULES = [MatFormFieldModule, MatInputModule, MatSelectModule, R
 
 @Component({
     selector: 'app-payment',
-    standalone: true,
     imports: [CurrencyMaskModule, UserSelectComponent, ...MATERIAL_MODULES],
     providers: [
         PaymentMethodLabelPipe,

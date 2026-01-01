@@ -6,9 +6,9 @@ services:
       POSTGRES_USER: root
       PGUSER: root
       POSTGRES_PASSWORD: root
-      PGDATA: /data/postgres
+      PGDATA: ${DB_ROUTE}
     volumes:
-      - postgres2:/data/postgres2
+      - ${DB_ROUTE}:${DB_ROUTE}
     ports:
       - "5432:5432"
     restart: always

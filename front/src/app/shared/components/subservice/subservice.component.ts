@@ -17,12 +17,11 @@ import { CHARGE_TYPES_OPTIONS, ChargeTypes, ISubservice } from '../../models/sub
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'app-subservice',
-  standalone: true,
-  imports: [MatDialogModule, ReactiveFormsModule, MatInputModule, MatIconModule, MatFormFieldModule,
-    MatSelectModule, MatCheckboxModule, MatButtonModule, CurrencyMaskModule],
-  templateUrl: './subservice.component.html',
-  styleUrl: './subservice.component.scss'
+    selector: 'app-subservice',
+    imports: [MatDialogModule, ReactiveFormsModule, MatInputModule, MatIconModule, MatFormFieldModule,
+        MatSelectModule, MatCheckboxModule, MatButtonModule, CurrencyMaskModule],
+    templateUrl: './subservice.component.html',
+    styleUrl: './subservice.component.scss'
 })
 export class SubserviceComponent {
 

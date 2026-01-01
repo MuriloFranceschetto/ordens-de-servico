@@ -1,7 +1,7 @@
 import {firstValueFrom, take} from 'rxjs';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
 
-import {AsyncPipe, CurrencyPipe, NgTemplateOutlet} from '@angular/common';
+import {CurrencyPipe, NgTemplateOutlet} from '@angular/common';
 import {
     Component,
     Signal,
@@ -46,12 +46,11 @@ import {UnityQuantityComponent} from "./quantity-strategies/unity-quantity/unity
 import {KilogramQuantityComponent} from "./quantity-strategies/kilogram-quantity/kilogram-quantity.component";
 
 const MATERIAL_MODULES = [MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatButtonModule, MatDialogModule, MatMenuModule, MatIconModule, MatTooltipModule];
-const ANGULAR_MODULES = [AsyncPipe, CurrencyPipe, NgTemplateOutlet];
-const PROJECT_COMPONENTS = [ConfirmationComponent, HourQuantityComponent, KilometerQuantityComponent, UserSelectComponent, SubServiceSelectComponent];
+const ANGULAR_MODULES = [CurrencyPipe, NgTemplateOutlet];
+const PROJECT_COMPONENTS = [HourQuantityComponent, KilometerQuantityComponent, UserSelectComponent, SubServiceSelectComponent];
 
 @Component({
     selector: 'order-subservices-form',
-    standalone: true,
     imports: [
         CurrencyMaskModule,
         SubserviceChargeTypeLabelPipe,

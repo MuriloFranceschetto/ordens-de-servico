@@ -7,12 +7,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-search-select-option',
-  standalone: true,
-  imports: [MatSelectModule, MatFormFieldModule, MatInputModule, MatIconModule, ReactiveFormsModule, MatTooltipModule],
-  templateUrl: './search-select-option.component.html',
-  styleUrl: './search-select-option.component.scss',
-  encapsulation: ViewEncapsulation.None,
+    selector: 'app-search-select-option',
+    imports: [MatSelectModule, MatFormFieldModule, MatInputModule, MatIconModule, ReactiveFormsModule, MatTooltipModule],
+    templateUrl: './search-select-option.component.html',
+    styleUrl: './search-select-option.component.scss',
+    encapsulation: ViewEncapsulation.None
 })
 export class SearchSelectOptionComponent {
 

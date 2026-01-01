@@ -5,11 +5,10 @@ import { Component, WritableSignal, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-hour-quantity',
-  standalone: true,
-  imports: [MatInputModule, ReactiveFormsModule],
-  templateUrl: './hour-quantity.component.html',
-  styleUrl: './hour-quantity.component.scss'
+    selector: 'app-hour-quantity',
+    imports: [MatInputModule, ReactiveFormsModule],
+    templateUrl: './hour-quantity.component.html',
+    styleUrl: './hour-quantity.component.scss'
 })
 export class HourQuantityComponent {
 

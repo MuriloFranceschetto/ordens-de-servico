@@ -7,7 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CurrencyPipe, DatePipe, NgClass } from '@angular/common';
+import { CurrencyPipe, NgClass } from '@angular/common';
 import { Component, Signal, computed, inject, input, output } from '@angular/core';
 
 import { IOrder } from '../../../models/order/Order';
@@ -16,14 +16,13 @@ import { OrderSubserviceFormComponent } from './order-subservice-form/order-subs
 import { SubservicesService } from '../../../services/subservices.service';
 
 const MATERIAL_MODULES = [MatIconModule, MatButtonModule, MatFormFieldModule, MatSelectModule, ReactiveFormsModule, MatInputModule, MatTooltipModule];
-const ANGULAR_MODULES = [CurrencyPipe, DatePipe, NgClass, FormsModule];
+const ANGULAR_MODULES = [CurrencyPipe, NgClass, FormsModule];
 
 @Component({
-  selector: 'app-order-subservices-table',
-  standalone: true,
-  imports: [...ANGULAR_MODULES, ...MATERIAL_MODULES],
-  templateUrl: './order-subservices-table.component.html',
-  styleUrl: './order-subservices-table.component.scss'
+    selector: 'app-order-subservices-table',
+    imports: [...ANGULAR_MODULES, ...MATERIAL_MODULES],
+    templateUrl: './order-subservices-table.component.html',
+    styleUrl: './order-subservices-table.component.scss'
 })
 export class OrderSubservicesComponent {
 
