@@ -14,13 +14,13 @@ export class UserEntity {
     email: string;
 
     @Column({ name: 'phone', nullable: true, length: 30 })
-    phone: string;
+    phone?: string;
 
     @Column({ name: 'address', nullable: true, length: 200 })
-    address: string;
+    address?: string;
 
     @Column({ name: 'salt', nullable: true, length: 10 })
-    salt: string;
+    salt?: string;
 
     @Column({ name: 'password', nullable: true, length: 255 })
     password: string;
