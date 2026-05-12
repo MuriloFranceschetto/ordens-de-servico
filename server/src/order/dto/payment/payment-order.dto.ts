@@ -1,4 +1,4 @@
-import { PaymentType } from "../../enums/paymentType";
+import { PaymentType } from "../../enums/PaymentType";
 import { Expose, Type } from "class-transformer";
 import { ListOrderDto } from "../order/list-order.dto";
 import { IsEnum } from "class-validator";

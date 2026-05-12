@@ -1,8 +1,9 @@
 import { Type } from "class-transformer";
-import { IsBoolean, IsEnum, IsNotEmpty, IsString } from "class-validator";
+import {IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString} from "class-validator";
 
-import { PaymentStatus } from "../../enums/paymentStatus";
+import { PaymentStatus } from "../../enums/PaymentStatus";
 import { ListUserDto } from "../../../user/dto/user-list.dto";
+import {OrderStatus} from "../../enums/OrderStatus";
 
 export class CreateOrderDTO {
 
@@ -18,13 +19,13 @@ export class CreateOrderDTO {
     @Type(() => Date)
     datetimeIn: Date;
 
-    @IsNotEmpty({ message: 'The property datetimeOut cannot be empty' })
+    @IsOptional()
     @Type(() => Date)
     datetimeOut: Date;
 
-    @IsNotEmpty({ message: 'The property open cannot be empty' })
-    @IsBoolean({ message: 'The property open must be a boolean' })
-    closed: boolean;
+    @IsNotEmpty({ message: 'The property orderStatus cannot be empty' })
+    @IsEnum(OrderStatus)
+    orderStatus: OrderStatus;
 
     @IsNotEmpty({ message: 'The property paymentStatus cannot be empty' })
     @IsEnum(PaymentStatus)
@@ -32,4 +33,5 @@ export class CreateOrderDTO {
 
     @IsNotEmpty({ message: 'The property client cannot be empty' })
     client: ListUserDto;
+
 }

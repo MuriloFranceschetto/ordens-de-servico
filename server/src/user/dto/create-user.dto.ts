@@ -1,4 +1,13 @@
-import { IsArray, IsBoolean, IsEmail, IsNotEmpty, IsOptional, MinLength, ValidateIf } from "class-validator";
+import {
+    IsArray,
+    IsBoolean,
+    IsEmail,
+    IsMobilePhone,
+    IsNotEmpty,
+    IsOptional,
+    MinLength,
+    ValidateIf
+} from "class-validator";
 import { UserRole } from "../user-role";
 import { Expose } from "class-transformer";
 
@@ -10,14 +19,23 @@ export class CreateUserDto {
 
     @Expose()
     @ValidateIf((obj: CreateUserDto) => {
-        return obj.roles.includes(UserRole.Admin)
+        return obj.roles?.includes(UserRole.Admin)
     })
     @IsEmail(undefined, { message: 'E-mail incorreto para usuário do tipo "Administrador"' })
     email: string;
 
     @Expose()
+    @IsOptional()
+    @IsMobilePhone("pt-BR", null, {message: `Telefone incorreto`})
+    phone: string;
+
+    @Expose()
+    @IsOptional()
+    address: string;
+
+    @Expose()
     @ValidateIf((obj: CreateUserDto) => {
-        return obj.roles.includes(UserRole.Admin);
+        return obj.roles?.includes(UserRole.Admin);
     })
     @IsNotEmpty({ message: 'Informe uma senha para o usuário se ele é do tipo "Administrador"' })
     @MinLength(6, { message: 'Esta senha é muito curta' })
@@ -35,7 +53,7 @@ export class CreateUserDto {
 
     @Expose()
     @ValidateIf((obj: CreateUserDto) => {
-        return obj.roles.includes(UserRole.Worker)
+        return obj.roles?.includes(UserRole.Worker)
     })
     @IsNotEmpty({ message: 'Informe o "Valor da Hora" para usuários do tipo "Mecânico"' })
     pricePerHour: number;

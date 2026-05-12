@@ -1,11 +1,10 @@
-
 <div class="p-4">
-    
+
     <div class="flex justify-between items-center mb-4">
         <h1 class="text-primary font-bold text-20">
-            {{ (data?.payment?.id ? 'Editar' : 'Registrar') + ' Pagamento' }} 
+            {{ (data?.payment?.id ? 'Editar' : 'Registrar') + ' Pagamento' }}
         </h1>
-        
+
         @if (data?.payment?.id) {
             <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Abrir menu">
                 <mat-icon>more_vert</mat-icon>
@@ -18,39 +17,44 @@
             </mat-menu>
         }
     </div>
-    
-    
+
+
     <form [formGroup]="form" class="flex flex-col">
 
-        <app-user-select [showCreationBtn]="true" ngDefaultControl [formGroup]="form" formControlName="payer" [roles]="onlyPayers">
+        <app-user-select [showCreationBtn]="true" ngDefaultControl [formGroup]="form" formControlName="payer"
+                         [roles]="onlyPayers">
             <span label>Pagador</span>
         </app-user-select>
-        
+
         <mat-form-field>
             <mat-label>Método</mat-label>
             <mat-select formControlName="type">
                 @for (method of PAYMENT_METHOD_OPTIONS; track method.value) {
-                    <mat-option [value]="method.value"> {{ method.label }} </mat-option>
+                    <mat-option [value]="method.value"> {{ method.label }}</mat-option>
                 }
             </mat-select>
         </mat-form-field>
-        
+
         <mat-form-field>
             <mat-label>Valor</mat-label>
             <input matInput formControlName="amount" currencyMask>
         </mat-form-field>
-        
+
         <mat-form-field class="col-span-1">
             <mat-label>Data do pagamento</mat-label>
             <input matInput type="date" formControlName="date">
-            <button mat-icon-button matSuffix (click)="setTodayToFormField()"><mat-icon> event </mat-icon></button>
+            <button mat-icon-button matSuffix (click)="setTodayToFormField()">
+                <mat-icon> event</mat-icon>
+            </button>
         </mat-form-field>
-        
+
     </form>
-    
+
     <section class="flex justify-between gap-2">
-        <button mat-stroked-button class="w-52" color="accent" matDialogClose> Voltar </button>
-        <button mat-raised-button class="w-52" color="primary" (click)="savePayment()" [disabled]="form.invalid"> Salvar </button>
+        <button mat-stroked-button class="w-52" color="accent" matDialogClose> Voltar</button>
+        <button mat-raised-button class="w-52" color="primary" (click)="savePayment()" [disabled]="form.invalid">
+            Salvar
+        </button>
     </section>
-    
+
 </div>

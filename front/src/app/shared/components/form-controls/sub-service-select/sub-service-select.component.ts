@@ -14,11 +14,10 @@ import { SearchSelectOptionComponent } from '../search-select-option/search-sele
 import { ISubservice } from '../../../models/subservice/ISubservice';
 
 @Component({
-  selector: 'app-sub-service-select',
-  standalone: true,
-  imports: [MatFormFieldModule, MatSelectModule, ReactiveFormsModule, SearchSelectOptionComponent],
-  templateUrl: './sub-service-select.component.html',
-  styleUrl: './sub-service-select.component.scss'
+    selector: 'app-sub-service-select',
+    imports: [MatFormFieldModule, MatSelectModule, ReactiveFormsModule, SearchSelectOptionComponent],
+    templateUrl: './sub-service-select.component.html',
+    styleUrl: './sub-service-select.component.scss'
 })
 export class SubServiceSelectComponent implements OnInit, OnDestroy {
 

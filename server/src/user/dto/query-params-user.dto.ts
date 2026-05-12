@@ -1,8 +1,8 @@
 import { IsArray, IsBoolean, IsEnum, IsOptional, IsString } from "class-validator";
 
 import { UserRole } from "../user-role";
-import { PaginationRequestDto } from "src/pipes/pagination-transform.pipe";
 import { Transform } from "class-transformer";
+import {PaginationRequestDto} from "../../shared/pipes/pagination-transform.pipe";
 
 export class QueryParamsUserDto extends PaginationRequestDto {
 

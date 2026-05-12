@@ -16,14 +16,13 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
 };
 
 @Component({
-  selector: 'app-kilogram-quantity',
-  standalone: true,
-  imports: [MatInputModule, ReactiveFormsModule, MatIconModule, CurrencyMaskModule],
-  templateUrl: './kilogram-quantity.component.html',
-  styleUrl: './kilogram-quantity.component.scss',
-  providers: [
-    { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
-  ]
+    selector: 'app-kilogram-quantity',
+    imports: [MatInputModule, ReactiveFormsModule, MatIconModule, CurrencyMaskModule],
+    templateUrl: './kilogram-quantity.component.html',
+    styleUrl: './kilogram-quantity.component.scss',
+    providers: [
+        { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
+    ]
 })
 export class KilogramQuantityComponent implements OnInit {
   public readonly quantity = input<WritableSignal<number>>();

@@ -2,7 +2,7 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToO
 
 import { OrderEntity } from "./order.entity";
 import { UserEntity } from "src/user/user.entity";
-import { EnvironmentType } from "../enums/environmentType";
+import { EnvironmentType } from "../enums/EnvironmentType";
 import { SubserviceEntity } from "src/subservice/subservice.entity";
 
 @Entity({ name: 'order_subservices' })

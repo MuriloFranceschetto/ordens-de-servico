@@ -1,17 +1,18 @@
-import { validate } from "class-validator";
-import { plainToClass } from "class-transformer";
-import { Test, TestingModule } from "@nestjs/testing";
-import { getRepositoryToken } from "@nestjs/typeorm";
-import { Repository, SelectQueryBuilder, UpdateResult } from "typeorm";
+import {validate} from "class-validator";
+import {plainToClass} from "class-transformer";
+import {Test, TestingModule} from "@nestjs/testing";
+import {getRepositoryToken} from "@nestjs/typeorm";
+import {Repository, UpdateResult} from "typeorm";
 
-import { UserRole } from "./user-role";
-import { MockType } from "test/mock-type";
-import { UserEntity } from "./user.entity";
-import { UserService } from "./user.service";
-import { UserController } from "./user.controller";
-import { CreateUserDto } from "./dto/create-user.dto";
-import { UpdateUserDto } from "./dto/update-user.dto";
-import { mockRepositoryFactory } from "../../test/test-helper";
+import {UserRole} from "./user-role";
+import {MockType} from "test/mock-type";
+import {UserEntity} from "./user.entity";
+import {UserService} from "./user.service";
+import {UserController} from "./user.controller";
+import {CreateUserDto} from "./dto/create-user.dto";
+import {UpdateUserDto} from "./dto/update-user.dto";
+import {mockRepositoryFactory} from "../../test/test-helper";
+import {ConfigService} from "@nestjs/config";
 
 const clientUser: UserEntity = {
     id: crypto.randomUUID(),
@@ -49,7 +50,8 @@ describe('UserService', () => {
             controllers: [UserController],
             providers: [
                 UserService,
-                { provide: getRepositoryToken(UserEntity), useFactory: mockRepositoryFactory }
+                ConfigService,
+                {provide: getRepositoryToken(UserEntity), useFactory: mockRepositoryFactory}
             ],
         }).compile();
 
@@ -60,19 +62,19 @@ describe('UserService', () => {
     it('should find a user by ID', async () => {
         repositoryMock.findOne.mockReturnValue(clientUser);
         expect(await userService.getUserById(clientUser.id)).toEqual(clientUser);
-        expect(repositoryMock.findOne).toHaveBeenCalledWith({ where: { id: clientUser.id } });
+        expect(repositoryMock.findOne).toHaveBeenCalledWith({where: {id: clientUser.id}});
     });
 
     it('should find a user by email', async () => {
         repositoryMock.findOne.mockReturnValue(clientUser);
         expect(await userService.getUserByEmail(clientUser.email)).toEqual(clientUser);
-        expect(repositoryMock.findOne).toHaveBeenCalledWith({ where: { email: clientUser.email } });
+        expect(repositoryMock.findOne).toHaveBeenCalledWith({where: {email: clientUser.email}});
     });
 
     it('should verify if user exists by his ID - Success', async () => {
         repositoryMock.findOne.mockReturnValue(clientUser);
         expect(await userService.verifyUserById(clientUser.id)).toEqual(clientUser);
-        expect(repositoryMock.findOne).toHaveBeenCalledWith({ where: { id: clientUser.id } });
+        expect(repositoryMock.findOne).toHaveBeenCalledWith({where: {id: clientUser.id}});
     });
 
     it('should verify if user exists by his ID - Fail', async () => {
@@ -83,7 +85,7 @@ describe('UserService', () => {
             expect(e).toBeInstanceOf(Error);
             expect(e).toHaveProperty('message', 'Não existe usuário com este identificador');
         }
-        expect(repositoryMock.findOne).toHaveBeenCalledWith({ where: { id: clientUser.id } });
+        expect(repositoryMock.findOne).toHaveBeenCalledWith({where: {id: clientUser.id}});
     });
 
     it('should verify if user is a client - Success', async () => {
@@ -152,7 +154,7 @@ describe('UserService', () => {
             roles: [UserRole.Admin]
         }
         let userDTO = plainToClass(CreateUserDto, user);
-        const errors = await validate(userDTO, { skipUndefinedProperties: true, });
+        const errors = await validate(userDTO, {skipUndefinedProperties: true,});
         expect(errors.length).toBe(1);
         expect(errors[0]).toHaveProperty('property', 'password');
     });
@@ -163,7 +165,7 @@ describe('UserService', () => {
             roles: [UserRole.Worker, UserRole.Client]
         }
         let userDTO = plainToClass(CreateUserDto, user);
-        const errors = await validate(userDTO, { skipMissingProperties: true });
+        const errors = await validate(userDTO, {skipMissingProperties: true});
         expect(errors.length).toBe(0);
     });
 

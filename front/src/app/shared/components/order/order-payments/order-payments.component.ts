@@ -14,11 +14,10 @@ const MATERIAL_MODULES = [MatIconModule, MatTooltipModule, MatDialogModule];
 const ANGULAR_MODULES = [CurrencyPipe, DatePipe, NgClass];
 
 @Component({
-  selector: 'app-order-payments',
-  standalone: true,
-  imports: [PaymentMethodLabelPipe, PaymentComponent, ...ANGULAR_MODULES, ...MATERIAL_MODULES],
-  templateUrl: './order-payments.component.html',
-  styleUrl: './order-payments.component.scss'
+    selector: 'app-order-payments',
+    imports: [PaymentMethodLabelPipe, ...ANGULAR_MODULES, ...MATERIAL_MODULES],
+    templateUrl: './order-payments.component.html',
+    styleUrl: './order-payments.component.scss'
 })
 export class OrderPaymentsComponent {
 

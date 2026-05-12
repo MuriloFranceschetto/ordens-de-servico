@@ -5,11 +5,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
-  selector: 'app-kilometer-quantity',
-  standalone: true,
-  imports: [MatInputModule, ReactiveFormsModule, MatIconModule],
-  templateUrl: './kilometer-quantity.component.html',
-  styleUrl: './kilometer-quantity.component.scss'
+    selector: 'app-kilometer-quantity',
+    imports: [MatInputModule, ReactiveFormsModule, MatIconModule],
+    templateUrl: './kilometer-quantity.component.html',
+    styleUrl: './kilometer-quantity.component.scss'
 })
 export class KilometerQuantityComponent implements OnInit {
 
