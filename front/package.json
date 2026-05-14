@@ -39,12 +39,13 @@
     "@angular/build": "21.2.10",
     "@angular/cli": "21.2.10",
     "@angular/compiler-cli": "21.2.12",
-    "@types/jest": "^29.5.12",
-    "jest": "30.2.0",
-    "jest-environment-jsdom": "^30.2.0",
-    "jest-preset-angular": "16.0.0",
+    "@types/jest": "30.0.0",
+    "@types/tailwindcss": "^3.1.0",
+    "jest": "30.4.2",
+    "jest-environment-jsdom": "30.4.1",
+    "jest-preset-angular": "16.1.5",
     "karma-typescript": "5.5.4",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "4.3.0",
     "typescript": "~5.9.3"
   }
 }
