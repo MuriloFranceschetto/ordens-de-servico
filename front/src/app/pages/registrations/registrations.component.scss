@@ -6,3 +6,9 @@
         filter: invert(1);
     }
 }
+
+.custom-card-button {
+    height: auto !important;
+    min-height: unset !important;
+    padding: 0 !important;
+}

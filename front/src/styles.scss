@@ -1,7 +1,6 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
-@import "./tailwind.css";
 // Plus imports for other components in your app.
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -51,3 +50,4 @@ $my-custom-level: mat.m2-define-typography-level(
 html, body { height: 100%; }
 body { margin: 0; font-family: 'Roboto', sans-serif; background-color: rgb(195, 195, 195) }
 
+@import "./tailwind.css";
