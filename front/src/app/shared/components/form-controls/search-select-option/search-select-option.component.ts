@@ -5,10 +5,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatIconButton} from "@angular/material/button";
 
 @Component({
     selector: 'app-search-select-option',
-    imports: [MatSelectModule, MatFormFieldModule, MatInputModule, MatIconModule, ReactiveFormsModule, MatTooltipModule],
+    imports: [MatSelectModule, MatFormFieldModule, MatInputModule, MatIconModule, ReactiveFormsModule, MatTooltipModule, MatIconButton],
     templateUrl: './search-select-option.component.html',
     styleUrl: './search-select-option.component.scss',
     encapsulation: ViewEncapsulation.None

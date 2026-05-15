@@ -1,3 +1,4 @@
+@reference "../../../../../tailwind.css";
 
 .search-option {
     display: flex;
@@ -6,7 +7,7 @@
     padding: 0 5px 5px !important;
 
     mat-icon {
-        @apply ml-4;
+        margin-left: 1rem;
         opacity: 1 !important;
     }
 

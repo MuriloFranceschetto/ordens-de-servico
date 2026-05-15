@@ -1,6 +1,6 @@
 
 <div class="basis-full flex flex-col">
-    
+
     <div class="flex justify-between items-center px-2 py-1 bg-primary text-whitesmoke">
         <h2> Pagamentos </h2>
         <mat-icon class="m-1 cursor-pointer text-whitesmoke" (click)="openDialogPayment()" matTooltip="Novo pagamento"> add </mat-icon>
@@ -8,16 +8,16 @@
 
     <div class="basis-full grid grid-cols-6 pt-1 child-align-vertical-center">
 
-        <section class="table-header col-span-2 pl-2"> Pagador </section>
-        <section class="table-header"> Método de Pagamento </section>
-        <section class="table-header"> Valor </section>
-        <section class="table-header"> Data </section>
-        <section class="table-header justify-end pr-2"></section>
+        <section class="text-primary font-bold text-12 py-0.5 col-span-2 pl-2"> Pagador </section>
+        <section class="text-primary font-bold text-12 py-0.5"> Método de Pagamento </section>
+        <section class="text-primary font-bold text-12 py-0.5"> Valor </section>
+        <section class="text-primary font-bold text-12 py-0.5"> Data </section>
+        <section class="text-primary font-bold text-12 py-0.5 justify-end pr-2"></section>
 
         <div class="resize-y overflow-y-auto col-span-6">
             @for (payment of payments$(); let i = $index; track payment.id; let last = $last; let odd = $odd) {
-                <div class="grid grid-cols-6 child-align-vertical-center" 
-                    [ngClass]="{'border-b-[1px] border-gray-400': !last, 'bg-slate-200': odd}">     
+                <div class="grid grid-cols-6 child-align-vertical-center"
+                    [ngClass]="{'border-b-[1px] border-gray-400': !last, 'bg-slate-200': odd}">
 
                     <section class="col-span-2 pl-2"> {{ payment.payer?.name }} </section>
                     <section> {{ payment.type | paymentMethodLabel }} </section>
@@ -26,7 +26,7 @@
                     <section class="justify-end pr-2">
                         <mat-icon color="primary" class="m-1 cursor-pointer" (click)="openDialogPayment(payment)" matTooltip="Editar pagamento"> edit </mat-icon>
                     </section>
-                    
+
                 </div>
             }
         </div>

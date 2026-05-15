@@ -1,3 +1,4 @@
+@reference "../../../tailwind.css";
 
 .hover-card:focus, .hover-card:hover {
     @apply bg-blue-800 text-white;

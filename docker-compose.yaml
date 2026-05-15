@@ -1,30 +1,16 @@
 services:
-  postgres:
-    image: postgres
-    container_name: my-postgres
-    environment:
-      POSTGRES_USER: root
-      PGUSER: root
-      POSTGRES_PASSWORD: root
-      PGDATA: ${DB_ROUTE}
-    volumes:
-      - ${DB_ROUTE}:${DB_ROUTE}
-    ports:
-      - "5432:5432"
-    restart: always
-
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: my-pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${DB_ADMIN_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "8081:80"
-    depends_on:
-      - postgres
-    volumes:
-      - ./data/pgadmin:/var/lib/pgadmin
+#  pgadmin:
+#    image: dpage/pgadmin4
+#    container_name: my-pgadmin
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: ${DB_ADMIN_EMAIL}
+#      PGADMIN_DEFAULT_PASSWORD: ${DB_PASSWORD}
+#    ports:
+#      - "8081:80"
+#    depends_on:
+#      - postgres
+#    volumes:
+#      - ./data/pgadmin:/var/lib/pgadmin
 
   server:
     image: murilo1704/ordens-de-servico-server:main
@@ -39,8 +25,6 @@ services:
       DB_NAME: ${DB_NAME}
       DB_SSL: ${DB_SSL}
       SECRET_JWT: ${SECRET_JWT}
-    depends_on:
-      - postgres
     networks:
       - ordens-de-servico
 
@@ -58,6 +42,5 @@ networks:
   ordens-de-servico:
     name: network-ordens-de-servico
     driver: bridge
-
-volumes:
-  postgres2:
+    enable_ipv6: true
+    external: true

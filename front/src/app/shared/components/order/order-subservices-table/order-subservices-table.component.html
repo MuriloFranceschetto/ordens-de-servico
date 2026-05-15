@@ -1,6 +1,6 @@
 
 <div class="basis-full flex flex-col">
-    
+
     <div class="flex justify-between items-center px-2 py-1 bg-primary text-whitesmoke">
         <h2> Sub-services </h2>
         <mat-icon class="m-1 cursor-pointer text-whitesmoke" (click)="openDialogSubservice()" matTooltip="Novo pagamento"> add </mat-icon>
@@ -8,16 +8,16 @@
 
     <div class="basis-full grid grid-cols-6 pt-1 child-align-vertical-center">
 
-        <section class="table-header col-span-2 pl-2"> Serviço </section>
-        <section class="table-header"> Quantidade </section>
-        <section class="table-header"> Valor </section>
-        <section class="table-header"> Mecânico </section>
-        <section class="table-header justify-end pr-2"></section>
+        <section class="text-primary font-bold text-12 py-0.5 col-span-2 pl-2"> Serviço </section>
+        <section class="text-primary font-bold text-12 py-0.5"> Quantidade </section>
+        <section class="text-primary font-bold text-12 py-0.5"> Valor </section>
+        <section class="text-primary font-bold text-12 py-0.5"> Mecânico </section>
+        <section class="text-primary font-bold text-12 py-0.5 justify-end pr-2"></section>
 
         <div class="resize-y overflow-y-auto col-span-6">
             @for (subservice of subservices$(); let i = $index; track subservice.id; let last = $last; let odd = $odd) {
-                <div class="grid grid-cols-6 child-align-vertical-center" 
-                    [ngClass]="{'border-b-[1px] border-gray-400': !last, 'bg-slate-200': odd}">     
+                <div class="grid grid-cols-6 child-align-vertical-center"
+                    [ngClass]="{'border-b-[1px] border-gray-400': !last, 'bg-slate-200': odd}">
 
                     <section class="col-span-2 pl-2"> {{ subservice.subservice?.name }} </section>
                     <section> {{ subservice.quantity }} </section>

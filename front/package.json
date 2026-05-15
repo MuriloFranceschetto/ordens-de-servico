@@ -29,7 +29,7 @@
     "class-transformer": "0.5.1",
     "dayjs": "1.11.20",
     "ng2-currency-mask": "13.0.3",
-    "postcss": "8.5.10",
+    "postcss": "^8.5.10",
     "rxjs": "7.8.2",
     "ts-node": "^10.9.2",
     "tslib": "2.6.2",
@@ -39,14 +39,14 @@
     "@angular/build": "21.2.10",
     "@angular/cli": "21.2.10",
     "@angular/compiler-cli": "21.2.12",
-    "@tailwindcss/postcss": "4.3.0",
+    "@tailwindcss/postcss": "^4.3.0",
     "@types/jest": "30.0.0",
     "@types/tailwindcss": "^3.1.0",
     "jest": "30.4.2",
     "jest-environment-jsdom": "30.4.1",
     "jest-preset-angular": "16.1.5",
     "karma-typescript": "5.5.4",
-    "tailwindcss": "4.3.0",
+    "tailwindcss": "^4.3.0",
     "typescript": "~5.9.3"
   }
 }
