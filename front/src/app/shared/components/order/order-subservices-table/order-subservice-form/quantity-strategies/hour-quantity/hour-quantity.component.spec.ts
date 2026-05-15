@@ -16,7 +16,7 @@ describe('HourQuantityComponent', () => {
 
     fixture = TestBed.createComponent(HourQuantityComponent);
 
-    fixture.componentRef.setInput('quantity', signal<number>(10))
+    fixture.componentRef.setInput('quantity', signal<number>(10));
 
     component = fixture.componentInstance;
     fixture.detectChanges();

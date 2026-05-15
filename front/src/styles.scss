@@ -50,7 +50,5 @@ $my-custom-level: mat.m2-define-typography-level(
 html, body { height: 100%; }
 body { margin: 0; font-family: 'Roboto', sans-serif; background-color: rgb(195, 195, 195) }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 

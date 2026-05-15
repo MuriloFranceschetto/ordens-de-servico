@@ -16,7 +16,7 @@ describe('KilometerQuantityComponent', () => {
 
     fixture = TestBed.createComponent(KilometerQuantityComponent);
 
-    fixture.componentRef.setInput('quantity', signal<number>(10))
+    fixture.componentRef.setInput('quantity', signal<number>(10));
 
     component = fixture.componentInstance;
     fixture.detectChanges();

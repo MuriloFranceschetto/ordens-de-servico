@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { PaymentStatus } from '../models/order/Order';
-import { DefaultColors } from 'tailwindcss/types/generated/colors';
 import colors from 'tailwindcss/colors';
 
 @Pipe({
