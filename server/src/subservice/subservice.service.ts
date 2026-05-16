@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,7 +13,7 @@ import { UpdateSubserviceDTO } from './dto/update-subservice.dto';
 export class SubserviceService {
 
     constructor(
-        @InjectRepository(SubserviceEntity) private subserviceRepository: Repository<SubserviceEntity>,
+        @InjectRepository(SubserviceEntity) private readonly subserviceRepository: Repository<SubserviceEntity>,
     ) { }
 
     async listSubservices() {

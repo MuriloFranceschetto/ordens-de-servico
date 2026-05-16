@@ -12,10 +12,10 @@ export class QueryParamsUserDto extends PaginationRequestDto {
 
     @IsOptional()
     @Transform(({ value }) => {
-        if (!Array.isArray(value)) {
-            return [value]
-        } else {
+        if (Array.isArray(value)) {
             return value;
+        } else {
+            return [value]
         }
     })
     @IsArray()

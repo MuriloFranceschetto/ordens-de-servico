@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { createHash, randomBytes } from 'crypto';
+import {Injectable} from '@nestjs/common';
+import {createHash, randomBytes} from 'node:crypto';
 
 @Injectable()
 export class HashingService {
@@ -7,7 +7,7 @@ export class HashingService {
     /**
      * Create password hash for new or edited users
      * @param password New user password
-     * @returns 
+     * @returns
      */
     public generatePasswordHash(password: string): [string, string] {
         const salt = randomBytes(10).toString('hex').slice(0, 10);

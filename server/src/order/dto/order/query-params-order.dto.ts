@@ -22,7 +22,7 @@ export class QueryParamsOrderDto extends PaginationRequestDto {
         if (!Array.isArray(value)) {
             value = [value]
         }
-        return value.map(e => +e);
+        return value.map((e: string) => +e);
     })
     @IsEnum(PaymentStatus, {each: true})
     public readonly payment_status?: PaymentStatus[];

@@ -1,4 +1,4 @@
-import {randomUUID} from "crypto";
+import {randomUUID} from "node:crypto";
 import {Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Inject, Injectable} from "@nestjs/common";
@@ -22,10 +22,10 @@ import {UserService} from "../user/user.service";
 export class OrderService {
 
     constructor(
-        @InjectRepository(OrderEntity) private orderRepository: Repository<OrderEntity>,
-        @InjectRepository(OrderPaymentEntity) private orderPaymentRepository: Repository<OrderPaymentEntity>,
-        @InjectRepository(OrderSubserviceEntity) private orderSubserviceRepository: Repository<OrderSubserviceEntity>,
-        @Inject(UserService) private userService: UserService,
+        @InjectRepository(OrderEntity) private readonly orderRepository: Repository<OrderEntity>,
+        @InjectRepository(OrderPaymentEntity) private readonly orderPaymentRepository: Repository<OrderPaymentEntity>,
+        @InjectRepository(OrderSubserviceEntity) private readonly orderSubserviceRepository: Repository<OrderSubserviceEntity>,
+        @Inject(UserService) private readonly userService: UserService,
     ) {
     }
 
@@ -63,7 +63,7 @@ export class OrderService {
         return {
             total,
             orders: orders?.map((order) => {
-                const totalAmountSubservices = order.subservices.map(s => s.amount).reduce((a, b) => a + b);
+                const totalAmountSubservices = order.subservices.map(s => s.amount).reduce((a, b) => a + b, 0);
                 return plainToClass(ListOrderDto, {...order, totalAmountSubservices});
             }) ?? []
         }

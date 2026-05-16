@@ -1,12 +1,12 @@
-import { Module, ParseBoolPipe, ParseEnumPipe, ParseUUIDPipe } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { OrderEntity } from "./entities/order.entity";
-import { OrderPaymentEntity } from "./entities/order-payment.entity";
-import { OrderController } from "./order.controller";
-import { OrderService } from "./order.service";
-import { UserModule } from "../../src/user/user.module";
-import { OrderSubserviceEntity } from "./entities/order-subservice.entity";
-import { JwtModule } from "@nestjs/jwt";
+import {Module} from "@nestjs/common";
+import {TypeOrmModule} from "@nestjs/typeorm";
+import {OrderEntity} from "./entities/order.entity";
+import {OrderPaymentEntity} from "./entities/order-payment.entity";
+import {OrderController} from "./order.controller";
+import {OrderService} from "./order.service";
+import {UserModule} from "../user/user.module";
+import {OrderSubserviceEntity} from "./entities/order-subservice.entity";
+import {JwtModule} from "@nestjs/jwt";
 
 @Module({
     imports: [
@@ -21,4 +21,5 @@ import { JwtModule } from "@nestjs/jwt";
         OrderService,
     ],
 })
-export class OrderModule { };
+export class OrderModule {
+}

@@ -31,7 +31,7 @@ import {AuthGuard} from "../shared/guards/auth.guard";
 export class OrderController {
 
     constructor(
-        private orderService: OrderService,
+        private readonly orderService: OrderService,
     ) {
     }
 

@@ -22,7 +22,7 @@ const config: Config = {
     // A preset that is used as a base for Jest's configuration
     preset: 'jest-preset-angular',
 
-    testRegex: ".*\\.spec\\.ts$",
+    testRegex: String.raw`.*.spec.ts$`,
 
     // An array of regexp pattern strings used to skip coverage collection
     coveragePathIgnorePatterns: [

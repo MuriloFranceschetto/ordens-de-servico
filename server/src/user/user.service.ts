@@ -1,4 +1,4 @@
-import {randomUUID} from 'crypto';
+import {randomUUID} from 'node:crypto';
 import {Repository, UpdateResult} from 'typeorm';
 import {Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
@@ -15,7 +15,7 @@ import {QueryParamsUserDto} from './dto/query-params-user.dto';
 export class UserService {
 
     constructor(
-        @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
+        @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
     ) {
     }
 

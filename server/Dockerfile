@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package.json .
 
 # Install app dependencies
-RUN npm install --ignore-scripts
+RUN npm install ci --ignore-scripts
 
 # Bundle app source
 COPY . .

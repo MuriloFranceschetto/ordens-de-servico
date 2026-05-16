@@ -3,7 +3,7 @@ import type { Config } from 'jest';
 const config: Config = {
     moduleFileExtensions: ["js", "json", "ts"],
     rootDir: "../src",
-    testRegex: ".*\\.spec\\.ts$",
+    testRegex: String.raw`.*.spec.ts$`,
     testPathIgnorePatterns: [
         '/node_modules./',
         '/(coverage|dist|lib|tmp)./*',

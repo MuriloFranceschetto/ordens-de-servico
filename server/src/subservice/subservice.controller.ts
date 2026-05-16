@@ -12,7 +12,7 @@ import {AuthGuard} from "../shared/guards/auth.guard";
 export class SubserviceController {
 
     constructor(
-        private subserviceService: SubserviceService,
+        private readonly subserviceService: SubserviceService,
     ) {
     }
 
