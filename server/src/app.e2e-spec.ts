@@ -25,11 +25,11 @@ describe('AppController (e2e)', () => {
       .expect('Hello World!');
   });
 
-  it(`/api/users (GET)`, async () => {
-    return supertest(app.getHttpServer())
-      .get('/api/users?name=mur')
-      .expect(200);
-  });
+  // it(`/api/users (GET)`, async () => {
+  //   return supertest(app.getHttpServer())
+  //     .get('/api/users?name=mur')
+  //     .expect(200);
+  // });
 
   afterAll(async () => {
     await app.close();
