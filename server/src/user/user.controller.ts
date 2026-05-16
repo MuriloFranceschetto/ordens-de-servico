@@ -25,7 +25,7 @@ import {AuthGuard} from "../shared/guards/auth.guard";
 export class UserController {
 
     constructor(
-        private userService: UserService,
+        private readonly userService: UserService,
     ) {
     }
 

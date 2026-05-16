@@ -12,13 +12,13 @@ WORKDIR /usr/src/app
 COPY . /usr/src/app
 
 # Instala dependências
-RUN npm install
+RUN npm install ci --ignore-scripts
 
 
 # TODO - TEM QUE TIRAR ESSA GAMBIARRA AQUI
 # QUANDO NÃO TEM ESSA LINHA DA PROBLEMA NA HORA DE FAZER O BIULD
-RUN npm i @esbuild/linux-x64
-RUN npm i @lmdb/lmdb-linux-x64
+RUN npm i @esbuild/linux-x64 ci --ignore-scripts
+RUN npm i @lmdb/lmdb-linux-x64 ci --ignore-scripts
 
 
 # Gera o build da aplicação

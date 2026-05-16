@@ -13,6 +13,7 @@ import {CreateUserDto} from "./dto/create-user.dto";
 import {UpdateUserDto} from "./dto/update-user.dto";
 import {mockRepositoryFactory} from "../../test/test-helper";
 import {ConfigService} from "@nestjs/config";
+import {JwtService} from "@nestjs/jwt";
 
 const clientUser: UserEntity = {
     id: crypto.randomUUID(),
@@ -51,6 +52,10 @@ describe('UserService', () => {
             providers: [
                 UserService,
                 ConfigService,
+                {
+                    provide: JwtService,
+                    useValue: { sign: jest.fn(), verify: jest.fn() },
+                },
                 {provide: getRepositoryToken(UserEntity), useFactory: mockRepositoryFactory}
             ],
         }).compile();
