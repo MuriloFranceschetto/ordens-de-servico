@@ -7,12 +7,10 @@ on:
     types: [ opened, synchronize, reopened ]
 jobs:
   push_to_registry_front:
-    name: Push front Docker image to Docker Hub
+    name: Push front Docker image to Google Artifact Registry
     runs-on: ubuntu-latest
     permissions:
-      packages: write
       contents: read
-      attestations: write
       id-token: write
     defaults:
       run:
@@ -21,20 +19,25 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v4
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: murilo1704/ordens-de-servico-front
+          images: ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/ordens-de-servico/front
 
       - name: Build and push Docker image
-        id: push
         uses: docker/build-push-action@v6
         with:
           context: ./front
@@ -44,12 +47,10 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
   push_to_registry_server:
-    name: Push server Docker image to Docker Hub
+    name: Push server Docker image to Google Artifact Registry
     runs-on: ubuntu-latest
     permissions:
-      packages: write
       contents: read
-      attestations: write
       id-token: write
     defaults:
       run:
@@ -58,20 +59,25 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: murilo1704/ordens-de-servico-server
+          images: ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/ordens-de-servico/server
 
       - name: Build and push Docker image
-        id: push
         uses: docker/build-push-action@v6
         with:
           context: ./server
